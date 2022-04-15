@@ -34,6 +34,8 @@ dependencies {
     runtimeOnly "org.lwjgl:lwjgl-stb::$lwjglNatives"
 
     implementation "io.github.spair:imgui-java-app:$imguiVersion"
+
+    implementation 'org.joml:joml:1.9.2'
 }
 
 test {
