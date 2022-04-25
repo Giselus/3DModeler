@@ -7,14 +7,14 @@ import java.util.ArrayList;
 import static org.lwjgl.opengl.GL30.*;
 
 public class Mesh {
-    public ArrayList<Vertex> vertices;
-    public ArrayList<Integer> indices;
-    public ArrayList<Texture> textures;
+    private ArrayList<Vertex> Vertices;
+    private ArrayList<Integer> Indices;
+    private ArrayList<Texture> Textures;
 
-    public Mesh(ArrayList<Vertex> vertices, ArrayList<Integer> indices, ArrayList<Texture> textures){
-        this.vertices = vertices;
-        this.indices = indices;
-        this.textures = textures;
+    public Mesh(ArrayList<Vertex> Vertices, ArrayList<Integer> Indices, ArrayList<Texture> Textures){
+        this.Vertices = Vertices;
+        this.Indices = Indices;
+        this.Textures = Textures;
 
         setupMesh();
     }
@@ -23,10 +23,10 @@ public class Mesh {
         shader.use();
         int diffuseNr = 1;
         int specularNr = 1;
-        for(int i = 0; i < textures.size();i++){
+        for(int i = 0; i < Textures.size();i++){
             glActiveTexture(GL_TEXTURE0+i);
             String number;
-            String name = textures.get(i).type;
+            String name = Textures.get(i).type;
             if(name.equals("texture_diffuse")){
                 number = String.valueOf(diffuseNr);
                 diffuseNr++;
@@ -35,12 +35,12 @@ public class Mesh {
                 specularNr++;
             }
             shader.setFloat(("material" + name + number),i);
-            glBindTexture(GL_TEXTURE_2D,textures.get(i).ID);
+            glBindTexture(GL_TEXTURE_2D,Textures.get(i).ID);
         }
         glActiveTexture(GL_TEXTURE0);
 
         glBindVertexArray(VAO);
-        glDrawElements(GL_TRIANGLES,indices.size(),GL_UNSIGNED_INT,0);
+        glDrawElements(GL_TRIANGLES,Indices.size(),GL_UNSIGNED_INT,0);
         glBindVertexArray(0);
     }
 
@@ -55,14 +55,14 @@ public class Mesh {
 
         glBindBuffer(GL_ARRAY_BUFFER,VBO);
         MemoryStack stack = MemoryStack.stackPush();
-        FloatBuffer verticesBuffer = stack.mallocFloat(vertices.size() * 8);
-        vertices.forEach((v) -> verticesBuffer.put(v.getBufferedData()));
+        FloatBuffer verticesBuffer = stack.mallocFloat(Vertices.size() * 8);
+        Vertices.forEach((v) -> verticesBuffer.put(v.getBufferedData()));
         verticesBuffer.flip();
         glBufferData(GL_ARRAY_BUFFER, verticesBuffer, GL_STATIC_DRAW);
 
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,EBO);
-        IntBuffer indicesBuffer = stack.mallocInt(indices.size());
-        indices.forEach((v) -> indicesBuffer.put(v));
+        IntBuffer indicesBuffer = stack.mallocInt(Indices.size());
+        Indices.forEach((v) -> indicesBuffer.put(v));
         indicesBuffer.flip();
         glBufferData(GL_ELEMENT_ARRAY_BUFFER,indicesBuffer, GL_STATIC_DRAW);
 
