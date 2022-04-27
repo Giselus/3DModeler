@@ -1,3 +1,6 @@
+package UtilsCommon;
+
+import UtilsCommon.Vertex;
 import org.lwjgl.system.MemoryStack;
 
 import java.nio.FloatBuffer;
@@ -15,7 +18,6 @@ public class Mesh {
         this.Vertices = Vertices;
         this.Indices = Indices;
         this.Textures = Textures;
-
         setupMesh();
     }
 
