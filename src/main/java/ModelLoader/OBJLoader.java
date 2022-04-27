@@ -7,6 +7,7 @@ import org.joml.Vector3f;
 
 import java.io.File;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Scanner;
@@ -39,44 +40,41 @@ public class OBJLoader implements Loader {
         }
         return ReadObjects;
     }
-    private void readFile(File file) {
+    private void readFile(File file) throws RuntimeException, FileNotFoundException {
         boolean firstObject = true;
-        try {
-            Scanner scanner = new Scanner(file);
-            String line;
-            while(scanner.hasNext()){
-                line = scanner.nextLine();
-                if(line == null){
-                    continue;
-                }
-                String[] splintedLine = line.split(" ");
-                if(splintedLine[0].equals("o")){
-                    if(firstObject){
-                        firstObject = false;
-                        continue;
-                    }
-                    ReadObjects.add(new Mesh(CreatedVertices, Indices, null));
-                    clear();
-                    continue;
-                }
-                switch (splintedLine[0]) {
-                    case "v" -> Vertices.add(new Vector3f(
-                            Float.parseFloat(splintedLine[1]),
-                            Float.parseFloat(splintedLine[2]),
-                            Float.parseFloat(splintedLine[3])));
-                    case "vn" -> Normals.add(new Vector3f(
-                            Float.parseFloat(splintedLine[1]),
-                            Float.parseFloat(splintedLine[2]),
-                            Float.parseFloat(splintedLine[3])));
-                    case "vt" -> Tex.add(new Vector2f(
-                            Float.parseFloat(splintedLine[1]),
-                            Float.parseFloat(splintedLine[2])));
-                    case "f" -> readFace(splintedLine);
-                }
+        Scanner scanner = new Scanner(file);
+        String line;
+        while(scanner.hasNext()){
+            line = scanner.nextLine();
+            if(line == null){
+                continue;
             }
-        } catch (Exception e){
-            e.printStackTrace();
+            String[] splintedLine = line.split(" ");
+            if(splintedLine[0].equals("o")){
+                if(firstObject){
+                    firstObject = false;
+                    continue;
+                }
+                ReadObjects.add(new Mesh(CreatedVertices, Indices, null));
+                clear();
+                continue;
+            }
+            switch (splintedLine[0]) {
+                case "v" -> Vertices.add(new Vector3f(
+                        Float.parseFloat(splintedLine[1]),
+                        Float.parseFloat(splintedLine[2]),
+                        Float.parseFloat(splintedLine[3])));
+                case "vn" -> Normals.add(new Vector3f(
+                        Float.parseFloat(splintedLine[1]),
+                        Float.parseFloat(splintedLine[2]),
+                        Float.parseFloat(splintedLine[3])));
+                case "vt" -> Tex.add(new Vector2f(
+                        Float.parseFloat(splintedLine[1]),
+                        Float.parseFloat(splintedLine[2])));
+                case "f" -> readFace(splintedLine);
+            }
         }
+        ReadObjects.add(new Mesh(CreatedVertices, Indices, null));
     }
     private void readFace(String[] line){
         if(firstFace){
@@ -104,6 +102,7 @@ public class OBJLoader implements Loader {
     }
 
     private void clear(){
+        firstFace = true;
         Vertices = new ArrayList<>();
         CreatedVertices = new ArrayList<>();
         Tex = new ArrayList<>();
