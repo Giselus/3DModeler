@@ -42,10 +42,10 @@ public class MainController{
     private void run(){
         initialize();
 
-        OBJLoader loader = new OBJLoader();
-        var tmp = loader.load("src/main/data/cube.obj");
-
-        Shader shader = new Shader("src/main/shaders/vertexShader.vs","src/main/shaders/fragmentShader.fs");
+//        OBJLoader loader = new OBJLoader();
+//        var tmp = loader.load("src/main/data/cube.obj");
+//
+//        Shader shader = new Shader("src/main/shaders/vertexShader.vs","src/main/shaders/fragmentShader.fs");
 
         while(!glfwWindowShouldClose(UIController.getInstance().getMainWindow())) {
             process_input(UIController.getInstance().getMainWindow());
@@ -54,15 +54,15 @@ public class MainController{
             glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-            Matrix4f projection = new Matrix4f().setPerspective((float)Math.toRadians(camera.getZoom()),
-                    1200.0f/800.0f, 0.1f, 100.0f);
-            Matrix4f view = camera.getViewMatrix();
-            Matrix4f model = new Matrix4f().identity();
-            shader.setMatrix4("projection",projection);
-            shader.setMatrix4("view",view);
-            shader.setMatrix4("model",model);
-            for(Mesh m: tmp)
-                m.draw(shader);
+//            Matrix4f projection = new Matrix4f().setPerspective((float)Math.toRadians(camera.getZoom()),
+//                    1200.0f/800.0f, 0.1f, 100.0f);
+//            Matrix4f view = camera.getViewMatrix();
+//            Matrix4f model = new Matrix4f().identity();
+//            shader.setMatrix4("projection",projection);
+//            shader.setMatrix4("view",view);
+//            shader.setMatrix4("model",model);
+//            for(Mesh m: tmp)
+//                m.draw(shader);
 
             UIController.getInstance().update();
             //TODO: move rendering, input and logic updates

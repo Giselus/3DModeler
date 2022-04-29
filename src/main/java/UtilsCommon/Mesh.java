@@ -10,15 +10,13 @@ import java.util.ArrayList;
 import static org.lwjgl.opengl.GL30.*;
 
 public class Mesh {
-    private ArrayList<Vertex> Vertices;
-    private ArrayList<Integer> Indices;
 
-    public Mesh(ArrayList<Vertex> Vertices, ArrayList<Integer> Indices){
-        this.Vertices = Vertices;
-        this.Indices = Indices;
+    private ArrayList<VertexInstance> Vertices;
+
+    public Mesh(ArrayList<Face> Faces){
+        processTopology(Faces);
         setupMesh();
     }
-
     public void draw(Shader shader){
         shader.use();
 //        int diffuseNr = 1;
@@ -40,16 +38,24 @@ public class Mesh {
 //        glActiveTexture(GL_TEXTURE0);
 
         glBindVertexArray(VAO);
-        glDrawElements(GL_TRIANGLES,Indices.size(),GL_UNSIGNED_INT,0);
+        glDrawElements(GL_TRIANGLES,Vertices.size(),GL_UNSIGNED_INT,0);
         glBindVertexArray(0);
     }
 
-    private int VAO, VBO, EBO;
+    private int VAO, VBO;
+
+    private void processTopology(ArrayList<Face> Faces){
+        Vertices = new ArrayList<>();
+        for(Face face: Faces){
+            for(VertexInstance vertex: face.Vertices){
+                Vertices.add(vertex);
+            }
+        }
+    }
 
     private void setupMesh(){
         VAO = glGenVertexArrays();
         VBO = glGenBuffers();
-        EBO = glGenBuffers();
 
         glBindVertexArray(VAO);
 
@@ -60,18 +66,10 @@ public class Mesh {
         verticesBuffer.flip();
         glBufferData(GL_ARRAY_BUFFER, verticesBuffer, GL_STATIC_DRAW);
 
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,EBO);
-        IntBuffer indicesBuffer = stack.mallocInt(Indices.size());
-        Indices.forEach((v) -> indicesBuffer.put(v));
-        indicesBuffer.flip();
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER,indicesBuffer, GL_STATIC_DRAW);
-
         glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0,3,GL_FLOAT,false,32,0);
+        glVertexAttribPointer(0,3,GL_FLOAT,false,24,0);
         glEnableVertexAttribArray(1);
-        glVertexAttribPointer(1,3,GL_FLOAT,false,32,12);
-        glEnableVertexAttribArray(2);
-        glVertexAttribPointer(2,2,GL_FLOAT,false,32,24);
+        glVertexAttribPointer(1,3,GL_FLOAT,false,24,12);
 
         glBindVertexArray(0);
     }

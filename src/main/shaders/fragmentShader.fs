@@ -3,7 +3,6 @@ out vec4 fragColor;
 
 in vec3 FragmentPosition;
 in vec3 Normals;
-in vec2 TextureCoordinates;
 
 void main()
 {
