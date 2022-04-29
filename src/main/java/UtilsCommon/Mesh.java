@@ -61,7 +61,7 @@ public class Mesh {
 
         glBindBuffer(GL_ARRAY_BUFFER,VBO);
         MemoryStack stack = MemoryStack.stackPush();
-        FloatBuffer verticesBuffer = stack.mallocFloat(Vertices.size() * 8);
+        FloatBuffer verticesBuffer = stack.mallocFloat(Vertices.size() * 6);
         Vertices.forEach((v) -> verticesBuffer.put(v.getBufferedData()));
         verticesBuffer.flip();
         glBufferData(GL_ARRAY_BUFFER, verticesBuffer, GL_STATIC_DRAW);
