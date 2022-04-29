@@ -55,7 +55,7 @@ public class OBJLoader implements Loader {
                     firstObject = false;
                     continue;
                 }
-                ReadObjects.add(new Mesh(CreatedVertices, Indices, null));
+                ReadObjects.add(new Mesh(CreatedVertices, Indices));
                 clear();
                 continue;
             }
@@ -74,7 +74,7 @@ public class OBJLoader implements Loader {
                 case "f" -> readFace(splintedLine);
             }
         }
-        ReadObjects.add(new Mesh(CreatedVertices, Indices, null));
+        ReadObjects.add(new Mesh(CreatedVertices, Indices));
     }
     private void readFace(String[] line){
         if(firstFace){
@@ -84,7 +84,7 @@ public class OBJLoader implements Loader {
             }
             firstFace = false;
         }
-        for(int i = 1; i < 3; i++){
+        for(int i = 1; i <= 3; i++){
             createVertex(line[i].split("/"));
         }
     }

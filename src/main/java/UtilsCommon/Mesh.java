@@ -12,34 +12,32 @@ import static org.lwjgl.opengl.GL30.*;
 public class Mesh {
     private ArrayList<Vertex> Vertices;
     private ArrayList<Integer> Indices;
-    private ArrayList<Texture> Textures;
 
-    public Mesh(ArrayList<Vertex> Vertices, ArrayList<Integer> Indices, ArrayList<Texture> Textures){
+    public Mesh(ArrayList<Vertex> Vertices, ArrayList<Integer> Indices){
         this.Vertices = Vertices;
         this.Indices = Indices;
-        this.Textures = Textures;
         setupMesh();
     }
 
     public void draw(Shader shader){
         shader.use();
-        int diffuseNr = 1;
-        int specularNr = 1;
-        for(int i = 0; i < Textures.size();i++){
-            glActiveTexture(GL_TEXTURE0+i);
-            String number;
-            String name = Textures.get(i).type;
-            if(name.equals("texture_diffuse")){
-                number = String.valueOf(diffuseNr);
-                diffuseNr++;
-            }else{
-                number = String.valueOf(specularNr);
-                specularNr++;
-            }
-            shader.setFloat(("material" + name + number),i);
-            glBindTexture(GL_TEXTURE_2D,Textures.get(i).ID);
-        }
-        glActiveTexture(GL_TEXTURE0);
+//        int diffuseNr = 1;
+//        int specularNr = 1;
+//        for(int i = 0; i < Textures.size();i++){
+//            glActiveTexture(GL_TEXTURE0+i);
+//            String number;
+//            String name = Textures.get(i).type;
+//            if(name.equals("texture_diffuse")){
+//                number = String.valueOf(diffuseNr);
+//                diffuseNr++;
+//            }else{
+//                number = String.valueOf(specularNr);
+//                specularNr++;
+//            }
+//            shader.setFloat(("material" + name + number),i);
+//            glBindTexture(GL_TEXTURE_2D,Textures.get(i).ID);
+//        }
+//        glActiveTexture(GL_TEXTURE0);
 
         glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES,Indices.size(),GL_UNSIGNED_INT,0);

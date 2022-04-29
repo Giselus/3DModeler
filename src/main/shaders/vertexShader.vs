@@ -16,6 +16,6 @@ void main()
     FragmentPosition = vec3(model * vec4(position,1.0));
     Normals = mat3(transpose(inverse(model))) * normals;
     TextureCoordinates = textureCoordinates;
-    gl_Position = vec4(position, 1.0);
-    //gl_Position = projection * view * vec4(FragmentPosition, 1.0);
+    //gl_Position = vec4(position, 1.0);
+    gl_Position = projection * view * model * vec4(FragmentPosition, 1.0);
 }

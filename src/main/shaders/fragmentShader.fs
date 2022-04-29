@@ -1,14 +1,9 @@
 #version 330
 out vec4 fragColor;
 
-struct Material{
-    uniform sampler2D texture_diffuse1;
-    uniform sampler2D texture_diffuse2;
-    uniform sampler2D texture_diffuse3;
-    uniform sampler2D texture_specular1;
-    uniform sampler2D texture_specular2;
-    uniform sampler2D texture_specular3;
-}
+in vec3 FragmentPosition;
+in vec3 Normals;
+in vec2 TextureCoordinates;
 
 void main()
 {

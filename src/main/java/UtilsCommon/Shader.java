@@ -18,8 +18,8 @@ public class Shader {
         CharSequence fragmentCode;
 
         try {
-            vertexCode = Files.readAllLines(Paths.get(vertexPath)).get(0);
-            fragmentCode = Files.readAllLines(Paths.get(fragmentPath)).get(0);
+            vertexCode = Files.readString(Paths.get(vertexPath));
+            fragmentCode = Files.readString(Paths.get(fragmentPath));
         }catch(Exception e){
             e.printStackTrace();
             return;
