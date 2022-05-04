@@ -37,7 +37,7 @@ public class Mesh {
 //        glActiveTexture(GL_TEXTURE0);
 
         glBindVertexArray(VAO);
-        glDrawElements(GL_TRIANGLES,Vertices.size(),GL_UNSIGNED_INT,0);
+        glDrawArrays(GL_TRIANGLES,0,Vertices.size());
         glBindVertexArray(0);
     }
 

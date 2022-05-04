@@ -14,6 +14,7 @@ public class NormalVector {
         u2.sub(v1.getValue());
 
         u1.cross(u2);
+        u1.normalize();
         this.Value = u1;
     }
 
