@@ -1,6 +1,5 @@
 package UtilsCommon;
 
-import UtilsCommon.Vertex;
 import org.lwjgl.system.MemoryStack;
 
 import java.nio.FloatBuffer;

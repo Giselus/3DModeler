@@ -1,5 +1,6 @@
 package UtilsCommon;
 
+import org.joml.Vector2f;
 import org.joml.Vector3f;
 
 public class VertexInstance {
@@ -7,6 +8,7 @@ public class VertexInstance {
     private Face Face;
     private NormalVector Normal;
 
+    private Vector2f TextureCoordinate;
     public VertexInstance(VertexPosition Position, Face Face, NormalVector Normal){
         this.Position = Position;
         this.Face = Face;

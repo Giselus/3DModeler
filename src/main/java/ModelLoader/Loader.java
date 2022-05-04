@@ -1,7 +1,9 @@
 package ModelLoader;
 
+import UtilsCommon.Model;
+
 import java.util.LinkedList;
 
 public interface Loader{
-    LinkedList<UtilsCommon.Mesh> load(String path);
+    LinkedList<Model> load(String path);
 }

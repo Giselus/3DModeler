@@ -1,7 +1,7 @@
 import ModelLoader.OBJLoader;
 import UtilsCommon.Mesh;
+import UtilsCommon.Model;
 import UtilsCommon.Shader;
-import UtilsCommon.Vertex;
 import com.sun.tools.javac.Main;
 import imgui.ImGui;
 import imgui.ImGuiIO;
@@ -61,8 +61,8 @@ public class MainController{
 //            shader.setMatrix4("projection",projection);
 //            shader.setMatrix4("view",view);
 //            shader.setMatrix4("model",model);
-//            for(Mesh m: tmp)
-//                m.draw(shader);
+//            for(Model m: tmp)
+//                m.Draw(shader);
 
             UIController.getInstance().update();
             //TODO: move rendering, input and logic updates
