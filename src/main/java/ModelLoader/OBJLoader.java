@@ -71,7 +71,7 @@ public class OBJLoader implements Loader {
                 Float.parseFloat(line[1]),
                 Float.parseFloat(line[2]),
                 Float.parseFloat(line[3]));
-        Cords.add(new VertexPosition(cords, null));
+        Cords.add(new VertexPosition(cords));
     }
 
     private void readNormals(String[] line){

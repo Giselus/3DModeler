@@ -2,17 +2,17 @@ package UtilsCommon;
 
 import org.joml.Vector3f;
 
-import java.util.ArrayList;
-
 public class VertexPosition {
-    private Vector3f Value;
-    private ArrayList<VertexInstance> Indices;
-    public VertexPosition(Vector3f Value, ArrayList<VertexInstance> Indices){
+    private final Vector3f Value;
+    public VertexPosition(Vector3f Value){
         this.Value = Value;
-        this.Indices = Indices;
     }
-
     public Vector3f getValue(){
-        return Value;
+        return new Vector3f(Value);
+    }
+    public void setValue(Vector3f Value) {
+        this.Value.x = Value.x;
+        this.Value.y = Value.y;
+        this.Value.z = Value.z;
     }
 }
