@@ -54,8 +54,8 @@ public class Camera {
     public void ProcessMousePosition(float offsetX, float offsetY, boolean constraintPitch){
         offsetX *= MouseSensitivity;
         offsetY *= MouseSensitivity;
-        Yaw += offsetX;
-        Pitch += offsetY;
+        Yaw -= offsetX;
+        Pitch -= offsetY;
 
         if(constraintPitch){
             if(Pitch > 89.0f)

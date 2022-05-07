@@ -1,5 +1,6 @@
 import imgui.ImGui;
 import imgui.ImGuiIO;
+import imgui.ImVec2;
 import imgui.flag.ImGuiConfigFlags;
 import imgui.flag.ImGuiDockNodeFlags;
 import imgui.flag.ImGuiStyleVar;
@@ -34,6 +35,16 @@ public class UIController{
     private long mainWindow;
     private String glslVersion;
 
+    private int width = 1200;
+    private int height = 800;
+
+    public int getWidth(){
+        return width;
+    }
+    public int getHeight(){
+        return height;
+    }
+
     private void initWindow(){
         if(!glfwInit())
             return;
@@ -43,15 +54,13 @@ public class UIController{
         glfwWindowHint(GLFW_VISIBLE,GLFW_FALSE);
         glfwWindowHint(GLFW_OPENGL_PROFILE,GLFW_OPENGL_CORE_PROFILE);
 
-        mainWindow = glfwCreateWindow(1200,800,"Title==null",NULL,NULL);
+        mainWindow = glfwCreateWindow(width,height,"Title==null",NULL,NULL);
 
         glfwMakeContextCurrent(mainWindow);
         glfwSwapInterval(1);
         glfwShowWindow(mainWindow);
 
         GL.createCapabilities();
-
-        glEnable(GL_DEPTH_TEST);
     }
 
     private void initImGui(){
@@ -117,8 +126,14 @@ public class UIController{
 
         ImGui.end();
 
-        ImGui.begin("TestWindow", new ImBoolean(true), 0);
-        ImGui.text("test");
+        ImGui.begin("SceneWindow", new ImBoolean(true), 0);
+        ImGui.getWindowDrawList().addImage(
+                RenderingController.getInstance().getSceneTexture(),
+                0,0,
+                width,
+                height,
+                0,1,1,0
+        );
         ImGui.end();
 
         ImGui.begin("TestWindow2", new ImBoolean(), 0);

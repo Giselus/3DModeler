@@ -64,6 +64,7 @@ void main()
     vec3 normal = normalize(Normals);
     vec3 viewDir = normalize(viewPos - FragmentPosition);
 
+    //TODO: allow not fixed amount of light sources
     for(int i = 0; i < 1;i++){
         //result += calculateDirectionalLight(dirLights[i],normal,viewDir);
         result += calculatePointLight(pointLights[i],normal,FragmentPosition,viewDir);
