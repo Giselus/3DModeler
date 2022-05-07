@@ -1,6 +1,7 @@
 package UtilsCommon;
 
 import org.lwjgl.system.MemoryStack;
+import org.lwjgl.system.MemoryUtil;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
@@ -59,8 +60,8 @@ public class Mesh {
         glBindVertexArray(VAO);
 
         glBindBuffer(GL_ARRAY_BUFFER,VBO);
-        MemoryStack stack = MemoryStack.stackPush();
-        FloatBuffer verticesBuffer = stack.mallocFloat(Vertices.size() * 6);
+
+        FloatBuffer verticesBuffer = MemoryUtil.memAllocFloat(Vertices.size() * 6);
         Vertices.forEach((v) -> verticesBuffer.put(v.getBufferedData()));
         verticesBuffer.flip();
         glBufferData(GL_ARRAY_BUFFER, verticesBuffer, GL_STATIC_DRAW);

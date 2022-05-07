@@ -89,7 +89,8 @@ public class OBJLoader implements Loader {
         Faces.add(new Face(tempVertices));
     }
     private void clear(){
-        Cords = new ArrayList<>();
+        if(Cords == null)
+            Cords = new ArrayList<>();
         Faces = new ArrayList<>();
     }
 }

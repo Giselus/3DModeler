@@ -13,6 +13,7 @@ import imgui.flag.ImGuiStyleVar;
 import imgui.flag.ImGuiWindowFlags;
 import imgui.type.ImBoolean;
 import org.joml.Matrix4f;
+import org.joml.Vector3f;
 
 import java.util.ArrayList;
 
@@ -43,7 +44,7 @@ public class MainController{
         initialize();
 
         OBJLoader loader = new OBJLoader();
-        var tmp = loader.load("src/main/data/wtf.obj");
+        var tmp = loader.load("src/main/data/cube.obj");
 
         Shader shader = new Shader("src/main/shaders/vertexShader.vs","src/main/shaders/fragmentShader.fs");
 
@@ -58,9 +59,21 @@ public class MainController{
                     1200.0f/800.0f, 0.1f, 100.0f);
             Matrix4f view = camera.getViewMatrix();
             Matrix4f model = new Matrix4f().identity();
+            model.translate(new Vector3f(0,0,-5));
             shader.setMatrix4("projection",projection);
             shader.setMatrix4("view",view);
             shader.setMatrix4("model",model);
+            shader.setVector3f("viewPos", camera.getPosition());
+            shader.setVector3f("pointLights[0].position", new Vector3f(1.0f,0.0f,1.0f));
+            shader.setVector3f("pointLights[0].ambient", new Vector3f(0.05f));
+            shader.setVector3f("pointLights[0].diffuse", new Vector3f(0.8f));
+            shader.setVector3f("pointLights[0].specular", new Vector3f(1f));
+            shader.setFloat("pointLights[0].constant", 1.0f);
+            shader.setFloat("pointLights[0].linear", 0.09f);
+            shader.setFloat("pointLights[0].quadratic", 0.032f);
+            shader.setFloat("material.shininess",32.0f);
+            shader.setFloat("material.diffuse",0.1f);
+            shader.setFloat("material.specular",0.5f);
             for(Model m: tmp)
                 m.Draw(shader);
 

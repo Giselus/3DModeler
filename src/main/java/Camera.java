@@ -15,6 +15,9 @@ public class Camera {
     private float MouseSensitivity = 0.1f;
     private float Zoom = 45f;
 
+    public Vector3f getPosition(){
+        return new Vector3f(Position);
+    }
     public float getZoom(){
         return Zoom;
     }
