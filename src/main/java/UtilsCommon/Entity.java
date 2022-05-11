@@ -1,19 +1,25 @@
 package UtilsCommon;
 
-import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedList;
 
-public class Entity extends Model {
+public abstract class Entity {
     private final Transform transform;
     private Entity parent;
-    private final ArrayList<Entity> children;
+    private final Collection<Entity> children;
 
-    public Entity(ArrayList<VertexPosition> Vertices, ArrayList<Face> Faces) {
-        super(Vertices, Faces);
+    public Entity() {
         transform = new Transform();
-        children = new ArrayList<>();
+        children = new LinkedList<>();
+        parent = null;
     }
 
     public void setParent(Entity parent) {
+        if(parent != null) {
+            parent.removeChild(this);
+            this.parent = null;
+        }
+
         this.parent = parent;
         parent.addChild(this);
     }
@@ -36,5 +42,9 @@ public class Entity extends Model {
 
     private void addChild(Entity child) {
         children.add(child);
+    }
+
+    private void removeChild(Entity child) {
+        children.remove(child);
     }
 }
