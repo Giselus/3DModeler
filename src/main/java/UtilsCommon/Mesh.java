@@ -1,5 +1,6 @@
 package UtilsCommon;
 
+import Controllers.RenderingController;
 import org.lwjgl.system.MemoryStack;
 import org.lwjgl.system.MemoryUtil;
 
@@ -38,7 +39,7 @@ public class Mesh {
 //        glActiveTexture(GL_TEXTURE0);
 
         glBindVertexArray(VAO);
-        glDrawArrays(GL_TRIANGLES,0,Vertices.size());
+        glDrawArrays(RenderingController.getInstance().getDrawingMode(),0,Vertices.size());
         glBindVertexArray(0);
     }
 
@@ -61,15 +62,16 @@ public class Mesh {
 
         glBindBuffer(GL_ARRAY_BUFFER,VBO);
 
-        FloatBuffer verticesBuffer = MemoryUtil.memAllocFloat(Vertices.size() * 6);
+        FloatBuffer verticesBuffer = MemoryUtil.memAllocFloat(Vertices.size() * 7);
         Vertices.forEach((v) -> verticesBuffer.put(v.getBufferedData()));
         verticesBuffer.flip();
         glBufferData(GL_ARRAY_BUFFER, verticesBuffer, GL_STATIC_DRAW);
-
         glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0,3,GL_FLOAT,false,24,0);
+        glVertexAttribPointer(0,3,GL_FLOAT,false,28,0);
         glEnableVertexAttribArray(1);
-        glVertexAttribPointer(1,3,GL_FLOAT,false,24,12);
+        glVertexAttribPointer(1,3,GL_FLOAT,false,28,12);
+        glEnableVertexAttribArray(2);
+        glVertexAttribPointer(2,1,GL_FLOAT,false,28,24);
 
         glBindVertexArray(0);
     }

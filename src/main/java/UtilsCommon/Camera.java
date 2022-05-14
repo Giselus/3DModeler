@@ -1,3 +1,5 @@
+package UtilsCommon;
+
 import org.joml.*;
 import org.joml.Math;
 
@@ -11,8 +13,8 @@ public class Camera {
     private float Yaw = -90f;
     private float Pitch = 0f;
 
-    private float MovementSpeed = 2.5f;
-    private float MouseSensitivity = 0.1f;
+    private float MouseSensitivity = 0.3f;
+    private float ScrollSensitivity = 2.0f;
     private float Zoom = 45f;
 
     public Vector3f getPosition(){
@@ -33,28 +35,10 @@ public class Camera {
         return new Matrix4f().lookAt(Position,dir,Up);
     }
 
-    enum Camera_Movement{
-        FORWARD,
-        BACKWARD,
-        LEFT,
-        RIGHT
-    }
-    public void ProcessMovement(Camera_Movement direction, float deltaTime){
-        float velocity = MovementSpeed * deltaTime;
-        if(direction == Camera_Movement.FORWARD)
-            Position.add(new Vector3f(Front).mul(velocity));
-        else if(direction == Camera_Movement.BACKWARD)
-            Position.sub(new Vector3f(Front).mul(velocity));
-        else if(direction == Camera_Movement.LEFT)
-            Position.sub(new Vector3f(Right).mul(velocity));
-        else
-            Position.add(new Vector3f(Right).mul(velocity));
-    }
-
     public void ProcessMousePosition(float offsetX, float offsetY, boolean constraintPitch){
         offsetX *= MouseSensitivity;
         offsetY *= MouseSensitivity;
-        Yaw -= offsetX;
+        Yaw += offsetX;
         Pitch -= offsetY;
 
         if(constraintPitch){
@@ -72,18 +56,25 @@ public class Camera {
     }
 
     public void ProcessMouseScroll(float offset){
-        Zoom -= offset;
+        Zoom -= offset * ScrollSensitivity;
         if(Zoom < 1.0f)
             Zoom = 1.0f;
-        if(Zoom > 45.0f)
-            Zoom = 45.0f;
+        if(Zoom > 180.0f)
+            Zoom = 180.0f;
     }
 
     private void updateCameraVectors(){
         Vector3f front = new Vector3f();
-        front.x = (float)(Math.cos(Math.toRadians(Yaw)) * Math.cos(Math.toRadians(Pitch)));
-        front.y = (float)(Math.sin(Math.toRadians(Pitch)));
-        front.z = (float)(Math.sin(Math.toRadians(Yaw)) * Math.cos(Math.toRadians(Pitch)));
+        front.x = -(float)(Math.cos(Math.toRadians(Yaw)) * Math.cos(Math.toRadians(Pitch)));
+        front.y = -(float)(Math.sin(Math.toRadians(Pitch)));
+        front.z = -(float)(Math.sin(Math.toRadians(Yaw)) * Math.cos(Math.toRadians(Pitch)));
+        Vector3f position = new Vector3f();
+        position.x = -front.x;
+        position.y = -front.y;
+        position.z = -front.z;
+        Position = position;
+        Position.normalize();
+        Position.mul(10);
         Front = front.normalize();
         Right = new Vector3f(Front).cross(WorldUp).normalize();
         Up = new Vector3f(Right).cross(Front).normalize();

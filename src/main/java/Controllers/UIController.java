@@ -1,6 +1,7 @@
+package Controllers;
+
 import imgui.ImGui;
 import imgui.ImGuiIO;
-import imgui.ImVec2;
 import imgui.flag.ImGuiConfigFlags;
 import imgui.flag.ImGuiDockNodeFlags;
 import imgui.flag.ImGuiStyleVar;
@@ -11,7 +12,6 @@ import org.lwjgl.opengl.GL;
 import imgui.gl3.ImGuiImplGl3;
 import imgui.glfw.ImGuiImplGlfw;
 import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 public class UIController{

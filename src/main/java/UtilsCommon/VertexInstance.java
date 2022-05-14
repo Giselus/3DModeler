@@ -26,6 +26,7 @@ public class VertexInstance {
     public float[] getBufferedData(){
         Vector3f pos = Position.getValue();
         Vector3f normal = Normal.getValue();
-        return new float[]{pos.x,pos.y,pos.z,normal.x,normal.y,normal.z};
+        boolean isPicked = Position.isPicked();
+        return new float[]{pos.x,pos.y,pos.z,normal.x,normal.y,normal.z,isPicked ? 1f : -1f};
     }
 }

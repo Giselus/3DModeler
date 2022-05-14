@@ -2,8 +2,11 @@ package UtilsCommon;
 
 import org.joml.Vector3f;
 
+import java.util.Random;
+
 public class VertexPosition {
     private final Vector3f Value;
+    private boolean isPicked = new Random().nextBoolean();
     public VertexPosition(Vector3f Value){
         this.Value = Value;
     }
@@ -14,5 +17,11 @@ public class VertexPosition {
         this.Value.x = Value.x;
         this.Value.y = Value.y;
         this.Value.z = Value.z;
+    }
+    public void pick(){
+        isPicked = true;
+    }
+    public boolean isPicked(){
+        return isPicked;
     }
 }

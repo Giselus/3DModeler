@@ -9,22 +9,25 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import static org.lwjgl.opengl.GL20.*;
+import static org.lwjgl.opengl.GL32.GL_GEOMETRY_SHADER;
 
 public class Shader {
     public int ID;
 
-    public Shader(String vertexPath, String fragmentPath){
+    public Shader(String vertexPath, String fragmentPath, String geometryPath){
         CharSequence vertexCode;
         CharSequence fragmentCode;
-
+        CharSequence geometryCode = null;
         try {
             vertexCode = Files.readString(Paths.get(vertexPath));
             fragmentCode = Files.readString(Paths.get(fragmentPath));
+            if(geometryPath != null)
+                geometryCode = Files.readString(Paths.get(geometryPath));
         }catch(Exception e){
             e.printStackTrace();
             return;
         }
-        int vertex, fragment;
+        int vertex, fragment, geometry = 0;
         vertex = glCreateShader(GL_VERTEX_SHADER);
         glShaderSource(vertex, vertexCode);
         glCompileShader(vertex);
@@ -33,14 +36,29 @@ public class Shader {
         glShaderSource(fragment,fragmentCode);
         glCompileShader(fragment);
 
+        if(geometryPath != null){
+            geometry = glCreateShader(GL_GEOMETRY_SHADER);
+            glShaderSource(geometry,geometryCode);
+            glCompileShader(geometry);
+        }
+
         ID = glCreateProgram();
         glAttachShader(ID,vertex);
         glAttachShader(ID,fragment);
+        if(geometryPath != null)
+            glAttachShader(ID,geometry);
         glLinkProgram(ID);
 
         glDeleteShader(vertex);
         glDeleteShader(fragment);
+        if(geometryPath != null)
+            glDeleteShader(geometry);
     }
+
+    public Shader(String vertexPath, String fragmentPath){
+        this(vertexPath,fragmentPath,null);
+    }
+
     public void use(){
         glUseProgram(ID);
     }
