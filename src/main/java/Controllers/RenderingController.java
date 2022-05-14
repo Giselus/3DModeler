@@ -12,7 +12,7 @@ import java.util.LinkedList;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL30.*;
-
+import static org.lwjgl.opengl.GL32.*;
 
 public class RenderingController {
     private RenderingController(){}
@@ -35,8 +35,10 @@ public class RenderingController {
 
     private LinkedList<Model> models;
 
+    private int multiSampleFbo;
     private int fbo;
     private int rbo;
+    private int multiSampleTexture;
     private int sceneTexture;
 
     public void setActiveShader(Shader shader){
@@ -77,27 +79,38 @@ public class RenderingController {
                 "src/main/shaders/pointsFragmentShader.fs", "src/main/shaders/pointsGeometryShader.gs");
 
 
+        multiSampleFbo = glGenFramebuffers();
+        glBindFramebuffer(GL_FRAMEBUFFER,multiSampleFbo);
+
+        multiSampleTexture = glGenTextures();
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D_MULTISAMPLE,multiSampleTexture);
+        glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE,4,GL_RGB,
+                UIController.getInstance().getWidth(),UIController.getInstance().getHeight(), true);
+        glBindTexture(GL_TEXTURE_2D_MULTISAMPLE,0);
+
+        glFramebufferTexture2D(GL_FRAMEBUFFER,GL_COLOR_ATTACHMENT0,GL_TEXTURE_2D_MULTISAMPLE,multiSampleTexture,0);
+
+        rbo = glGenRenderbuffers();
+        glBindRenderbuffer(GL_RENDERBUFFER,rbo);
+        glRenderbufferStorageMultisample(GL_RENDERBUFFER,4,GL_DEPTH24_STENCIL8,
+                UIController.getInstance().getWidth(), UIController.getInstance().getHeight());
+        glFramebufferRenderbuffer(GL_FRAMEBUFFER,GL_DEPTH_STENCIL_ATTACHMENT,GL_RENDERBUFFER,rbo);
+
         fbo = glGenFramebuffers();
         glBindFramebuffer(GL_FRAMEBUFFER,fbo);
 
         sceneTexture = glGenTextures();
-        glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D,sceneTexture);
-        glTexImage2D(GL_TEXTURE_2D,0,GL_RGB,UIController.getInstance().getWidth(),UIController.getInstance().getHeight(),
+        glTexImage2D(GL_TEXTURE_2D,0,GL_RGB,UIController.getInstance().getWidth(), UIController.getInstance().getHeight(),
                 0,GL_RGB,GL_UNSIGNED_BYTE,(ByteBuffer) null);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         glFramebufferTexture2D(GL_FRAMEBUFFER,GL_COLOR_ATTACHMENT0,GL_TEXTURE_2D,sceneTexture,0);
 
-        rbo = glGenRenderbuffers();
-        glBindRenderbuffer(GL_RENDERBUFFER,rbo);
-        glRenderbufferStorage(GL_RENDERBUFFER,GL_DEPTH24_STENCIL8,UIController.getInstance().getWidth(),
-                UIController.getInstance().getHeight());
-        glFramebufferRenderbuffer(GL_FRAMEBUFFER,GL_DEPTH_STENCIL_ATTACHMENT,GL_RENDERBUFFER,rbo);
-
         glBindFramebuffer(GL_FRAMEBUFFER,0);
 
-        glLineWidth(0.2f);
+        glLineWidth(1f);
         glPointSize(3);
     }
 
@@ -106,7 +119,7 @@ public class RenderingController {
     }
 
     public void render() {
-        glBindFramebuffer(GL_FRAMEBUFFER,fbo);
+        glBindFramebuffer(GL_FRAMEBUFFER,multiSampleFbo);
 
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -126,6 +139,12 @@ public class RenderingController {
                 m.Draw(activeShader);
             }
         }
+
+        glBindFramebuffer(GL_READ_FRAMEBUFFER,multiSampleFbo);
+        glBindFramebuffer(GL_DRAW_FRAMEBUFFER,fbo);
+        glBlitFramebuffer(0,0,UIController.getInstance().getWidth(), UIController.getInstance().getHeight(),
+                0,0,UIController.getInstance().getWidth(), UIController.getInstance().getHeight(),
+                GL_COLOR_BUFFER_BIT,GL_NEAREST);
 
         glBindFramebuffer(GL_FRAMEBUFFER,0);
 
