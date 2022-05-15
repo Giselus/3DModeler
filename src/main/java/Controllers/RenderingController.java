@@ -72,7 +72,8 @@ public class RenderingController {
 
         camera = new Camera();
 
-        mainShader = new Shader("src/main/shaders/vertexShader.vs","src/main/shaders/fragmentShader.fs");
+        mainShader = new Shader("src/main/shaders/mainVertexShader.vs","src/main/shaders/mainFragmentShader.fs",
+                "src/main/shaders/mainGeometryShader.gs");
         wireframeShader = new Shader("src/main/shaders/wireframeVertexShader.vs",
                 "src/main/shaders/wireframeFragmentShader.fs", "src/main/shaders/wireframeGeometryShader.gs");
         pointsShader = new Shader("src/main/shaders/pointsVertexShader.vs",

@@ -45,7 +45,8 @@ struct SpotLight{
 #define LIGHTS_LIMIT 4
 
 in vec3 FragmentPosition;
-in vec3 Normals;
+in vec3 Normal;
+in float Picked;
 
 uniform vec3 viewPos;
 uniform DirectionalLight dirLights[LIGHTS_LIMIT];
@@ -61,7 +62,7 @@ vec3 calculateSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir
 void main()
 {
     vec3 result = vec3(0.0);
-    vec3 normal = normalize(Normals);
+    vec3 normal = normalize(Normal);
     vec3 viewDir = normalize(viewPos - FragmentPosition);
 
     //TODO: allow not fixed amount of light sources
@@ -71,7 +72,11 @@ void main()
         //result += calculateSpotLight(spotLights[i],normal,FragmentPosition,viewDir);
     }
     result += vec3(0.5);
-    fragColor = vec4(result, 1.0);
+    if(Picked > 0.0){
+        fragColor = mix(vec4(result, 1.0), vec4(1.0,0.5,0.0,1.0), 0.1);
+    }else{
+        fragColor = vec4(result, 1.0);
+    }
 }
 
 vec3 calculateDirectionalLight(DirectionalLight light, vec3 normal, vec3 viewDir){
