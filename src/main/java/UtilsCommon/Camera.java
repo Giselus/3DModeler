@@ -14,7 +14,9 @@ public class Camera {
     private float Pitch = 0f;
 
     private float MouseSensitivity = 0.3f;
-    private float ScrollSensitivity = 2.0f;
+    private float ScrollSensitivity = 1.04f;
+    private float ScrollLinear = 0.35f;
+    private float Distance = 45f;
     private float Zoom = 45f;
 
     public Vector3f getPosition(){
@@ -56,11 +58,23 @@ public class Camera {
     }
 
     public void ProcessMouseScroll(float offset){
-        Zoom -= offset * ScrollSensitivity;
-        if(Zoom < 1.0f)
-            Zoom = 1.0f;
-        if(Zoom > 180.0f)
-            Zoom = 180.0f;
+        while(offset > 0.5f || offset < -0.5f) {
+            if (offset < 0f) {
+                Distance *= ScrollSensitivity;
+                Distance += ScrollLinear;
+                offset += 1f;
+            } else {
+                Distance /= ScrollSensitivity;
+                Distance -= ScrollLinear;
+                offset -= 1f;
+            }
+        }
+        if(Distance < 0.1f)
+            Distance = 0.1f;
+        if(Distance > 180.0f)
+            Distance = 180.0f;
+        Position.normalize();
+        Position.mul(Distance);
     }
 
     private void updateCameraVectors(){
@@ -74,7 +88,7 @@ public class Camera {
         position.z = -front.z;
         Position = position;
         Position.normalize();
-        Position.mul(10);
+        Position.mul(Distance);
         Front = front.normalize();
         Right = new Vector3f(Front).cross(WorldUp).normalize();
         Up = new Vector3f(Right).cross(Front).normalize();

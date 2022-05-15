@@ -165,7 +165,7 @@ public class RenderingController {
 
     public void prepareShader(){
         Matrix4f projection = new Matrix4f().setPerspective((float)Math.toRadians(camera.getZoom()),
-                (float)UIController.getInstance().getWidth()/UIController.getInstance().getHeight(), 0.1f, 100.0f);
+                (float)UIController.getInstance().getWidth()/UIController.getInstance().getHeight(), 0.1f, 200.0f);
         Matrix4f view = camera.getViewMatrix();
         Matrix4f model = new Matrix4f().identity();
         model.translate(new Vector3f(0,0,0));
