@@ -1,16 +1,17 @@
 package Controllers;
 
+import UtilsCommon.Entity;
 import imgui.ImGui;
 import imgui.ImGuiIO;
-import imgui.flag.ImGuiConfigFlags;
-import imgui.flag.ImGuiDockNodeFlags;
-import imgui.flag.ImGuiStyleVar;
-import imgui.flag.ImGuiWindowFlags;
+import imgui.flag.*;
 import imgui.type.ImBoolean;
 import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.opengl.GL;
 import imgui.gl3.ImGuiImplGl3;
 import imgui.glfw.ImGuiImplGlfw;
+
+import java.util.List;
+
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
@@ -136,11 +137,26 @@ public class UIController{
         );
         ImGui.end();
 
-        ImGui.begin("TestWindow2", new ImBoolean(), 0);
-        ImGui.text("test2");
+        ImGui.begin("Entities", new ImBoolean(), 0);
+        int baseFlags = ImGuiTreeNodeFlags.OpenOnArrow | ImGuiTreeNodeFlags.OpenOnDoubleClick |
+                ImGuiTreeNodeFlags.SpanAvailWidth | ImGuiTreeNodeFlags.DefaultOpen;
+        showEntitiesTree(RenderingController.getInstance().getRootEntity(), baseFlags);
         ImGui.end();
 
         ImGui.render();
         imGuiGl3.renderDrawData(ImGui.getDrawData());
+    }
+
+    private void showEntitiesTree(final Entity entity, final int baseFlags) {
+        int nodeFlags = baseFlags;
+        if(entity.getUnmodifiableChildren().size() == 0)
+            nodeFlags |= ImGuiTreeNodeFlags.Bullet;
+
+        if(ImGui.treeNodeEx(entity.getName(), nodeFlags)) {
+            for(Entity child : entity.getUnmodifiableChildren())
+                showEntitiesTree(child, baseFlags);
+
+            ImGui.treePop();
+        }
     }
 }

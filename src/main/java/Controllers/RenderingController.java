@@ -1,14 +1,15 @@
 package Controllers;
 
 import ModelLoader.OBJLoader;
-import UtilsCommon.Camera;
-import UtilsCommon.Model;
-import UtilsCommon.Shader;
+import UtilsCommon.*;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL30.*;
@@ -34,6 +35,8 @@ public class RenderingController {
     private int drawingMode = GL_TRIANGLES;
 
     private LinkedList<Model> models;
+
+    private Entity rootEntity;
 
     private int multiSampleFbo;
     private int fbo;
@@ -64,11 +67,18 @@ public class RenderingController {
         return camera;
     }
 
+    public Entity getRootEntity() {
+        return rootEntity;
+    }
+
     public void initialize(){
         glEnable(GL_DEPTH_TEST);
 
         OBJLoader loader = new OBJLoader();
         models = loader.load("src/main/data/cube.obj");
+
+        rootEntity = new RootEntity();
+        createDemoEntitiesTree(rootEntity); //TODO creating entities tree
 
         camera = new Camera();
 
@@ -173,5 +183,23 @@ public class RenderingController {
         activeShader.setFloat("material.shininess",32.0f);
         activeShader.setFloat("material.diffuse",0.1f);
         activeShader.setFloat("material.specular",0.5f);
+    }
+
+    private void createDemoEntitiesTree(Entity rootEntity) {
+        ArrayList<Entity> entities = new ArrayList<>();
+        for(int i = 0; i < 10; i++) {
+            entities.add(i, new RootEntity());
+            entities.get(i).setName("node " + i);
+        }
+        entities.get(0).setParent(rootEntity);
+        entities.get(1).setParent(rootEntity);
+        entities.get(2).setParent(rootEntity);
+        entities.get(3).setParent(entities.get(0));
+        entities.get(4).setParent(entities.get(0));
+        entities.get(5).setParent(entities.get(3));
+        entities.get(6).setParent(entities.get(1));
+        entities.get(7).setParent(entities.get(1));
+        entities.get(8).setParent(entities.get(1));
+        entities.get(9).setParent(entities.get(1));
     }
 }
