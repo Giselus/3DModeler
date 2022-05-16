@@ -171,7 +171,7 @@ public class RenderingController {
         model.translate(new Vector3f(0,0,0));
         activeShader.setMatrix4("projection",projection);
         activeShader.setMatrix4("view",view);
-        activeShader.setMatrix4("model",model);
+        activeShader.setMatrix4("model",new Matrix4f(entities.get(0).getTransform().getGlobalModelMatrix()));
         activeShader.setVector3f("viewPos", camera.getPosition());
         activeShader.setVector3f("pointLights[0].position", new Vector3f(5.0f,1.0f,5.0f));
         activeShader.setVector3f("pointLights[0].ambient", new Vector3f(0.05f));
@@ -184,14 +184,15 @@ public class RenderingController {
         activeShader.setFloat("material.diffuse",0.1f);
         activeShader.setFloat("material.specular",0.5f);
     }
-
+    ArrayList<Entity> entities = new ArrayList<>();
     private void createDemoEntitiesTree(Entity rootEntity) {
-        ArrayList<Entity> entities = new ArrayList<>();
+
         for(int i = 0; i < 10; i++) {
             entities.add(i, new RootEntity());
             entities.get(i).setName("node " + i);
         }
         entities.get(0).setParent(rootEntity);
+        entities.get(0).setName("Cube");
         entities.get(1).setParent(rootEntity);
         entities.get(2).setParent(rootEntity);
         entities.get(3).setParent(entities.get(0));

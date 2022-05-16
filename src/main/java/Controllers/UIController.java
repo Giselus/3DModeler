@@ -39,6 +39,8 @@ public class UIController{
     private int width = 1200;
     private int height = 800;
 
+    private Entity selectedEntity = null;
+
     public int getWidth(){
         return width;
     }
@@ -143,6 +145,11 @@ public class UIController{
         showEntitiesTree(RenderingController.getInstance().getRootEntity(), baseFlags);
         ImGui.end();
 
+        ImGui.begin("Inspector", new ImBoolean(), 0);
+        if(selectedEntity != null)
+            selectedEntity.showInspector();
+        ImGui.end();
+
         ImGui.render();
         imGuiGl3.renderDrawData(ImGui.getDrawData());
     }
@@ -153,10 +160,14 @@ public class UIController{
             nodeFlags |= ImGuiTreeNodeFlags.Bullet;
 
         if(ImGui.treeNodeEx(entity.getName(), nodeFlags)) {
+            if(ImGui.isItemClicked()){
+                selectedEntity = entity;
+            }
             for(Entity child : entity.getUnmodifiableChildren())
                 showEntitiesTree(child, baseFlags);
 
             ImGui.treePop();
         }
     }
+
 }

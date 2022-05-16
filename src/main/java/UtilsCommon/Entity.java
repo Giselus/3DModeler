@@ -1,5 +1,7 @@
 package UtilsCommon;
 
+import imgui.ImGui;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -63,5 +65,9 @@ public abstract class Entity {
 
     private void removeChild(Entity child) {
         children.remove(child);
+    }
+
+    public void showInspector(){
+        transform.showInspector();
     }
 }

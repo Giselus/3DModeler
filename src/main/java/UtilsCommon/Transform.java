@@ -1,5 +1,8 @@
 package UtilsCommon;
 
+import imgui.ImGui;
+import imgui.flag.ImGuiTreeNodeFlags;
+import imgui.type.ImFloat;
 import org.joml.Matrix4f;
 import org.joml.Matrix4fc;
 import org.joml.Vector3f;
@@ -51,5 +54,34 @@ public class Transform {
     private Matrix4f getLocalModelMatrix() {
         //TODO: rotation
         return new Matrix4f().identity().translate(localTranslation).scale(localScale);
+    }
+
+    public void showInspector(){
+        final int bulletFlags = ImGuiTreeNodeFlags.OpenOnArrow | ImGuiTreeNodeFlags.OpenOnDoubleClick |
+                ImGuiTreeNodeFlags.SpanAvailWidth | ImGuiTreeNodeFlags.DefaultOpen;
+        final float[] tmp = new float[1];
+        if(ImGui.treeNode("Transform")){
+            if(ImGui.treeNode("Position")){
+                float x,y,z;
+                tmp[0] = localTranslation.x();
+                ImGui.dragFloat("x",tmp,0.005f);
+                x = tmp[0];
+                tmp[0] = localTranslation.y();
+                ImGui.dragFloat("y",tmp,0.005f);
+                y = tmp[0];
+                tmp[0] = localTranslation.z();
+                ImGui.dragFloat("z",tmp,0.005f);
+                z = tmp[0];
+                localTranslation = new Vector3f(x,y,z);
+                updateGlobalModelMatrix();
+                ImGui.treePop();
+            }
+
+
+            ImGui.treePop();
+        }
+
+
+
     }
 }

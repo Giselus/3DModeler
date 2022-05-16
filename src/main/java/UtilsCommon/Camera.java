@@ -16,7 +16,7 @@ public class Camera {
     private float MouseSensitivity = 0.3f;
     private float ScrollSensitivity = 1.04f;
     private float ScrollLinear = 0.35f;
-    private float Distance = 45f;
+    private float Distance = 15f;
     private float Zoom = 45f;
 
     public Vector3f getPosition(){
