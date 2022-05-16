@@ -7,16 +7,17 @@ import java.util.Collections;
 import java.util.LinkedList;
 
 public abstract class Entity {
-    private final Transform transform;
-    private Entity parent;
-    private final Collection<Entity> children;
-    private String name;
+    protected final Transform transform;
+    protected Entity parent;
+    protected final Collection<Entity> children;
+    protected String name;
 
-    public Entity() {
-        transform = new Transform();
-        children = new LinkedList<>();
-        parent = null;
-        name = "Entity";
+    public Entity(Entity parent){
+        this.transform = new Transform();
+        this.children = new LinkedList<>();
+        this.parent = null;
+        this.name = "Entity";
+        setParent(parent);
     }
 
     public void setParent(Entity parent) {
@@ -68,6 +69,11 @@ public abstract class Entity {
     }
 
     public void showInspector(){
-        transform.showInspector();
+        transform.showInspector(this);
+    }
+
+    public void update(){
+        for(Entity child : children)
+            child.update();
     }
 }

@@ -79,12 +79,20 @@ public class Shader {
         glUniform2f(glGetUniformLocation(ID,name),value.x,value.y);
     }
 
+    public void setVector2f(String name, Vector2fc value){
+        glUniform2f(glGetUniformLocation(ID,name),value.x(),value.y());
+    }
+
     public void setVector3f(String name, float x, float y, float z){
         glUniform3f(glGetUniformLocation(ID,name),x,y,z);
     }
 
     public void setVector3f(String name, Vector3f value){
         glUniform3f(glGetUniformLocation(ID,name),value.x,value.y, value.z);
+    }
+
+    public void setVector3f(String name, Vector3fc value){
+        glUniform3f(glGetUniformLocation(ID,name),value.x(),value.y(), value.z());
     }
 
     public void setVector4f(String name, float x, float y, float z, float w){
@@ -95,7 +103,17 @@ public class Shader {
         glUniform4f(glGetUniformLocation(ID,name),value.x,value.y, value.z, value.w);
     }
 
+    public void setVector4f(String name, Vector4fc value){
+        glUniform4f(glGetUniformLocation(ID,name),value.x(),value.y(), value.z(), value.w());
+    }
+
     public void setMatrix4(String name, Matrix4f value){
+        try(MemoryStack stack = MemoryStack.stackPush()) {
+            glUniformMatrix4fv(glGetUniformLocation(ID, name), false, value.get(stack.mallocFloat(16)));
+        }
+    }
+
+    public void setMatrix4(String name, Matrix4fc value){
         try(MemoryStack stack = MemoryStack.stackPush()) {
             glUniformMatrix4fv(glGetUniformLocation(ID, name), false, value.get(stack.mallocFloat(16)));
         }

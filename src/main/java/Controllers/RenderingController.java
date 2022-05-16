@@ -34,10 +34,6 @@ public class RenderingController {
 
     private int drawingMode = GL_TRIANGLES;
 
-    private LinkedList<Model> models;
-
-    private Entity rootEntity;
-
     private int multiSampleFbo;
     private int fbo;
     private int rbo;
@@ -45,10 +41,13 @@ public class RenderingController {
     private int sceneTexture;
 
     public void setActiveShader(Shader shader){
-        ;
         shader.use();
         activeShader = shader;
         prepareShader();
+    }
+
+    public Shader getActiveShader(){
+        return activeShader;
     }
 
     public void setDrawingMode(int mode){
@@ -67,18 +66,8 @@ public class RenderingController {
         return camera;
     }
 
-    public Entity getRootEntity() {
-        return rootEntity;
-    }
-
     public void initialize(){
         glEnable(GL_DEPTH_TEST);
-
-        OBJLoader loader = new OBJLoader();
-        models = loader.load("src/main/data/cube.obj");
-
-        rootEntity = new RootEntity();
-        createDemoEntitiesTree(rootEntity); //TODO creating entities tree
 
         camera = new Camera();
 
@@ -122,7 +111,7 @@ public class RenderingController {
         glBindFramebuffer(GL_FRAMEBUFFER,0);
 
         glLineWidth(1f);
-        glPointSize(3);
+        glPointSize(5);
     }
 
     public void update(){
@@ -137,19 +126,18 @@ public class RenderingController {
 
         setDrawingMode(GL_TRIANGLES);
         setActiveShader(mainShader);
-        for(Model m: models)
-            m.Draw(activeShader);
-        if(MainController.getInstance().getMode() == MainController.Mode.Edit) {
+
+        setActiveShader(mainShader);
+        setDrawingMode(GL_TRIANGLES);
+        SceneController.getInstance().getRoot().update();
+        if(MainController.getInstance().getMode() == MainController.Mode.Edit){
             setActiveShader(wireframeShader);
-            for (Model m : models) {
-                m.Draw(activeShader);
-            }
-            setDrawingMode(GL_POINTS);
+            SceneController.getInstance().getRoot().update();
             setActiveShader(pointsShader);
-            for(Model m : models){
-                m.Draw(activeShader);
-            }
+            setDrawingMode(GL_POINTS);
+            SceneController.getInstance().getRoot().update();
         }
+
 
         glBindFramebuffer(GL_READ_FRAMEBUFFER,multiSampleFbo);
         glBindFramebuffer(GL_DRAW_FRAMEBUFFER,fbo);
@@ -167,11 +155,8 @@ public class RenderingController {
         Matrix4f projection = new Matrix4f().setPerspective((float)Math.toRadians(camera.getZoom()),
                 (float)UIController.getInstance().getWidth()/UIController.getInstance().getHeight(), 0.1f, 200.0f);
         Matrix4f view = camera.getViewMatrix();
-        Matrix4f model = new Matrix4f().identity();
-        model.translate(new Vector3f(0,0,0));
         activeShader.setMatrix4("projection",projection);
         activeShader.setMatrix4("view",view);
-        activeShader.setMatrix4("model",new Matrix4f(entities.get(0).getTransform().getGlobalModelMatrix()));
         activeShader.setVector3f("viewPos", camera.getPosition());
         activeShader.setVector3f("pointLights[0].position", new Vector3f(5.0f,1.0f,5.0f));
         activeShader.setVector3f("pointLights[0].ambient", new Vector3f(0.05f));
@@ -184,23 +169,5 @@ public class RenderingController {
         activeShader.setFloat("material.diffuse",0.1f);
         activeShader.setFloat("material.specular",0.5f);
     }
-    ArrayList<Entity> entities = new ArrayList<>();
-    private void createDemoEntitiesTree(Entity rootEntity) {
 
-        for(int i = 0; i < 10; i++) {
-            entities.add(i, new RootEntity());
-            entities.get(i).setName("node " + i);
-        }
-        entities.get(0).setParent(rootEntity);
-        entities.get(0).setName("Cube");
-        entities.get(1).setParent(rootEntity);
-        entities.get(2).setParent(rootEntity);
-        entities.get(3).setParent(entities.get(0));
-        entities.get(4).setParent(entities.get(0));
-        entities.get(5).setParent(entities.get(3));
-        entities.get(6).setParent(entities.get(1));
-        entities.get(7).setParent(entities.get(1));
-        entities.get(8).setParent(entities.get(1));
-        entities.get(9).setParent(entities.get(1));
-    }
 }

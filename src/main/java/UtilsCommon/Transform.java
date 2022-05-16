@@ -56,12 +56,11 @@ public class Transform {
         return new Matrix4f().identity().translate(localTranslation).scale(localScale);
     }
 
-    public void showInspector(){
-        final int bulletFlags = ImGuiTreeNodeFlags.OpenOnArrow | ImGuiTreeNodeFlags.OpenOnDoubleClick |
-                ImGuiTreeNodeFlags.SpanAvailWidth | ImGuiTreeNodeFlags.DefaultOpen;
+    public void showInspector(Entity entity){
+        final int baseFlags = ImGuiTreeNodeFlags.DefaultOpen;
         final float[] tmp = new float[1];
-        if(ImGui.treeNode("Transform")){
-            if(ImGui.treeNode("Position")){
+        if(ImGui.treeNodeEx("Transform",baseFlags)){
+            if(ImGui.treeNodeEx("Position",baseFlags)){
                 float x,y,z;
                 tmp[0] = localTranslation.x();
                 ImGui.dragFloat("x",tmp,0.005f);
@@ -73,15 +72,10 @@ public class Transform {
                 ImGui.dragFloat("z",tmp,0.005f);
                 z = tmp[0];
                 localTranslation = new Vector3f(x,y,z);
-                updateGlobalModelMatrix();
+                entity.updateSelfAndChildren();
                 ImGui.treePop();
             }
-
-
             ImGui.treePop();
         }
-
-
-
     }
 }

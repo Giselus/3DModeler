@@ -15,7 +15,7 @@ public class Model {
         Mesh = new Mesh(Faces);
     }
 
-    public void Draw(Shader shader){
-        Mesh.draw(shader);
+    public void Draw(){
+        Mesh.draw();
     }
 }

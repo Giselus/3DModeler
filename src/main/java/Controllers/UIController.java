@@ -142,7 +142,7 @@ public class UIController{
         ImGui.begin("Entities", new ImBoolean(), 0);
         int baseFlags = ImGuiTreeNodeFlags.OpenOnArrow | ImGuiTreeNodeFlags.OpenOnDoubleClick |
                 ImGuiTreeNodeFlags.SpanAvailWidth | ImGuiTreeNodeFlags.DefaultOpen;
-        showEntitiesTree(RenderingController.getInstance().getRootEntity(), baseFlags);
+        showEntitiesTree(SceneController.getInstance().getRoot(), baseFlags);
         ImGui.end();
 
         ImGui.begin("Inspector", new ImBoolean(), 0);
@@ -158,7 +158,8 @@ public class UIController{
         int nodeFlags = baseFlags;
         if(entity.getUnmodifiableChildren().size() == 0)
             nodeFlags |= ImGuiTreeNodeFlags.Bullet;
-
+        if(entity == selectedEntity)
+            nodeFlags |= ImGuiTreeNodeFlags.Selected;
         if(ImGui.treeNodeEx(entity.getName(), nodeFlags)) {
             if(ImGui.isItemClicked()){
                 selectedEntity = entity;

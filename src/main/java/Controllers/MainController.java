@@ -27,6 +27,7 @@ public class MainController{
 
     private void initialize(){
         UIController.getInstance().initialize();
+        SceneController.getInstance().initialize();
         RenderingController.getInstance().initialize();
         InputController.getInstance().initialize();
 

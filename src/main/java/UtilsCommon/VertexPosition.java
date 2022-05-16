@@ -6,7 +6,7 @@ import java.util.Random;
 
 public class VertexPosition {
     private final Vector3f Value;
-    private boolean isPicked = new Random().nextBoolean();
+    private boolean isPicked = false;
     public VertexPosition(Vector3f Value){
         this.Value = Value;
     }

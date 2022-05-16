@@ -18,8 +18,7 @@ public class Mesh {
         processTopology(Faces);
         setupMesh();
     }
-    public void draw(Shader shader){
-        shader.use();
+    public void draw(){
 //        int diffuseNr = 1;
 //        int specularNr = 1;
 //        for(int i = 0; i < Textures.size();i++){
