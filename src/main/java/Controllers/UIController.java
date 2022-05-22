@@ -207,13 +207,13 @@ public class UIController{
             if(ImGui.treeNodeEx("Rotation",baseFlags)) {
                 float x,y,z;
                 tmp[0] = entity.getTransform().getLocalRotation().x();
-                ImGui.dragFloat("x",tmp,0.005f);
+                ImGui.dragFloat("x",tmp,0.1f);
                 x = tmp[0];
                 tmp[0] = entity.getTransform().getLocalRotation().y();
-                ImGui.dragFloat("y",tmp,0.005f);
+                ImGui.dragFloat("y",tmp,0.1f);
                 y = tmp[0];
                 tmp[0] = entity.getTransform().getLocalRotation().z();
-                ImGui.dragFloat("z",tmp,0.005f);
+                ImGui.dragFloat("z",tmp,0.1f);
                 z = tmp[0];
                 entity.getTransform().setLocalRotation(new Vector3f(x,y,z));
                 entity.updateSelfAndChildren();

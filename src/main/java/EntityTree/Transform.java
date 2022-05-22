@@ -1,6 +1,7 @@
 package EntityTree;
 
 import org.joml.*;
+import org.joml.Math;
 
 public class Transform {
     private Vector3fc localTranslation = new Vector3f(0, 0, 0);
@@ -46,7 +47,12 @@ public class Transform {
     }
 
     private Matrix4f getLocalModelMatrix() {
-        return new Matrix4f().identity().translate(localTranslation).scale(localScale)
-                .rotateY(localRotation.y()).rotateZ(localRotation.z()).rotateY(localRotation.x());
+
+        return new Matrix4f().identity()
+                .translate(localTranslation)
+                .rotateY((float)Math.toRadians(localRotation.y()))
+                .rotateZ((float)Math.toRadians(localRotation.z()))
+                .rotateX((float)Math.toRadians(localRotation.x()))
+                .scale(localScale);
     }
 }
