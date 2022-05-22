@@ -1,6 +1,4 @@
-package UtilsCommon;
-
-import imgui.ImGui;
+package EntityTree;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -66,10 +64,6 @@ public abstract class Entity {
 
     private void removeChild(Entity child) {
         children.remove(child);
-    }
-
-    public void showInspector(){
-        transform.showInspector(this);
     }
 
     public void update(){

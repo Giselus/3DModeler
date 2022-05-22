@@ -1,16 +1,15 @@
 package Controllers;
 
-import UtilsCommon.Entity;
+import EntityTree.Entity;
 import imgui.ImGui;
 import imgui.ImGuiIO;
 import imgui.flag.*;
 import imgui.type.ImBoolean;
+import org.joml.Vector3f;
 import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.opengl.GL;
 import imgui.gl3.ImGuiImplGl3;
 import imgui.glfw.ImGuiImplGlfw;
-
-import java.util.List;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
@@ -147,7 +146,7 @@ public class UIController{
 
         ImGui.begin("Inspector", new ImBoolean(), 0);
         if(selectedEntity != null)
-            selectedEntity.showInspector();
+            showInspector(selectedEntity);
         ImGui.end();
 
         ImGui.render();
@@ -171,4 +170,56 @@ public class UIController{
         }
     }
 
+    public void showInspector(Entity entity) {
+        final int baseFlags = ImGuiTreeNodeFlags.DefaultOpen;
+        final float[] tmp = new float[1];
+        if(ImGui.treeNodeEx("Transform",baseFlags)) {
+            if(ImGui.treeNodeEx("Position",baseFlags)) {
+                float x,y,z;
+                tmp[0] = entity.getTransform().getLocalTranslation().x();
+                ImGui.dragFloat("x",tmp,0.005f);
+                x = tmp[0];
+                tmp[0] = entity.getTransform().getLocalTranslation().y();
+                ImGui.dragFloat("y",tmp,0.005f);
+                y = tmp[0];
+                tmp[0] = entity.getTransform().getLocalTranslation().z();
+                ImGui.dragFloat("z",tmp,0.005f);
+                z = tmp[0];
+                entity.getTransform().setLocalTranslation(new Vector3f(x,y,z));
+                entity.updateSelfAndChildren();
+                ImGui.treePop();
+            }
+            if(ImGui.treeNodeEx("Scale",baseFlags)) {
+                float x,y,z;
+                tmp[0] = entity.getTransform().getLocalScale().x();
+                ImGui.dragFloat("x",tmp,0.005f);
+                x = tmp[0];
+                tmp[0] = entity.getTransform().getLocalScale().y();
+                ImGui.dragFloat("y",tmp,0.005f);
+                y = tmp[0];
+                tmp[0] = entity.getTransform().getLocalScale().z();
+                ImGui.dragFloat("z",tmp,0.005f);
+                z = tmp[0];
+                entity.getTransform().setLocalScale(new Vector3f(x,y,z));
+                entity.updateSelfAndChildren();
+                ImGui.treePop();
+            }
+            if(ImGui.treeNodeEx("Rotation",baseFlags)) {
+                float x,y,z;
+                tmp[0] = entity.getTransform().getLocalRotation().x();
+                ImGui.dragFloat("x",tmp,0.005f);
+                x = tmp[0];
+                tmp[0] = entity.getTransform().getLocalRotation().y();
+                ImGui.dragFloat("y",tmp,0.005f);
+                y = tmp[0];
+                tmp[0] = entity.getTransform().getLocalRotation().z();
+                ImGui.dragFloat("z",tmp,0.005f);
+                z = tmp[0];
+                entity.getTransform().setLocalRotation(new Vector3f(x,y,z));
+                entity.updateSelfAndChildren();
+                ImGui.treePop();
+            }
+            ImGui.treePop();
+        }
+    }
 }

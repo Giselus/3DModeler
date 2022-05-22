@@ -1,9 +1,9 @@
 package Controllers;
 
 import ModelLoader.OBJLoader;
-import UtilsCommon.EntityEmpty;
-import UtilsCommon.Entity;
-import UtilsCommon.EntityModel;
+import EntityTree.EntityEmpty;
+import EntityTree.Entity;
+import EntityTree.EntityModel;
 import UtilsModel.Model;
 
 public class SceneController {

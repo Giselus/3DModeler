@@ -1,12 +1,13 @@
-package UtilsCommon;
+package EntityTree;
 
 import Controllers.RenderingController;
+import UtilsCommon.Shader;
 import UtilsModel.Model;
 import org.joml.Matrix4fc;
 
-public class EntityModel extends Entity{
+public class EntityModel extends Entity {
 
-    private UtilsModel.Model Model;
+    final private UtilsModel.Model Model;
 
     public EntityModel(Model model, Entity parent){
         super(parent);
