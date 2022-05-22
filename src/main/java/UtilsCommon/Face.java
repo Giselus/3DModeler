@@ -21,7 +21,7 @@ public class Face {
         }
     }
 
-    private void recalculateNormals(){
+    public void recalculateNormals(){
         NormalVector Normal = new NormalVector(Vertices.get(0).getPosition(),Vertices.get(1).getPosition()
                 ,Vertices.get(2).getPosition());
         for(VertexInstance vertex: Vertices){
