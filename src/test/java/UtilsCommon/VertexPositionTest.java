@@ -1,5 +1,6 @@
 package UtilsCommon;
 
+import UtilsModel.VertexPosition;
 import org.joml.Vector3f;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;

@@ -1,4 +1,8 @@
-package UtilsCommon;
+package UtilsModel;
+
+import UtilsCommon.NormalVector;
+import UtilsModel.VertexInstance;
+import UtilsModel.VertexPosition;
 
 import java.util.ArrayList;
 

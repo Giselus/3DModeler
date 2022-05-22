@@ -1,8 +1,8 @@
 package ModelLoader;
 
-import UtilsCommon.*;
-
-import org.joml.Vector2f;
+import UtilsModel.Face;
+import UtilsModel.Model;
+import UtilsModel.VertexPosition;
 import org.joml.Vector3f;
 
 import java.io.File;

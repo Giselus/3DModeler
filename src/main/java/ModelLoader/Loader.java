@@ -1,6 +1,6 @@
 package ModelLoader;
 
-import UtilsCommon.Model;
+import UtilsModel.Model;
 
 import java.util.LinkedList;
 

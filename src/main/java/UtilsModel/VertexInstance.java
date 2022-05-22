@@ -1,11 +1,12 @@
-package UtilsCommon;
+package UtilsModel;
 
+import UtilsCommon.NormalVector;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
 public class VertexInstance {
     private VertexPosition Position;
-    private Face Face;
+    private UtilsModel.Face Face;
     private NormalVector Normal;
 
     private Vector2f TextureCoordinate;

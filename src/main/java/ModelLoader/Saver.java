@@ -1,7 +1,7 @@
 package ModelLoader;
 
-import UtilsCommon.Model;
+import UtilsModel.Model;
 
 public interface Saver {
-    public void save(Model model, String dst);
+    void save(Model model, String dst);
 }

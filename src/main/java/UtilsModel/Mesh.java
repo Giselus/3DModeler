@@ -1,16 +1,16 @@
-package UtilsCommon;
+package UtilsModel;
 
 import Controllers.RenderingController;
-import org.lwjgl.system.MemoryStack;
+import UtilsModel.Face;
+import UtilsModel.VertexInstance;
 import org.lwjgl.system.MemoryUtil;
 
 import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
 import java.util.ArrayList;
 
 import static org.lwjgl.opengl.GL30.*;
 
-public class Mesh {
+public class Mesh implements IMesh {
 
     private ArrayList<VertexInstance> Vertices;
 

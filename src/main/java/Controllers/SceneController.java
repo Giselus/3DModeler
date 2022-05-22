@@ -4,7 +4,7 @@ import ModelLoader.OBJLoader;
 import UtilsCommon.EntityEmpty;
 import UtilsCommon.Entity;
 import UtilsCommon.EntityModel;
-import UtilsCommon.Model;
+import UtilsModel.Model;
 
 public class SceneController {
     private SceneController(){}

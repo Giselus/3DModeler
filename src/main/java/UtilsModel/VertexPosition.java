@@ -1,4 +1,4 @@
-package UtilsCommon;
+package UtilsModel;
 
 import org.joml.Vector3f;
 

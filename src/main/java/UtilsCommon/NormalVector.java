@@ -1,5 +1,6 @@
 package UtilsCommon;
 
+import UtilsModel.VertexPosition;
 import org.joml.Vector3f;
 
 public class NormalVector {
