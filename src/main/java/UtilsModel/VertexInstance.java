@@ -20,7 +20,7 @@ public class VertexInstance {
         return position;
     }
 
-    public void SetNormal(NormalVector normal){
+    public void setNormal(NormalVector normal){
         this.normal = normal;
     }
 

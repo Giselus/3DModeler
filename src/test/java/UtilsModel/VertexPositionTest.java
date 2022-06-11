@@ -1,6 +1,5 @@
-package UtilsCommon;
+package UtilsModel;
 
-import UtilsModel.VertexPosition;
 import org.joml.Vector3f;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -40,5 +39,29 @@ class VertexPositionTest {
         newVal.x = 42f;
         Vector3f result = vertexPosition.getValue();
         assertNotEquals(newVal, result);
+    }
+
+    @Test
+    public void testPickVertexDefaultValue(){
+        Vector3f position = new Vector3f(1f, 1f, 1f);
+        VertexPosition vertexPosition = new VertexPosition(position);
+        assertFalse(vertexPosition.isPicked());
+    }
+
+    @Test
+    public void testPickVertex(){
+        Vector3f position = new Vector3f(1f, 1f, 1f);
+        VertexPosition vertexPosition = new VertexPosition(position);
+        vertexPosition.pick();
+        assertTrue(vertexPosition.isPicked());
+    }
+
+    @Test
+    public void testPickUnpick(){
+        Vector3f position = new Vector3f(1f, 1f, 1f);
+        VertexPosition vertexPosition = new VertexPosition(position);
+        vertexPosition.pick();
+        vertexPosition.unpick();
+        assertFalse(vertexPosition.isPicked());
     }
 }

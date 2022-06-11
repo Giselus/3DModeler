@@ -32,7 +32,7 @@ public class Face {
         NormalVector normal = new NormalVector(vertices.get(0).getPosition(), vertices.get(1).getPosition()
                 , vertices.get(2).getPosition());
         for(VertexInstance vertex: vertices){
-            vertex.SetNormal(normal);
+            vertex.setNormal(normal);
         }
     }
 

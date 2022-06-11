@@ -19,6 +19,7 @@ public class VertexPosition {
     public void pick(){
         isPicked = true;
     }
+    public void unpick() { isPicked = false; }
     public boolean isPicked(){
         return isPicked;
     }
