@@ -18,6 +18,15 @@ public class SceneController {
     }
 
     private Entity root;
+    private Entity selectedEntity = null;
+
+    public Entity getSelectedEntity() {
+        return selectedEntity;
+    }
+
+    public void setSelectedEntity(Entity selectedEntity) {
+        this.selectedEntity = selectedEntity;
+    }
 
     public Entity getRoot(){
         return root;
