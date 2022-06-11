@@ -4,9 +4,9 @@ import org.joml.*;
 import org.joml.Math;
 
 public class Transform {
-    private Vector3fc localTranslation = new Vector3f(0, 0, 0);
-    private Vector3fc localRotation = new Vector3f(0, 0, 0);
-    private Vector3fc localScale = new Vector3f(1, 1, 1);
+    private Vector3fc localTranslation = new Vector3f(0f, 0f, 0f);
+    private Vector3fc localRotation = new Vector3f(0f, 0f, 0f);
+    private Vector3fc localScale = new Vector3f(1f, 1f, 1f);
 
     private Matrix4f globalModelMatrix = new Matrix4f().identity();
 

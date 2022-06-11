@@ -5,6 +5,7 @@ import UtilsCommon.NormalVector;
 import java.util.ArrayList;
 
 public class Face {
+    //TODO should this class be container only?
     public Face(ArrayList<VertexPosition> vertices, NormalVector normal){
         this.vertices = new ArrayList<>();
         for(VertexPosition vertex: vertices){
