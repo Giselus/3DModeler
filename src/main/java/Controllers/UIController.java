@@ -6,10 +6,14 @@ import imgui.ImGuiIO;
 import imgui.flag.*;
 import imgui.type.ImBoolean;
 import org.joml.Vector3f;
+import org.joml.Vector3fc;
 import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.opengl.GL;
 import imgui.gl3.ImGuiImplGl3;
 import imgui.glfw.ImGuiImplGlfw;
+
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
@@ -18,16 +22,6 @@ public class UIController{
     private UIController(){}
 
     private static UIController instance;
-
-    public long getMainWindow(){
-        return mainWindow;
-    }
-
-    public static UIController getInstance(){
-        if(instance == null)
-            instance = new UIController();
-        return instance;
-    }
 
     private final ImGuiImplGlfw imGuiGlfw = new ImGuiImplGlfw();
     private final ImGuiImplGl3 imGuiGl3 = new ImGuiImplGl3();
@@ -40,11 +34,52 @@ public class UIController{
 
     private Entity selectedEntity = null;
 
+    public long getMainWindow(){
+        return mainWindow;
+    }
+
+    public static UIController getInstance(){
+        if(instance == null)
+            instance = new UIController();
+        return instance;
+    }
+
     public int getWidth(){
         return width;
     }
     public int getHeight(){
         return height;
+    }
+
+    public void initialize(){
+        initWindow();
+        initImGui();
+
+        imGuiGlfw.init(mainWindow, true);
+        imGuiGl3.init(glslVersion);
+    }
+
+    public void destroy(){
+        imGuiGl3.dispose();
+        imGuiGlfw.dispose();
+        ImGui.destroyContext();
+        Callbacks.glfwFreeCallbacks(mainWindow);
+        glfwDestroyWindow(mainWindow);
+        glfwTerminate();
+    }
+
+    public void update(){
+        imGuiGlfw.newFrame();
+        ImGui.newFrame();
+
+        frameInit();
+        showMainWindow();
+        showSceneWindow();
+        showEntitiesWindow();
+        showInspectorWindow();
+
+        ImGui.render();
+        imGuiGl3.renderDrawData(ImGui.getDrawData());
     }
 
     private void initWindow(){
@@ -70,31 +105,9 @@ public class UIController{
         ImGuiIO io = ImGui.getIO();
         io.addConfigFlags(ImGuiConfigFlags.DockingEnable);
         ImGui.styleColorsDark();
-
     }
 
-    public void initialize(){
-        initWindow();
-        initImGui();
-
-        imGuiGlfw.init(mainWindow, true);
-        imGuiGl3.init(glslVersion);
-    }
-
-    public void destroy(){
-        imGuiGl3.dispose();
-        imGuiGlfw.dispose();
-        ImGui.destroyContext();
-        Callbacks.glfwFreeCallbacks(mainWindow);
-        glfwDestroyWindow(mainWindow);
-        glfwTerminate();
-    }
-
-    public void update(){
-        imGuiGlfw.newFrame();
-        ImGui.newFrame();
-
-        //TODO: extract this part and move it
+    private void frameInit() {
         ImGuiIO io = ImGui.getIO();
 
         ImGui.setNextWindowPos(0,0);
@@ -102,7 +115,8 @@ public class UIController{
         ImGui.pushStyleVar(ImGuiStyleVar.WindowRounding,0f);
         ImGui.pushStyleVar(ImGuiStyleVar.WindowBorderSize,0);
         ImGui.pushStyleVar(ImGuiStyleVar.WindowPadding,0,0);
-
+    }
+    private void showMainWindow() {
         ImGui.begin("MainWindow", new ImBoolean(), ImGuiWindowFlags.MenuBar |
                 ImGuiWindowFlags.NoDocking | ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoCollapse |
                 ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove | ImGuiWindowFlags.NoBringToFrontOnFocus |
@@ -110,9 +124,42 @@ public class UIController{
 
         ImGui.popStyleVar(3);
 
-        int dockspace_id = ImGui.getID("MyDockSpace");
-        ImGui.dockSpace(dockspace_id, 0,0, ImGuiDockNodeFlags.PassthruCentralNode);
+        int dockSpaceId = ImGui.getID("MyDockSpace");
+        ImGui.dockSpace(dockSpaceId, 0,0, ImGuiDockNodeFlags.PassthruCentralNode);
 
+        showMainMenuBar();
+
+        ImGui.end();
+    }
+
+    private void showSceneWindow() {
+        ImGui.begin("SceneWindow", new ImBoolean(true), 0);
+        ImGui.getWindowDrawList().addImage(
+                RenderingController.getInstance().getSceneTexture(),
+                0,0,
+                width,
+                height,
+                0,1,1,0
+        );
+        ImGui.end();
+    }
+
+    private void showEntitiesWindow() {
+        ImGui.begin("Entities", new ImBoolean(), 0);
+        int baseFlags = ImGuiTreeNodeFlags.OpenOnArrow | ImGuiTreeNodeFlags.OpenOnDoubleClick |
+                ImGuiTreeNodeFlags.SpanAvailWidth | ImGuiTreeNodeFlags.DefaultOpen;
+        showEntitiesTree(SceneController.getInstance().getRoot(), baseFlags);
+        ImGui.end();
+    }
+
+    private void showInspectorWindow() {
+        ImGui.begin("Inspector", new ImBoolean(), 0);
+        if(selectedEntity != null)
+            showInspector(selectedEntity);
+        ImGui.end();
+    }
+
+    private void showMainMenuBar() {
         if(ImGui.beginMainMenuBar()) {
             if(ImGui.beginMenu("File")){
                 ImGui.endMenu();
@@ -125,32 +172,6 @@ public class UIController{
             }
         }
         ImGui.endMainMenuBar();
-
-        ImGui.end();
-
-        ImGui.begin("SceneWindow", new ImBoolean(true), 0);
-        ImGui.getWindowDrawList().addImage(
-                RenderingController.getInstance().getSceneTexture(),
-                0,0,
-                width,
-                height,
-                0,1,1,0
-        );
-        ImGui.end();
-
-        ImGui.begin("Entities", new ImBoolean(), 0);
-        int baseFlags = ImGuiTreeNodeFlags.OpenOnArrow | ImGuiTreeNodeFlags.OpenOnDoubleClick |
-                ImGuiTreeNodeFlags.SpanAvailWidth | ImGuiTreeNodeFlags.DefaultOpen;
-        showEntitiesTree(SceneController.getInstance().getRoot(), baseFlags);
-        ImGui.end();
-
-        ImGui.begin("Inspector", new ImBoolean(), 0);
-        if(selectedEntity != null)
-            showInspector(selectedEntity);
-        ImGui.end();
-
-        ImGui.render();
-        imGuiGl3.renderDrawData(ImGui.getDrawData());
     }
 
     private void showEntitiesTree(final Entity entity, final int baseFlags) {
@@ -170,55 +191,41 @@ public class UIController{
         }
     }
 
-    public void showInspector(Entity entity) {
+    private void showInspector(Entity entity) {
         final int baseFlags = ImGuiTreeNodeFlags.DefaultOpen;
-        final float[] tmp = new float[1];
         if(ImGui.treeNodeEx("Transform",baseFlags)) {
-            if(ImGui.treeNodeEx("Position",baseFlags)) {
-                float x,y,z;
-                tmp[0] = entity.getTransform().getLocalTranslation().x();
-                ImGui.dragFloat("x",tmp,0.005f);
-                x = tmp[0];
-                tmp[0] = entity.getTransform().getLocalTranslation().y();
-                ImGui.dragFloat("y",tmp,0.005f);
-                y = tmp[0];
-                tmp[0] = entity.getTransform().getLocalTranslation().z();
-                ImGui.dragFloat("z",tmp,0.005f);
-                z = tmp[0];
-                entity.getTransform().setLocalTranslation(new Vector3f(x,y,z));
-                entity.updateSelfAndChildren();
-                ImGui.treePop();
-            }
-            if(ImGui.treeNodeEx("Scale",baseFlags)) {
-                float x,y,z;
-                tmp[0] = entity.getTransform().getLocalScale().x();
-                ImGui.dragFloat("x",tmp,0.005f);
-                x = tmp[0];
-                tmp[0] = entity.getTransform().getLocalScale().y();
-                ImGui.dragFloat("y",tmp,0.005f);
-                y = tmp[0];
-                tmp[0] = entity.getTransform().getLocalScale().z();
-                ImGui.dragFloat("z",tmp,0.005f);
-                z = tmp[0];
-                entity.getTransform().setLocalScale(new Vector3f(x,y,z));
-                entity.updateSelfAndChildren();
-                ImGui.treePop();
-            }
-            if(ImGui.treeNodeEx("Rotation",baseFlags)) {
-                float x,y,z;
-                tmp[0] = entity.getTransform().getLocalRotation().x();
-                ImGui.dragFloat("x",tmp,0.1f);
-                x = tmp[0];
-                tmp[0] = entity.getTransform().getLocalRotation().y();
-                ImGui.dragFloat("y",tmp,0.1f);
-                y = tmp[0];
-                tmp[0] = entity.getTransform().getLocalRotation().z();
-                ImGui.dragFloat("z",tmp,0.1f);
-                z = tmp[0];
-                entity.getTransform().setLocalRotation(new Vector3f(x,y,z));
-                entity.updateSelfAndChildren();
-                ImGui.treePop();
-            }
+            show3DSetter("Position",
+                    () -> entity.getTransform().getLocalTranslation(),
+                    (val) -> entity.getTransform().setLocalTranslation(val),
+                    baseFlags, 0.005f);
+            show3DSetter("Scale",
+                    () -> entity.getTransform().getLocalScale(),
+                    (val) -> entity.getTransform().setLocalScale(val),
+                    baseFlags, 0.005f);
+            show3DSetter("Rotation",
+                    () -> entity.getTransform().getLocalRotation(),
+                    (val) -> entity.getTransform().setLocalRotation(val),
+                    baseFlags, 0.1f);
+            entity.updateSelfAndChildren();
+            ImGui.treePop();
+        }
+    }
+
+    private void show3DSetter(String name, Supplier<Vector3fc> getter, Consumer<Vector3f> setter,
+                              final int baseFlags, final float step) {
+        final float[] tmp = new float[1];
+        if(ImGui.treeNodeEx(name,baseFlags)) {
+            float x,y,z;
+            tmp[0] = getter.get().x();
+            ImGui.dragFloat("x",tmp,step);
+            x = tmp[0];
+            tmp[0] = getter.get().y();
+            ImGui.dragFloat("y",tmp,step);
+            y = tmp[0];
+            tmp[0] = getter.get().z();
+            ImGui.dragFloat("z",tmp,step);
+            z = tmp[0];
+            setter.accept(new Vector3f(x,y,z));
             ImGui.treePop();
         }
     }
