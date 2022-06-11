@@ -3,8 +3,6 @@ package UtilsCommon;
 import org.joml.*;
 import org.lwjgl.system.MemoryStack;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -12,7 +10,7 @@ import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL32.GL_GEOMETRY_SHADER;
 
 public class Shader {
-    public int ID;
+    public int id;
 
     public Shader(String vertexPath, String fragmentPath, String geometryPath){
         CharSequence vertexCode;
@@ -42,12 +40,12 @@ public class Shader {
             glCompileShader(geometry);
         }
 
-        ID = glCreateProgram();
-        glAttachShader(ID,vertex);
-        glAttachShader(ID,fragment);
+        id = glCreateProgram();
+        glAttachShader(id,vertex);
+        glAttachShader(id,fragment);
         if(geometryPath != null)
-            glAttachShader(ID,geometry);
-        glLinkProgram(ID);
+            glAttachShader(id,geometry);
+        glLinkProgram(id);
 
         glDeleteShader(vertex);
         glDeleteShader(fragment);
@@ -60,62 +58,62 @@ public class Shader {
     }
 
     public void use(){
-        glUseProgram(ID);
+        glUseProgram(id);
     }
 
     public void setFloat(String name, float value){
-        glUniform1f(glGetUniformLocation(ID,name),value);
+        glUniform1f(glGetUniformLocation(id,name),value);
     }
 
     public void setInteger(String name, int value){
-        glUniform1i(glGetUniformLocation(ID,name),value);
+        glUniform1i(glGetUniformLocation(id,name),value);
     }
 
     public void setVector2f(String name, float x, float y){
-        glUniform2f(glGetUniformLocation(ID,name),x,y);
+        glUniform2f(glGetUniformLocation(id,name),x,y);
     }
 
     public void setVector2f(String name, Vector2f value){
-        glUniform2f(glGetUniformLocation(ID,name),value.x,value.y);
+        glUniform2f(glGetUniformLocation(id,name),value.x,value.y);
     }
 
     public void setVector2f(String name, Vector2fc value){
-        glUniform2f(glGetUniformLocation(ID,name),value.x(),value.y());
+        glUniform2f(glGetUniformLocation(id,name),value.x(),value.y());
     }
 
     public void setVector3f(String name, float x, float y, float z){
-        glUniform3f(glGetUniformLocation(ID,name),x,y,z);
+        glUniform3f(glGetUniformLocation(id,name),x,y,z);
     }
 
     public void setVector3f(String name, Vector3f value){
-        glUniform3f(glGetUniformLocation(ID,name),value.x,value.y, value.z);
+        glUniform3f(glGetUniformLocation(id,name),value.x,value.y, value.z);
     }
 
     public void setVector3f(String name, Vector3fc value){
-        glUniform3f(glGetUniformLocation(ID,name),value.x(),value.y(), value.z());
+        glUniform3f(glGetUniformLocation(id,name),value.x(),value.y(), value.z());
     }
 
     public void setVector4f(String name, float x, float y, float z, float w){
-        glUniform4f(glGetUniformLocation(ID,name),x,y,z,w);
+        glUniform4f(glGetUniformLocation(id,name),x,y,z,w);
     }
 
     public void setVector4f(String name, Vector4f value){
-        glUniform4f(glGetUniformLocation(ID,name),value.x,value.y, value.z, value.w);
+        glUniform4f(glGetUniformLocation(id,name),value.x,value.y, value.z, value.w);
     }
 
     public void setVector4f(String name, Vector4fc value){
-        glUniform4f(glGetUniformLocation(ID,name),value.x(),value.y(), value.z(), value.w());
+        glUniform4f(glGetUniformLocation(id,name),value.x(),value.y(), value.z(), value.w());
     }
 
     public void setMatrix4(String name, Matrix4f value){
         try(MemoryStack stack = MemoryStack.stackPush()) {
-            glUniformMatrix4fv(glGetUniformLocation(ID, name), false, value.get(stack.mallocFloat(16)));
+            glUniformMatrix4fv(glGetUniformLocation(id, name), false, value.get(stack.mallocFloat(16)));
         }
     }
 
     public void setMatrix4(String name, Matrix4fc value){
         try(MemoryStack stack = MemoryStack.stackPush()) {
-            glUniformMatrix4fv(glGetUniformLocation(ID, name), false, value.get(stack.mallocFloat(16)));
+            glUniformMatrix4fv(glGetUniformLocation(id, name), false, value.get(stack.mallocFloat(16)));
         }
     }
 

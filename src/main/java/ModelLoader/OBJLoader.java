@@ -13,14 +13,14 @@ import java.util.LinkedList;
 import java.util.Scanner;
 
 public class OBJLoader implements Loader {
-    private LinkedList<Model> ReadObjects;
-    private ArrayList<VertexPosition> Cords;
-    private ArrayList<Face> Faces;
+    private LinkedList<Model> readObjects;
+    private ArrayList<VertexPosition> cords;
+    private ArrayList<Face> faces;
 
     @Override
     public LinkedList<Model> load(String path) {
         clear();
-        ReadObjects = new LinkedList<>();
+        readObjects = new LinkedList<>();
         File file;
         try {
             file = new File(path);
@@ -36,7 +36,7 @@ public class OBJLoader implements Loader {
             System.out.println("An error has occurred while reading file " + path);
             return null;
         }
-        return ReadObjects;
+        return readObjects;
     }
     private void readFile(File file) throws RuntimeException, FileNotFoundException {
         boolean firstObject = true;
@@ -53,7 +53,7 @@ public class OBJLoader implements Loader {
                     firstObject = false;
                     continue;
                 }
-                ReadObjects.add(new Model(Cords, Faces));
+                readObjects.add(new Model(cords, faces));
                 clear();
                 continue;
             }
@@ -64,14 +64,14 @@ public class OBJLoader implements Loader {
                 case "f" -> readFace(splintedLine);
             }
         }
-        ReadObjects.add(new Model(Cords, Faces));
+        readObjects.add(new Model(cords, faces));
     }
     private void readVertexPosition(String[] line){
         Vector3f cords = new Vector3f(
                 Float.parseFloat(line[1]),
                 Float.parseFloat(line[2]),
                 Float.parseFloat(line[3]));
-        Cords.add(new VertexPosition(cords));
+        this.cords.add(new VertexPosition(cords));
     }
 
     private void readNormals(String[] line){
@@ -84,13 +84,13 @@ public class OBJLoader implements Loader {
         ArrayList<VertexPosition> tempVertices = new ArrayList<>();
         for(int i=1; i<=3; i++){
             String[] oneVertex = line[i].split("/");
-            tempVertices.add(Cords.get(Integer.parseInt(oneVertex[0]) - 1));
+            tempVertices.add(cords.get(Integer.parseInt(oneVertex[0]) - 1));
         }
-        Faces.add(new Face(tempVertices));
+        faces.add(new Face(tempVertices));
     }
     private void clear(){
-        if(Cords == null)
-            Cords = new ArrayList<>();
-        Faces = new ArrayList<>();
+        if(cords == null)
+            cords = new ArrayList<>();
+        faces = new ArrayList<>();
     }
 }

@@ -6,20 +6,20 @@ import static org.lwjgl.glfw.GLFW.*;
 
 public class MainController{
 
-    private static MainController Instance;
+    private static MainController instance;
 
     public static MainController getInstance(){
-        if(Instance == null)
-            Instance = new MainController();
-        return Instance;
+        if(instance == null)
+            instance = new MainController();
+        return instance;
     }
 
     public enum Mode{
-        View,
-        Edit
+        VIEW,
+        EDIT
     }
 
-    private Mode mode = Mode.Edit;
+    private Mode mode = Mode.EDIT;
 
     public Mode getMode(){
         return mode;

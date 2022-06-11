@@ -17,16 +17,16 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 public class UIController{
     private UIController(){}
 
-    private static UIController Instance;
+    private static UIController instance;
 
     public long getMainWindow(){
         return mainWindow;
     }
 
     public static UIController getInstance(){
-        if(Instance == null)
-            Instance = new UIController();
-        return Instance;
+        if(instance == null)
+            instance = new UIController();
+        return instance;
     }
 
     private final ImGuiImplGlfw imGuiGlfw = new ImGuiImplGlfw();

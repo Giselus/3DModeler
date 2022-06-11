@@ -4,50 +4,50 @@ import org.joml.*;
 import org.joml.Math;
 
 public class Camera {
-    private Vector3f Position;
-    private Vector3f Front;
-    private Vector3f Up;
-    private Vector3f Right;
-    private Vector3f WorldUp;
+    private Vector3f position;
+    private Vector3f front;
+    private Vector3f up;
+    private Vector3f right;
+    private Vector3f worldUp;
 
-    private float Yaw = -90f;
-    private float Pitch = 0f;
+    private float yaw = -90f;
+    private float pitch = 0f;
 
-    private float MouseSensitivity = 0.3f;
-    private float ScrollSensitivity = 1.04f;
-    private float ScrollLinear = 0.35f;
-    private float Distance = 15f;
-    private float Zoom = 45f;
+    private float mouseSensitivity = 0.3f;
+    private float scrollSensitivity = 1.04f;
+    private float scrollLinear = 0.35f;
+    private float distance = 15f;
+    private float zoom = 45f;
 
     public Vector3f getPosition(){
-        return new Vector3f(Position);
+        return new Vector3f(position);
     }
     public float getZoom(){
-        return Zoom;
+        return zoom;
     }
 
     public Camera(){
-        Position = new Vector3f(0f);
-        WorldUp = new Vector3f(0f,1f,0f);
+        position = new Vector3f(0f);
+        worldUp = new Vector3f(0f,1f,0f);
         updateCameraVectors();
     }
     public Matrix4f getViewMatrix(){
-        Vector3f dir = new Vector3f(Position);
-        dir.add(Front);
-        return new Matrix4f().lookAt(Position,dir,Up);
+        Vector3f dir = new Vector3f(position);
+        dir.add(front);
+        return new Matrix4f().lookAt(position,dir, up);
     }
 
     public void ProcessMousePosition(float offsetX, float offsetY, boolean constraintPitch){
-        offsetX *= MouseSensitivity;
-        offsetY *= MouseSensitivity;
-        Yaw += offsetX;
-        Pitch -= offsetY;
+        offsetX *= mouseSensitivity;
+        offsetY *= mouseSensitivity;
+        yaw += offsetX;
+        pitch -= offsetY;
 
         if(constraintPitch){
-            if(Pitch > 89.0f)
-                Pitch = 89.0f;
-            if(Pitch < -89.0f)
-                Pitch = -89.0f;
+            if(pitch > 89.0f)
+                pitch = 89.0f;
+            if(pitch < -89.0f)
+                pitch = -89.0f;
         }
 
         updateCameraVectors();
@@ -60,37 +60,37 @@ public class Camera {
     public void ProcessMouseScroll(float offset){
         while(offset > 0.5f || offset < -0.5f) {
             if (offset < 0f) {
-                Distance *= ScrollSensitivity;
-                Distance += ScrollLinear;
+                distance *= scrollSensitivity;
+                distance += scrollLinear;
                 offset += 1f;
             } else {
-                Distance /= ScrollSensitivity;
-                Distance -= ScrollLinear;
+                distance /= scrollSensitivity;
+                distance -= scrollLinear;
                 offset -= 1f;
             }
         }
-        if(Distance < 0.1f)
-            Distance = 0.1f;
-        if(Distance > 180.0f)
-            Distance = 180.0f;
-        Position.normalize();
-        Position.mul(Distance);
+        if(distance < 0.1f)
+            distance = 0.1f;
+        if(distance > 180.0f)
+            distance = 180.0f;
+        position.normalize();
+        position.mul(distance);
     }
 
     private void updateCameraVectors(){
         Vector3f front = new Vector3f();
-        front.x = -(float)(Math.cos(Math.toRadians(Yaw)) * Math.cos(Math.toRadians(Pitch)));
-        front.y = -(float)(Math.sin(Math.toRadians(Pitch)));
-        front.z = -(float)(Math.sin(Math.toRadians(Yaw)) * Math.cos(Math.toRadians(Pitch)));
+        front.x = -(float)(Math.cos(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)));
+        front.y = -(float)(Math.sin(Math.toRadians(pitch)));
+        front.z = -(float)(Math.sin(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)));
         Vector3f position = new Vector3f();
         position.x = -front.x;
         position.y = -front.y;
         position.z = -front.z;
-        Position = position;
-        Position.normalize();
-        Position.mul(Distance);
-        Front = front.normalize();
-        Right = new Vector3f(Front).cross(WorldUp).normalize();
-        Up = new Vector3f(Right).cross(Front).normalize();
+        this.position = position;
+        this.position.normalize();
+        this.position.mul(distance);
+        this.front = front.normalize();
+        right = new Vector3f(this.front).cross(worldUp).normalize();
+        up = new Vector3f(right).cross(this.front).normalize();
     }
 }

@@ -5,29 +5,29 @@ import org.joml.Vector2f;
 import org.joml.Vector3f;
 
 public class VertexInstance {
-    private VertexPosition Position;
-    private UtilsModel.Face Face;
-    private NormalVector Normal;
+    private VertexPosition position;
+    private UtilsModel.Face face;
+    private NormalVector normal;
 
-    private Vector2f TextureCoordinate;
-    public VertexInstance(VertexPosition Position, Face Face, NormalVector Normal){
-        this.Position = Position;
-        this.Face = Face;
-        this.Normal = Normal;
+    private Vector2f textureCoordinate;
+    public VertexInstance(VertexPosition position, Face face, NormalVector normal){
+        this.position = position;
+        this.face = face;
+        this.normal = normal;
     }
 
     public VertexPosition getPosition(){
-        return Position;
+        return position;
     }
 
-    public void SetNormal(NormalVector Normal){
-        this.Normal = Normal;
+    public void SetNormal(NormalVector normal){
+        this.normal = normal;
     }
 
     public float[] getBufferedData(){
-        Vector3f pos = Position.getValue();
-        Vector3f normal = Normal.getValue();
-        boolean isPicked = Position.isPicked();
+        Vector3f pos = position.getValue();
+        Vector3f normal = this.normal.getValue();
+        boolean isPicked = position.isPicked();
         return new float[]{pos.x,pos.y,pos.z,normal.x,normal.y,normal.z,isPicked ? 1f : -1f};
     }
 }

@@ -2,21 +2,19 @@ package UtilsModel;
 
 import org.joml.Vector3f;
 
-import java.util.Random;
-
 public class VertexPosition {
-    private final Vector3f Value;
+    private final Vector3f value;
     private boolean isPicked = false;
-    public VertexPosition(Vector3f Value){
-        this.Value = Value;
+    public VertexPosition(Vector3f value){
+        this.value = value;
     }
     public Vector3f getValue(){
-        return new Vector3f(Value);
+        return new Vector3f(value);
     }
-    public void setValue(Vector3f Value) {
-        this.Value.x = Value.x;
-        this.Value.y = Value.y;
-        this.Value.z = Value.z;
+    public void setValue(Vector3f value) {
+        this.value.x = value.x;
+        this.value.y = value.y;
+        this.value.z = value.z;
     }
     public void pick(){
         isPicked = true;

@@ -1,8 +1,6 @@
 package UtilsModel;
 
 import Controllers.RenderingController;
-import UtilsModel.Face;
-import UtilsModel.VertexInstance;
 import org.lwjgl.system.MemoryUtil;
 
 import java.nio.FloatBuffer;
@@ -12,10 +10,10 @@ import static org.lwjgl.opengl.GL30.*;
 
 public class Mesh implements IMesh {
 
-    private ArrayList<VertexInstance> Vertices;
+    private ArrayList<VertexInstance> vertices;
 
-    public Mesh(ArrayList<Face> Faces){
-        processTopology(Faces);
+    public Mesh(ArrayList<Face> faces){
+        processTopology(faces);
         setupMesh();
     }
     public void draw(){
@@ -37,32 +35,30 @@ public class Mesh implements IMesh {
 //        }
 //        glActiveTexture(GL_TEXTURE0);
 
-        glBindVertexArray(VAO);
-        glDrawArrays(RenderingController.getInstance().getDrawingMode(),0,Vertices.size());
+        glBindVertexArray(vao);
+        glDrawArrays(RenderingController.getInstance().getDrawingMode(),0, vertices.size());
         glBindVertexArray(0);
     }
 
-    private int VAO, VBO;
+    private int vao, vbo;
 
-    private void processTopology(ArrayList<Face> Faces){
-        Vertices = new ArrayList<>();
-        for(Face face: Faces){
-            for(VertexInstance vertex: face.Vertices){
-                Vertices.add(vertex);
-            }
+    private void processTopology(ArrayList<Face> faces){
+        vertices = new ArrayList<>();
+        for(Face face: faces){
+            vertices.addAll(face.getVertices());
         }
     }
 
     private void setupMesh(){
-        VAO = glGenVertexArrays();
-        VBO = glGenBuffers();
+        vao = glGenVertexArrays();
+        vbo = glGenBuffers();
 
-        glBindVertexArray(VAO);
+        glBindVertexArray(vao);
 
-        glBindBuffer(GL_ARRAY_BUFFER,VBO);
+        glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
-        FloatBuffer verticesBuffer = MemoryUtil.memAllocFloat(Vertices.size() * 7);
-        Vertices.forEach((v) -> verticesBuffer.put(v.getBufferedData()));
+        FloatBuffer verticesBuffer = MemoryUtil.memAllocFloat(vertices.size() * 7);
+        vertices.forEach((v) -> verticesBuffer.put(v.getBufferedData()));
         verticesBuffer.flip();
         glBufferData(GL_ARRAY_BUFFER, verticesBuffer, GL_STATIC_DRAW);
         glEnableVertexAttribArray(0);

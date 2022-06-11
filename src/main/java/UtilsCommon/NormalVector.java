@@ -4,9 +4,9 @@ import UtilsModel.VertexPosition;
 import org.joml.Vector3f;
 
 public class NormalVector {
-    private final Vector3f Value;
-    public NormalVector(Vector3f Value){
-        this.Value = Value;
+    private final Vector3f value;
+    public NormalVector(Vector3f value){
+        this.value = value;
     }
     public NormalVector(VertexPosition v1, VertexPosition v2, VertexPosition v3){
         Vector3f u1 = new Vector3f(v2.getValue());
@@ -16,10 +16,10 @@ public class NormalVector {
 
         u1.cross(u2);
         u1.normalize();
-        this.Value = u1;
+        this.value = u1;
     }
     //TODO recalculate instead of creating new instance
     public Vector3f getValue(){
-        return new Vector3f(Value);
+        return new Vector3f(value);
     }
 }

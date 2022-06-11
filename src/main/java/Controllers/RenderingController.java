@@ -1,15 +1,10 @@
 package Controllers;
 
-import ModelLoader.OBJLoader;
 import UtilsCommon.*;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
 import java.nio.ByteBuffer;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL30.*;
@@ -130,7 +125,7 @@ public class RenderingController {
         setActiveShader(mainShader);
         setDrawingMode(GL_TRIANGLES);
         SceneController.getInstance().getRoot().update();
-        if(MainController.getInstance().getMode() == MainController.Mode.Edit){
+        if(MainController.getInstance().getMode() == MainController.Mode.EDIT){
             setActiveShader(wireframeShader);
             SceneController.getInstance().getRoot().update();
             setActiveShader(pointsShader);

@@ -1,35 +1,40 @@
 package UtilsModel;
 
 import UtilsCommon.NormalVector;
-import UtilsModel.VertexInstance;
-import UtilsModel.VertexPosition;
 
 import java.util.ArrayList;
 
 public class Face {
-    // TODO: make this private
-    public ArrayList<VertexInstance> Vertices;
-
-    public Face(ArrayList<VertexPosition> Vertices, NormalVector Normal){
-        this.Vertices = new ArrayList<>();
-        for(VertexPosition vertex: Vertices){
-            this.Vertices.add(new VertexInstance(vertex, this, Normal));
+    public Face(ArrayList<VertexPosition> vertices, NormalVector normal){
+        this.vertices = new ArrayList<>();
+        for(VertexPosition vertex: vertices){
+            this.vertices.add(new VertexInstance(vertex, this, normal));
         }
     }
 
-    public Face(ArrayList<VertexPosition> Vertices){
-        this.Vertices = new ArrayList<>();
-        NormalVector Normal = new NormalVector(Vertices.get(0),Vertices.get(1),Vertices.get(2));
-        for(VertexPosition vertex: Vertices){
-            this.Vertices.add(new VertexInstance(vertex, this, Normal));
+    public Face(ArrayList<VertexPosition> vertices){
+        this.vertices = new ArrayList<>();
+        NormalVector normal = new NormalVector(vertices.get(0),vertices.get(1),vertices.get(2));
+        for(VertexPosition vertex: vertices){
+            this.vertices.add(new VertexInstance(vertex, this, normal));
         }
+    }
+
+    public ArrayList<VertexInstance> getVertices() {
+        return vertices;
+    }
+
+    public void setVertices(ArrayList<VertexInstance> vertices) {
+        this.vertices = vertices;
     }
 
     public void recalculateNormals(){
-        NormalVector Normal = new NormalVector(Vertices.get(0).getPosition(),Vertices.get(1).getPosition()
-                ,Vertices.get(2).getPosition());
-        for(VertexInstance vertex: Vertices){
-            vertex.SetNormal(Normal);
+        NormalVector normal = new NormalVector(vertices.get(0).getPosition(), vertices.get(1).getPosition()
+                , vertices.get(2).getPosition());
+        for(VertexInstance vertex: vertices){
+            vertex.SetNormal(normal);
         }
     }
+
+    private ArrayList<VertexInstance> vertices;
 }

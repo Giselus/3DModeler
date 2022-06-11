@@ -3,19 +3,19 @@ package UtilsModel;
 import java.util.ArrayList;
 
 public class Model {
-    private ArrayList<VertexPosition> Vertices;
-    private ArrayList<Face> Faces;
+    private ArrayList<VertexPosition> vertices;
+    private ArrayList<Face> faces;
 
-    private UtilsModel.IMesh Mesh;
+    private UtilsModel.IMesh mesh;
 
-    public Model(ArrayList<VertexPosition> Vertices, ArrayList<Face> Faces){
-        this.Vertices = Vertices;
-        this.Faces = Faces;
+    public Model(ArrayList<VertexPosition> vertices, ArrayList<Face> faces){
+        this.vertices = vertices;
+        this.faces = faces;
         //TODO: make this dependency injection
-        Mesh = new Mesh(Faces);
+        mesh = new Mesh(faces);
     }
 
     public void Draw(){
-        Mesh.draw();
+        mesh.draw();
     }
 }
