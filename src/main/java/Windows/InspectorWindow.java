@@ -2,6 +2,7 @@ package Windows;
 
 import Controllers.SceneController;
 import EntityTree.Entity;
+import Scene.SceneState;
 import imgui.ImGui;
 import imgui.flag.ImGuiTreeNodeFlags;
 import imgui.type.ImBoolean;
@@ -12,10 +13,11 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class InspectorWindow {
-    static public void show() {
+
+    static public void show(SceneState sceneState) {
         ImGui.begin("Inspector", new ImBoolean(), 0);
-        if(SceneController.getInstance().getSelectedEntity() != null)
-            showInspector(SceneController.getInstance().getSelectedEntity());
+        if(sceneState.getSelectedEntity() != null)
+            showInspector(sceneState.getSelectedEntity());
         ImGui.end();
     }
 

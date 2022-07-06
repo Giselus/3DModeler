@@ -1,6 +1,7 @@
 package UtilsModel;
 
-import Controllers.RenderingController;
+//import Controllers.RenderingController;
+import Scene.RenderingUpdater;
 import org.lwjgl.system.MemoryUtil;
 
 import java.nio.FloatBuffer;
@@ -12,8 +13,10 @@ public class Mesh implements IMesh {
 
     private ArrayList<VertexInstance> vertices;
 
-    public Mesh(ArrayList<Face> faces){
+    private final RenderingUpdater renderingUpdater;
+    public Mesh(ArrayList<Face> faces, RenderingUpdater renderingUpdater){
         processTopology(faces);
+        this.renderingUpdater = renderingUpdater;
         setupMesh();
     }
     public void draw(){
@@ -36,7 +39,7 @@ public class Mesh implements IMesh {
 //        glActiveTexture(GL_TEXTURE0);
 
         glBindVertexArray(vao);
-        glDrawArrays(RenderingController.getInstance().getDrawingMode(),0, vertices.size());
+        glDrawArrays(renderingUpdater.getDrawingMode(),0, vertices.size());
         glBindVertexArray(0);
     }
 
