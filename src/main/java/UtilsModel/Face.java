@@ -36,6 +36,5 @@ public class Face {
             vertex.setNormal(normal);
         }
     }
-
     private ArrayList<VertexInstance> vertices;
 }

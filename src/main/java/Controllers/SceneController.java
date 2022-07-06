@@ -40,7 +40,6 @@ public class SceneController {
         for(Model model: models){
             new EntityModel(model,root);
         }
-
     }
 
     public void update(){

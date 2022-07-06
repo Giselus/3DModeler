@@ -21,5 +21,4 @@ public class EntityModel extends Entity {
         model.Draw();
         super.update();
     }
-
 }

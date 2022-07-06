@@ -17,7 +17,6 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 
 public class UIController{
     private UIController(){}
-
     private static UIController instance;
 
     private final ImGuiImplGlfw imGuiGlfw = new ImGuiImplGlfw();

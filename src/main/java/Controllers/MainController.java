@@ -37,7 +37,7 @@ public class MainController{
         initialize();
         while(!glfwWindowShouldClose(UIController.getInstance().getMainWindow())) {
             InputController.getInstance().update();
-            float deltaTime = ImGui.getIO().getDeltaTime();
+//            float deltaTime = ImGui.getIO().getDeltaTime();
 
             RenderingController.getInstance().update();
             UIController.getInstance().update();

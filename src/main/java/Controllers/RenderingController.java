@@ -124,6 +124,7 @@ public class RenderingController {
 
         setActiveShader(mainShader);
         setDrawingMode(GL_TRIANGLES);
+
         SceneController.getInstance().getRoot().update();
         if(MainController.getInstance().getMode() == MainController.Mode.EDIT){
             setActiveShader(wireframeShader);
