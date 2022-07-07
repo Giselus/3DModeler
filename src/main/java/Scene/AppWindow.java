@@ -80,12 +80,12 @@ public class AppWindow implements IUpdater {
         glfwTerminate();
     }
 
-    public int getWidth(){
-        return width;
-    }
-    public int getHeight(){
-        return height;
-    }
+//    public int getWidth(){
+//        return width;
+//    }
+//    public int getHeight(){
+//        return height;
+//    }
     public long getMainWindow(){
         return mainWindow;
     }

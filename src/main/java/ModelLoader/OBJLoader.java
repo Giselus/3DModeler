@@ -3,7 +3,6 @@ package ModelLoader;
 import EntityTree.Entity;
 import EntityTree.EntityEmpty;
 import EntityTree.EntityModel;
-import Scene.RenderingUpdater;
 import UtilsModel.Model;
 
 import java.util.LinkedList;

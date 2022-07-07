@@ -31,7 +31,6 @@ public class RenderingUpdater implements IUpdater {
     private int fbo;
     private int rbo;
     private int multiSampleTexture;
-    private int sceneTexture;
 
     public RenderingUpdater(SceneState sceneState) {
         this.sceneState = sceneState;
@@ -50,7 +49,7 @@ public class RenderingUpdater implements IUpdater {
         setActiveShader(mainShader);
         setDrawingMode(GL_TRIANGLES);
 
-        sceneState.getRoot().update();
+        sceneState.getRoot().drawSelfAndChildren(); //todo
 //        if(MainController.getInstance().getMode() == MainController.Mode.EDIT){
 //            setActiveShader(wireframeShader);
 //            SceneController.getInstance().getRoot().update();
@@ -62,14 +61,16 @@ public class RenderingUpdater implements IUpdater {
 
         glBindFramebuffer(GL_READ_FRAMEBUFFER,multiSampleFbo);
         glBindFramebuffer(GL_DRAW_FRAMEBUFFER,fbo);
-        glBlitFramebuffer(0,0,appWindow.getWidth(), appWindow.getHeight(),
-                0,0,appWindow.getWidth(), appWindow.getHeight(),
+        glBlitFramebuffer(0,0,sceneState.getSceneWindowWidth(), sceneState.getSceneWindowHeight(),
+                0,0,sceneState.getSceneWindowWidth(), sceneState.getSceneWindowHeight(),
                 GL_COLOR_BUFFER_BIT,GL_NEAREST);
 
         glBindFramebuffer(GL_FRAMEBUFFER,0);
 
         glClearColor(0.6f, 0.6f, 0.6f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+
     }
 
     public void setActiveShader(Shader shader) {
@@ -88,10 +89,6 @@ public class RenderingUpdater implements IUpdater {
 
     public int getDrawingMode() {
         return drawingMode;
-    }
-
-    public int getSceneTexture() {
-        return sceneTexture;
     }
 
     public Camera getCamera() {
@@ -118,7 +115,7 @@ public class RenderingUpdater implements IUpdater {
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D_MULTISAMPLE,multiSampleTexture);
         glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE,4,GL_RGB,
-                appWindow.getWidth(),appWindow.getHeight(), true);
+                sceneState.getSceneWindowWidth(),sceneState.getSceneWindowHeight(), true);
         glBindTexture(GL_TEXTURE_2D_MULTISAMPLE,0);
 
         glFramebufferTexture2D(GL_FRAMEBUFFER,GL_COLOR_ATTACHMENT0,GL_TEXTURE_2D_MULTISAMPLE,multiSampleTexture,0);
@@ -126,29 +123,34 @@ public class RenderingUpdater implements IUpdater {
         rbo = glGenRenderbuffers();
         glBindRenderbuffer(GL_RENDERBUFFER,rbo);
         glRenderbufferStorageMultisample(GL_RENDERBUFFER,4,GL_DEPTH24_STENCIL8,
-                appWindow.getWidth(), appWindow.getHeight());
+                sceneState.getSceneWindowWidth(), sceneState.getSceneWindowHeight());
         glFramebufferRenderbuffer(GL_FRAMEBUFFER,GL_DEPTH_STENCIL_ATTACHMENT,GL_RENDERBUFFER,rbo);
 
         fbo = glGenFramebuffers();
         glBindFramebuffer(GL_FRAMEBUFFER,fbo);
 
-        sceneTexture = glGenTextures();
-        glBindTexture(GL_TEXTURE_2D,sceneTexture);
-        glTexImage2D(GL_TEXTURE_2D,0,GL_RGB,appWindow.getWidth(), appWindow.getHeight(),
+        sceneState.setSceneTexture(glGenTextures());
+        glBindTexture(GL_TEXTURE_2D,sceneState.getSceneTexture());
+        glTexImage2D(GL_TEXTURE_2D,0,GL_RGB,sceneState.getSceneWindowWidth(), sceneState.getSceneWindowHeight(),
                 0,GL_RGB,GL_UNSIGNED_BYTE,(ByteBuffer) null);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glFramebufferTexture2D(GL_FRAMEBUFFER,GL_COLOR_ATTACHMENT0,GL_TEXTURE_2D,sceneTexture,0);
-
+        glFramebufferTexture2D(GL_FRAMEBUFFER,GL_COLOR_ATTACHMENT0,GL_TEXTURE_2D,sceneState.getSceneTexture(),0);
         glBindFramebuffer(GL_FRAMEBUFFER,0);
 
         glLineWidth(1f);
         glPointSize(5);
+
+        setDrawers();
+    }
+
+    private void setDrawers() {
+        sceneState.getRoot().setDrawer(this);
     }
 
     private void prepareShader() {
         Matrix4f projection = new Matrix4f().setPerspective((float)Math.toRadians(camera.getZoom()),
-                (float)appWindow.getWidth()/appWindow.getHeight(), 0.1f, 200.0f);
+                (float)sceneState.getSceneWindowWidth()/sceneState.getSceneWindowHeight(), 0.1f, 200.0f);
         Matrix4f view = camera.getViewMatrix();
         activeShader.setMatrix4("projection",projection);
         activeShader.setMatrix4("view",view);
