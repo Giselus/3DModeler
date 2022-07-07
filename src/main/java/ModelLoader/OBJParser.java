@@ -18,7 +18,7 @@ public class OBJParser {
     private ArrayList<VertexPosition> cords;
     private ArrayList<Face> faces;
 
-    public LinkedList<Model> load(String path, RenderingUpdater renderingUpdater) {
+    public LinkedList<Model> load(String path) {
         clear();
         readObjects = new LinkedList<>();
         File file;
@@ -30,7 +30,7 @@ public class OBJParser {
             return null;
         }
         try {
-            readFile(file, renderingUpdater);
+            readFile(file);
         } catch (Exception e){
             e.printStackTrace();
             System.out.println("An error has occurred while reading file " + path);
@@ -38,7 +38,7 @@ public class OBJParser {
         }
         return readObjects;
     }
-    private void readFile(File file, RenderingUpdater renderingUpdater) throws RuntimeException, FileNotFoundException {
+    private void readFile(File file) throws RuntimeException, FileNotFoundException {
         boolean firstObject = true;
         Scanner scanner = new Scanner(file);
         String line;
@@ -53,7 +53,7 @@ public class OBJParser {
                     firstObject = false;
                     continue;
                 }
-                readObjects.add(new Model(cords, faces, renderingUpdater));
+                readObjects.add(new Model(cords, faces));
                 clear();
                 continue;
             }
@@ -64,7 +64,7 @@ public class OBJParser {
                 case "f" -> readFace(splintedLine);
             }
         }
-        readObjects.add(new Model(cords, faces, renderingUpdater));
+        readObjects.add(new Model(cords, faces));
     }
     private void readVertexPosition(String[] line){
         Vector3f cords = new Vector3f(

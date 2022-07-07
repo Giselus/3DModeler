@@ -7,7 +7,10 @@ public class SceneState {
     private Entity root;
     private Entity selectedEntity = null;
 
-    public SceneState() {}
+    private int sceneWindowWidth = 1200;
+    private int sceneWindowHeight = 800;
+    private int sceneTexture;
+
     public void setRoot(Entity root) {
         this.root = root;
     }
@@ -21,5 +24,21 @@ public class SceneState {
 
     public Entity getRoot() {
         return root;
+    }
+
+    public int getSceneWindowWidth(){
+        return sceneWindowWidth;
+    }
+
+    public int getSceneWindowHeight(){
+        return sceneWindowHeight;
+    }
+
+    public int getSceneTexture() {
+        return sceneTexture;
+    }
+
+    public void setSceneTexture(int sceneTexture) {
+        this.sceneTexture = sceneTexture;
     }
 }

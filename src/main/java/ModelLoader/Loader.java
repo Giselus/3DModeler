@@ -7,5 +7,5 @@ import UtilsModel.Model;
 import java.util.LinkedList;
 
 public interface Loader {
-    Entity load(String path, RenderingUpdater renderingUpdater);
+    Entity load(String path);
 }

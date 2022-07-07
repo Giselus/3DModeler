@@ -16,7 +16,6 @@ import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 public class AppWindow implements IUpdater {
-    //TODO move from UIController
 
     private final SceneState sceneState;
     private final ImGuiImplGlfw imGuiGlfw = new ImGuiImplGlfw();
@@ -24,9 +23,6 @@ public class AppWindow implements IUpdater {
     private long mainWindow;
     private String glslVersion;
 
-    //TODO should this be final?
-    private final int width = 1200;
-    private final int height = 800;
     public AppWindow(SceneState sceneState) {
         this.sceneState = sceneState;
         initWindow();
@@ -42,7 +38,7 @@ public class AppWindow implements IUpdater {
         ImGui.newFrame();
 
         MainWindow.show();
-        SceneWindow.show(width, height);
+        SceneWindow.show(sceneState.getSceneWindowWidth(), sceneState.getSceneWindowHeight(), sceneState.getSceneTexture());
         EntitiesWindow.show(sceneState.getRoot(), sceneState);
         InspectorWindow.show(sceneState);
 
@@ -59,7 +55,7 @@ public class AppWindow implements IUpdater {
         glfwWindowHint(GLFW_VISIBLE,GLFW_FALSE);
         glfwWindowHint(GLFW_OPENGL_PROFILE,GLFW_OPENGL_CORE_PROFILE);
 
-        mainWindow = glfwCreateWindow(width,height,"Title==null",NULL,NULL);
+        mainWindow = glfwCreateWindow(sceneState.getSceneWindowWidth(),sceneState.getSceneWindowHeight(),"Title==null",NULL,NULL);
 
         glfwMakeContextCurrent(mainWindow);
         glfwSwapInterval(1);

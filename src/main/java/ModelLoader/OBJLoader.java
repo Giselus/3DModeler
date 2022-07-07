@@ -16,9 +16,9 @@ public class OBJLoader implements Loader {
     }
 
     @Override
-    public Entity load(String path, RenderingUpdater renderingUpdater) {
+    public Entity load(String path) {
         Entity root = new EntityEmpty();
-        LinkedList<Model> models = objParser.load(path, renderingUpdater);
+        LinkedList<Model> models = objParser.load(path);
         for(Model model : models)
                 new EntityModel(model, root);
         return root;

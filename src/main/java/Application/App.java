@@ -1,13 +1,10 @@
 package Application;
 
-import ModelLoader.Loader;
 import ModelLoader.OBJLoader;
 import Scene.AppWindow;
 import Scene.InputController;
 import Scene.RenderingUpdater;
 import Scene.SceneState;
-import Windows.InspectorWindow;
-import Windows.SceneWindow;
 
 import static org.lwjgl.glfw.GLFW.*;
 
@@ -32,15 +29,15 @@ public class App {
     }
 
     private void initialize() {
-        sceneState = new SceneState();
+        sceneStateInit();
         appWindowInit();
         renderingUpdaterInit();
-        sceneState.setRoot(new OBJLoader().load(INIT_FILE, renderingUpdater));
         inputControllerInit();
     }
 
     private void sceneStateInit() {
         sceneState = new SceneState();
+        sceneState.setRoot(new OBJLoader().load(INIT_FILE));
     }
 
     private void appWindowInit() {
@@ -48,8 +45,7 @@ public class App {
     }
 
     private void renderingUpdaterInit() {
-        renderingUpdater = new RenderingUpdater(sceneState, appWindow);
-        SceneWindow.renderingUpdater = renderingUpdater;
+        renderingUpdater = new RenderingUpdater(sceneState);
     }
 
     private void inputControllerInit() {

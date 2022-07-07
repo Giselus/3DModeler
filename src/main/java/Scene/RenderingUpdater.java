@@ -17,10 +17,8 @@ import static org.lwjgl.opengl.GL32.GL_TEXTURE_2D_MULTISAMPLE;
 import static org.lwjgl.opengl.GL32.glTexImage2DMultisample;
 
 public class RenderingUpdater implements IUpdater {
-    //TODO move from rendering controller
 
     private final SceneState sceneState;
-    private final AppWindow appWindow;
     private Camera camera;
     private Shader mainShader;
     private Shader wireframeShader;
@@ -35,9 +33,8 @@ public class RenderingUpdater implements IUpdater {
     private int multiSampleTexture;
     private int sceneTexture;
 
-    public RenderingUpdater(SceneState sceneState, AppWindow appWindow) {
+    public RenderingUpdater(SceneState sceneState) {
         this.sceneState = sceneState;
-        this.appWindow = appWindow;
         initialize();
     }
     @Override
