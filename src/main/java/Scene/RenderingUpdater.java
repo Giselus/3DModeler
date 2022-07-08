@@ -145,7 +145,7 @@ public class RenderingUpdater implements IUpdater {
     }
 
     private void setDrawers() {
-        sceneState.getRoot().setDrawer(this);
+        DrawerInitializer.initialize(sceneState.getRoot(), this);
     }
 
     private void prepareShader() {

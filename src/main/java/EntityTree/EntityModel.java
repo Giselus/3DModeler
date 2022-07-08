@@ -2,10 +2,10 @@ package EntityTree;
 
 import Scene.IModelDrawer;
 import Scene.ModelDrawer;
-import Scene.RenderingUpdater;
-import UtilsCommon.Shader;
+import UtilsModel.Face;
 import UtilsModel.Model;
-import org.joml.Matrix4fc;
+
+import java.util.ArrayList;
 
 public class EntityModel extends Entity {
 
@@ -23,8 +23,11 @@ public class EntityModel extends Entity {
         super.drawSelfAndChildren();
     }
 
-    @Override
-    public void setDrawer(RenderingUpdater renderingUpdater) {
-        this.modelDrawer = new ModelDrawer(model.getFaces(), renderingUpdater);
+    public void setDrawer(ModelDrawer modelDrawer) {
+        this.modelDrawer = modelDrawer;
+    }
+
+    public ArrayList<Face> getFaces() {
+        return model.getFaces();
     }
 }

@@ -5,6 +5,7 @@ import Scene.RenderingUpdater;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
 
 public abstract class Entity {
     protected final Transform transform;
@@ -73,8 +74,7 @@ public abstract class Entity {
             child.drawSelfAndChildren();
     }
 
-    public void setDrawer(RenderingUpdater renderingUpdater) {
-        for(Entity child : children)
-            child.setDrawer(renderingUpdater);
+    public Collection<Entity> getChildren() {
+        return children;
     }
 }
