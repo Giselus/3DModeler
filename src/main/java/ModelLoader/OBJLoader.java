@@ -3,7 +3,6 @@ package ModelLoader;
 import EntityTree.Entity;
 import EntityTree.EntityEmpty;
 import EntityTree.EntityModel;
-import UtilsModel.Model;
 
 import java.util.LinkedList;
 
@@ -17,9 +16,9 @@ public class OBJLoader implements Loader {
     @Override
     public Entity load(String path) {
         Entity root = new EntityEmpty();
-        LinkedList<Model> models = objParser.load(path);
-        for(Model model : models)
-                new EntityModel(model, root);
+        LinkedList<NamedModel> models = objParser.load(path);
+        for(NamedModel model : models)
+                new EntityModel(model.model, root).setName(model.name);
         return root;
     }
 }

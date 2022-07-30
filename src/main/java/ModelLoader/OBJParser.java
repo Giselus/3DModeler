@@ -1,6 +1,5 @@
 package ModelLoader;
 
-import Scene.RenderingUpdater;
 import UtilsModel.Face;
 import UtilsModel.Model;
 import UtilsModel.VertexPosition;
@@ -9,18 +8,16 @@ import org.joml.Vector3f;
 import java.io.File;
 
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Scanner;
+import java.util.*;
 
 public class OBJParser {
-    private LinkedList<Model> readObjects;
+    private LinkedList<NamedModel> readObjects;
     private ArrayList<VertexPosition> cords;
     private ArrayList<Face> faces;
 
-    private String objectName;
+    String modelName;
 
-    public LinkedList<Model> load(String path) {
+    public LinkedList<NamedModel> load(String path) {
         clear();
         readObjects = new LinkedList<>();
         File file;
@@ -53,11 +50,11 @@ public class OBJParser {
             if(splintedLine[0].equals("o")){
                 if(firstObject){
                     firstObject = false;
-                    objectName = splintedLine[1];
+                    modelName = splintedLine[1];
                     continue;
                 }
-                readObjects.add(new Model(cords, faces));
-                objectName = splintedLine[1];
+                readObjects.add(new NamedModel(new Model(cords, faces), modelName));
+                modelName = splintedLine[1];
                 clear();
                 continue;
             }
@@ -68,7 +65,7 @@ public class OBJParser {
                 case "f" -> readFace(splintedLine);
             }
         }
-        readObjects.add(new Model(cords, faces));
+        readObjects.add(new NamedModel(new Model(cords, faces), modelName));
     }
     private void readVertexPosition(String[] line){
         Vector3f cords = new Vector3f(
@@ -86,7 +83,9 @@ public class OBJParser {
     }
     private void readFace(String[] line){
         ArrayList<VertexPosition> tempVertices = new ArrayList<>();
-        for(int i=1; i<=3; i++){
+        int limit = line.length;
+        System.out.println(Arrays.toString(line));
+        for(int i=1; i<limit; i++){
             String[] oneVertex = line[i].split("/");
             tempVertices.add(cords.get(Integer.parseInt(oneVertex[0]) - 1));
         }
@@ -96,5 +95,15 @@ public class OBJParser {
         if(cords == null)
             cords = new ArrayList<>();
         faces = new ArrayList<>();
+    }
+}
+
+class NamedModel {
+    Model model;
+    String name;
+
+    public NamedModel(Model model, String modelName) {
+        this.model = model;
+        this.name = modelName;
     }
 }

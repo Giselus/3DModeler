@@ -48,7 +48,7 @@ public class ModelDrawer implements IModelDrawer {
         for(Face face: faces){
             var faceVertices = face.getVertices();
             for(int i = 2; i < faceVertices.size(); i++){
-                vertices.add(faceVertices.get(i-2));
+                vertices.add(faceVertices.get(0));
                 vertices.add(faceVertices.get(i-1));
                 vertices.add(faceVertices.get(i));
             }
