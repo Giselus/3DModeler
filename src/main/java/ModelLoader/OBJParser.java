@@ -18,6 +18,8 @@ public class OBJParser {
     private ArrayList<VertexPosition> cords;
     private ArrayList<Face> faces;
 
+    private String objectName;
+
     public LinkedList<Model> load(String path) {
         clear();
         readObjects = new LinkedList<>();
@@ -51,9 +53,11 @@ public class OBJParser {
             if(splintedLine[0].equals("o")){
                 if(firstObject){
                     firstObject = false;
+                    objectName = splintedLine[1];
                     continue;
                 }
                 readObjects.add(new Model(cords, faces));
+                objectName = splintedLine[1];
                 clear();
                 continue;
             }

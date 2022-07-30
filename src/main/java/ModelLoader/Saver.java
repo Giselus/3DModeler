@@ -1,7 +1,7 @@
 package ModelLoader;
 
-import UtilsModel.Model;
+import EntityTree.Entity;
 
 public interface Saver {
-    void save(Model model, String dst);
+    void save(Entity entity, String dst);
 }

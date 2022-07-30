@@ -4,12 +4,13 @@ import Scene.IModelDrawer;
 import Scene.ModelDrawer;
 import UtilsModel.Face;
 import UtilsModel.Model;
+import UtilsModel.VertexPosition;
 
 import java.util.ArrayList;
 
 public class EntityModel extends Entity {
 
-    final private UtilsModel.Model model;
+    final private Model model;
     private IModelDrawer modelDrawer;
 
     public EntityModel(Model model, Entity parent) {
@@ -29,5 +30,9 @@ public class EntityModel extends Entity {
 
     public ArrayList<Face> getFaces() {
         return model.getFaces();
+    }
+
+    public ArrayList<VertexPosition> getVertices() {
+        return model.getVertices();
     }
 }

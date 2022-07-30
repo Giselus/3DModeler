@@ -1,7 +1,5 @@
 package UtilsModel;
 
-import Scene.RenderingUpdater;
-
 import java.util.ArrayList;
 
 public class Model {
@@ -17,4 +15,7 @@ public class Model {
         return faces;
     }
 
+    public ArrayList<VertexPosition> getVertices(){
+        return vertices;
+    }
 }
