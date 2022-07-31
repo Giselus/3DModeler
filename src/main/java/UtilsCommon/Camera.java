@@ -10,7 +10,7 @@ public class Camera {
     private Vector3f right;
     private Vector3f worldUp;
 
-    private float yaw = -90f;
+    private float yaw = 0;
     private float pitch = 0f;
 
     private float mouseSensitivity = 0.3f;
