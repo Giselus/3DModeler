@@ -1,5 +1,6 @@
 package Application;
 
+import EntityTree.EntityModel;
 import ModelLoader.OBJLoader;
 import Scene.*;
 import UtilsCommon.Camera;
@@ -19,7 +20,7 @@ public class App {
     private IRenderer renderer;
     private IInput input;
     private Camera camera;
-
+    private Editor editor;
     public void run() {
         initialize();
 
@@ -28,8 +29,11 @@ public class App {
             renderer.startFrame();
 
             //render models here
-            sceneState.getRoot().drawSelfAndChildren(renderer);
-
+            sceneState.getRoot().invokeFunctionOnSubtree(entity -> {
+                if (entity instanceof EntityModel){
+                    renderer.render((EntityModel) entity);
+                }
+            });
             renderer.renderGUI();
             input.processInput();
         }
@@ -56,8 +60,10 @@ public class App {
         appWindow.setWidth(sceneState.getSceneWindowWidth());
 
         graphicEngine.initialize();
-        camera = new Camera(input);
+        camera = new Camera(input,sceneState);
         sceneState.setCamera(camera);
+
+        editor = new Editor(input,sceneState);
     }
 
     private void sceneStateInit() {

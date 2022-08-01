@@ -16,12 +16,6 @@ public class EntityModel extends Entity {
         this.mesh = mesh;
     }
 
-    @Override
-    public void drawSelfAndChildren(IRenderer renderer) {
-        renderer.render(this);
-        super.drawSelfAndChildren(renderer);
-    }
-
     public ArrayList<Face> getFaces() {
         return mesh.getFaces();
     }

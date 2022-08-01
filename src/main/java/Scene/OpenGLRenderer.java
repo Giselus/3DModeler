@@ -80,12 +80,19 @@ public class OpenGLRenderer implements IRenderer{
     @Override
     public void render(EntityModel entityModel) {
         Mesh mesh = entityModel.getMesh();
-        if(mesh.getMeshDrawer() == null){
+        //if(mesh.getMeshDrawer() == null){
             mesh.setMeshDrawer(new OpenGLMeshDrawer(mesh.getFaces()));
-        }
+        //}
         setActiveShader(mainShader);
         setDrawingMode(GL_TRIANGLES);
 
+        drawMeshWithActiveShader(entityModel);
+
+        setActiveShader(wireframeShader);
+        drawMeshWithActiveShader(entityModel);
+
+        setActiveShader(pointsShader);
+        setDrawingMode(GL_POINTS);
         drawMeshWithActiveShader(entityModel);
 
         //
@@ -154,8 +161,7 @@ public class OpenGLRenderer implements IRenderer{
 
     private void prepareShader() {
         Camera camera = sceneState.getCamera();
-        Matrix4f projection = new Matrix4f().setPerspective((float)Math.toRadians(camera.getZoom()),
-                (float)sceneState.getSceneWindowWidth()/sceneState.getSceneWindowHeight(), 0.1f, 200.0f);
+        Matrix4f projection = camera.getProjectionMatrix();
         Matrix4f view = camera.getViewMatrix();
         activeShader.setMatrix4("projection",projection);
         activeShader.setMatrix4("view",view);
