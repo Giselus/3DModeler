@@ -39,7 +39,6 @@ public class OpenGLRenderer implements IRenderer{
 
     private String glslVersion;
 
-    private Camera camera;
     private Shader mainShader;
     private Shader wireframeShader;
     private Shader pointsShader;
@@ -56,7 +55,6 @@ public class OpenGLRenderer implements IRenderer{
         this.sceneState = sceneState;
         this.appWindow = appWindow;
         this.glslVersion = glslVersion;
-        this.camera = sceneState.getCamera();
     }
     @Override
     public void initialize() {
@@ -133,7 +131,7 @@ public class OpenGLRenderer implements IRenderer{
         imGuiGl3.renderDrawData(ImGui.getDrawData());
 
         glfwSwapBuffers(appWindow.getWindowID());
-        glfwPollEvents();
+
     }
 
     //TODO: this should be moved somewhere else
@@ -155,6 +153,7 @@ public class OpenGLRenderer implements IRenderer{
     }
 
     private void prepareShader() {
+        Camera camera = sceneState.getCamera();
         Matrix4f projection = new Matrix4f().setPerspective((float)Math.toRadians(camera.getZoom()),
                 (float)sceneState.getSceneWindowWidth()/sceneState.getSceneWindowHeight(), 0.1f, 200.0f);
         Matrix4f view = camera.getViewMatrix();
@@ -231,8 +230,6 @@ public class OpenGLRenderer implements IRenderer{
         //setDrawers();
     }
 
-//    private void setDrawers() {
-//        DrawerInitializer.initialize(sceneState.getRoot(), this);
-//    }
+
 
 }

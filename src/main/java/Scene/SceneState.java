@@ -7,7 +7,7 @@ public class SceneState {
     //TODO change from SceneController
     private Entity root;
     private Entity selectedEntity = null;
-    private Camera camera = new Camera();
+    private Camera camera;
 
     private int sceneWindowWidth = 1200;
     private int sceneWindowHeight = 800;
@@ -45,4 +45,8 @@ public class SceneState {
     }
 
     public Camera getCamera(){return camera;}
+
+    public void setCamera(Camera camera){
+        this.camera = camera;
+    }
 }

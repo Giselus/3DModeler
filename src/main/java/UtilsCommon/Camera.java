@@ -1,5 +1,6 @@
 package UtilsCommon;
 
+import Scene.IInput;
 import org.joml.*;
 import org.joml.Math;
 
@@ -26,37 +27,45 @@ public class Camera {
         return zoom;
     }
 
-    public Camera(){
+    private IInput input;
+
+    public Camera(IInput input){
+        this.input = input;
         position = new Vector3f(0f);
         worldUp = new Vector3f(0f,1f,0f);
         updateCameraVectors();
+        registerInput();
     }
+
+    private void registerInput(){
+        input.addMouseMoveCallback(this::ProcessMousePosition);
+        input.addMouseScrollCallback(this::ProcessMouseScroll);
+        //TODO: register input
+    }
+
     public Matrix4f getViewMatrix(){
         Vector3f dir = new Vector3f(position);
         dir.add(front);
         return new Matrix4f().lookAt(position,dir, up);
     }
 
-    public void ProcessMousePosition(float offsetX, float offsetY, boolean constraintPitch){
+    public void ProcessMousePosition(float offsetX, float offsetY){
+        if(!input.isMouseKeyPressed(IInput.MouseKeyCode.MOUSE_SCROLL))
+            return;
         offsetX *= mouseSensitivity;
         offsetY *= mouseSensitivity;
         yaw += offsetX;
         pitch -= offsetY;
 
-        if(constraintPitch){
-            if(pitch > 89.0f)
-                pitch = 89.0f;
-            if(pitch < -89.0f)
-                pitch = -89.0f;
-        }
+
+        if(pitch > 89.0f)
+            pitch = 89.0f;
+        if(pitch < -89.0f)
+            pitch = -89.0f;
+
 
         updateCameraVectors();
     }
-
-    public void ProcessMousePosition(float offsetX, float offsetY){
-        ProcessMousePosition(offsetX,offsetY,true);
-    }
-
     public void ProcessMouseScroll(float offset){
         while(offset > 0.5f || offset < -0.5f) {
             if (offset < 0f) {
