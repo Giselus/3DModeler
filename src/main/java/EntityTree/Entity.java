@@ -14,16 +14,28 @@ public abstract class Entity {
     protected Entity parent;
     protected final Collection<Entity> children;
     protected String name;
+    protected final int index;
+    static int maxIndex = 0;
 
     public Entity(Entity parent){
         this.transform = new Transform();
         this.children = new LinkedList<>();
         this.parent = null;
         this.name = "Entity";
+        this.index = maxIndex++;
         setParent(parent);
     }
 
     public void setParent(Entity parent) {
+        Entity tempEnt = parent;
+        while(tempEnt != null) {
+            if(tempEnt == this) {
+                System.out.println("Cannot set child as a parent");
+                return;
+            }
+            tempEnt = tempEnt.parent;
+        }
+
         if(this.parent != null) {
             this.parent.removeChild(this);
         }
@@ -62,6 +74,8 @@ public abstract class Entity {
     public void setName(String name) {
         this.name = name;
     }
+
+    public int getIndex() { return index; }
 
     private void addChild(Entity child) {
         children.add(child);

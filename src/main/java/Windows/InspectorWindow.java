@@ -1,11 +1,12 @@
 package Windows;
 
-//import Controllers.SceneController;
 import EntityTree.Entity;
+import EntityTree.EntityEmpty;
 import Scene.SceneState;
 import imgui.ImGui;
 import imgui.flag.ImGuiTreeNodeFlags;
 import imgui.type.ImBoolean;
+import imgui.type.ImString;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
 
@@ -22,21 +23,42 @@ public class InspectorWindow {
     }
 
     static private void showInspector(Entity entity) {
-        final int baseFlags = ImGuiTreeNodeFlags.DefaultOpen;
-        if(ImGui.treeNodeEx("Transform",baseFlags)) {
+        final int baseFlags = 0;
+
+        if(ImGui.treeNodeEx("Properties", baseFlags)) {
+            ImGui.text("Name: ");
+            ImGui.sameLine();
+            ImString resultString = new ImString(entity.getName(), 256);
+            if (ImGui.inputText("Name: ", resultString)) {
+                entity.setName(resultString.get());
+            }
+            ImGui.treePop();
+        }
+
+        if(ImGui.treeNodeEx("Transform", baseFlags)) {
+            final int transformFlags = baseFlags | ImGuiTreeNodeFlags.DefaultOpen;
             show3DSetter("Position",
                     () -> entity.getTransform().getLocalTranslation(),
                     (val) -> entity.getTransform().setLocalTranslation(val),
-                    baseFlags, 0.005f);
+                    transformFlags, 0.005f);
             show3DSetter("Scale",
                     () -> entity.getTransform().getLocalScale(),
                     (val) -> entity.getTransform().setLocalScale(val),
-                    baseFlags, 0.005f);
+                    transformFlags, 0.005f);
             show3DSetter("Rotation",
                     () -> entity.getTransform().getLocalRotation(),
                     (val) -> entity.getTransform().setLocalRotation(val),
-                    baseFlags, 0.1f);
+                    transformFlags, 0.1f);
             entity.updateSelfAndChildren();
+            ImGui.treePop();
+        }
+
+        if(ImGui.treeNodeEx("Tools", baseFlags)) {
+            if(ImGui.button("Add child node")) {
+                Entity node = new EntityEmpty();
+                node.setName("Node");
+                node.setParent(entity);
+            }
             ImGui.treePop();
         }
     }

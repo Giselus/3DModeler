@@ -35,9 +35,9 @@ public class GLFWInput implements IInput{
     private void keyCallback(long window, int key, int scancode, int action, int mods){
         if(action != GLFW_PRESS)
             return;
-        for(Runnable f: keyCallbackMap.get(key)){
-            f.run();
-        }
+//        for(Runnable f: keyCallbackMap.get(key)){ //todo fix
+//            f.run();
+//        }
     }
 
     private float mouseX;

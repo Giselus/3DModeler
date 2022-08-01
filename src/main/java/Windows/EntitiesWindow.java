@@ -15,20 +15,45 @@ public class EntitiesWindow {
         ImGui.end();
     }
 
-    static private void showEntitiesTree(final Entity entity, final int baseFlags, SceneState sceneState) {
+    static private boolean showEntitiesTree(final Entity entity, final int baseFlags, SceneState sceneState) {
         int nodeFlags = baseFlags;
         if(entity.getUnmodifiableChildren().size() == 0)
             nodeFlags |= ImGuiTreeNodeFlags.Bullet;
         if(entity == sceneState.getSelectedEntity())
             nodeFlags |= ImGuiTreeNodeFlags.Selected;
+        ImGui.pushID(entity.getIndex());
         if(ImGui.treeNodeEx(entity.getName(), nodeFlags)) {
             if(ImGui.isItemClicked()){
                 sceneState.setSelectedEntity(entity);
             }
+
+            if(ImGui.beginDragDropSource()) {
+                ImGui.setDragDropPayload("ENTITY_NODE", entity, 0);
+                ImGui.text(entity.getName());
+                ImGui.endDragDropSource();
+            }
+
+            if(ImGui.beginDragDropTarget()) {
+                Entity payload = ImGui.acceptDragDropPayload("ENTITY_NODE");
+                if(payload != null) {
+                    payload.setParent(entity);
+                    ImGui.treePop();
+                    ImGui.popID();
+                    return false;
+                }
+                ImGui.endDragDropTarget();
+            }
+
             for(Entity child : entity.getUnmodifiableChildren())
-                showEntitiesTree(child, baseFlags, sceneState);
+                if(!showEntitiesTree(child, baseFlags, sceneState)) {
+                    ImGui.treePop();
+                    ImGui.popID();
+                    return false;
+                }
 
             ImGui.treePop();
         }
+        ImGui.popID();
+        return true;
     }
 }
