@@ -1,7 +1,7 @@
 package ModelLoader;
 
 import UtilsModel.Face;
-import UtilsModel.Model;
+import UtilsModel.Mesh;
 import UtilsModel.VertexPosition;
 import org.joml.Vector3f;
 
@@ -53,7 +53,7 @@ public class OBJParser {
                     modelName = splintedLine[1];
                     continue;
                 }
-                readObjects.add(new NamedModel(new Model(cords, faces), modelName));
+                readObjects.add(new NamedModel(new Mesh(cords, faces), modelName));
                 modelName = splintedLine[1];
                 clear();
                 continue;
@@ -65,7 +65,7 @@ public class OBJParser {
                 case "f" -> readFace(splintedLine);
             }
         }
-        readObjects.add(new NamedModel(new Model(cords, faces), modelName));
+        readObjects.add(new NamedModel(new Mesh(cords, faces), modelName));
     }
     private void readVertexPosition(String[] line){
         Vector3f cords = new Vector3f(
@@ -99,10 +99,10 @@ public class OBJParser {
 }
 
 class NamedModel {
-    Model model;
+    Mesh model;
     String name;
 
-    public NamedModel(Model model, String modelName) {
+    public NamedModel(Mesh model, String modelName) {
         this.model = model;
         this.name = modelName;
     }

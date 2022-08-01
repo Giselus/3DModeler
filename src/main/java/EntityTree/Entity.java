@@ -1,7 +1,9 @@
 package EntityTree;
 
-import Scene.RenderingUpdater;
 
+import Scene.IRenderer;
+
+import javax.swing.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -69,9 +71,9 @@ public abstract class Entity {
         children.remove(child);
     }
 
-    public void drawSelfAndChildren() {
+    public void drawSelfAndChildren(IRenderer renderer) {
         for(Entity child : children)
-            child.drawSelfAndChildren();
+            child.drawSelfAndChildren(renderer);
     }
 
     public Collection<Entity> getChildren() {

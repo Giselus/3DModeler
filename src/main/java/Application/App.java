@@ -1,38 +1,58 @@
 package Application;
 
 import ModelLoader.OBJLoader;
-import Scene.AppWindow;
-import Scene.InputController;
-import Scene.RenderingUpdater;
-import Scene.SceneState;
+import Scene.*;
+
+import java.util.function.BiConsumer;
 
 import static org.lwjgl.glfw.GLFW.*;
 
 public class App {
-    private final String INIT_FILE = "src/main/data/cube.obj";
+    //TODO: delete
+    private final String INIT_FILE = "src/main/data/szybkaFura.obj";
+
     private SceneState sceneState;
-    private AppWindow appWindow;
-    private RenderingUpdater renderingUpdater;
-    private InputController inputController;
+
+    private IGraphicEngine graphicEngine;
+    private IAppWindow appWindow;
+    private IRenderer renderer;
+    private IInput input;
 
     public void run() {
-
         initialize();
-        while(!glfwWindowShouldClose(appWindow.getMainWindow())) {
-            renderingUpdater.update();
-            appWindow.update();
 
-            glfwSwapBuffers(appWindow.getMainWindow());
-            glfwPollEvents();
+        while(!appWindow.shouldBeClosed()){
+            renderer.startFrame();
+
+            //render models here
+            sceneState.getRoot().drawSelfAndChildren(renderer);
+
+            renderer.renderGUI();
         }
-        appWindow.destroy();
+        graphicEngine.destroy();
+//        while(!glfwWindowShouldClose(appWindow.getMainWindow())) {
+//            renderingUpdater.update();
+//            appWindow.update();
+//
+//            glfwSwapBuffers(appWindow.getMainWindow());
+//            glfwPollEvents();
+//        }
+//        appWindow.destroy();
     }
 
     private void initialize() {
         sceneStateInit();
-        appWindowInit();
-        renderingUpdaterInit();
-        inputControllerInit();
+
+        graphicEngine = new OpenGLEngine(sceneState);
+        renderer = graphicEngine.getRenderer();
+        appWindow = graphicEngine.getAppWindow();
+        input = graphicEngine.getInput();
+
+        appWindow.setHeight(sceneState.getSceneWindowHeight());
+        appWindow.setWidth(sceneState.getSceneWindowWidth());
+
+        graphicEngine.initialize();
+
     }
 
     private void sceneStateInit() {
@@ -40,15 +60,4 @@ public class App {
         sceneState.setRoot(new OBJLoader().load(INIT_FILE));
     }
 
-    private void appWindowInit() {
-        appWindow = new AppWindow(sceneState);
-    }
-
-    private void renderingUpdaterInit() {
-        renderingUpdater = new RenderingUpdater(sceneState);
-    }
-
-    private void inputControllerInit() {
-        inputController = new InputController(appWindow, renderingUpdater);
-    }
 }

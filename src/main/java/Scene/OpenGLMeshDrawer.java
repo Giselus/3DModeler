@@ -1,11 +1,7 @@
 package Scene;
 
-import EntityTree.Entity;
-import EntityTree.EntityModel;
-import UtilsCommon.Shader;
 import UtilsModel.Face;
 import UtilsModel.VertexInstance;
-import org.joml.Matrix4fc;
 import org.lwjgl.system.MemoryUtil;
 
 import java.nio.FloatBuffer;
@@ -19,27 +15,53 @@ import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 
-public class ModelDrawer implements IModelDrawer {
+public class OpenGLMeshDrawer implements IMeshDrawer{
     private ArrayList<VertexInstance> vertices;
-    private final RenderingUpdater renderingUpdater;
+    private ArrayList<Face> faces;
 
-    public ModelDrawer(ArrayList<Face> faces, RenderingUpdater renderingUpdater){
+    public OpenGLMeshDrawer(ArrayList<Face> faces){
+        this.faces = faces;
         processTopology(faces);
-        this.renderingUpdater = renderingUpdater;
         setupMesh();
     }
 
-    public void draw(EntityModel entity) {
-        Shader shader = renderingUpdater.getActiveShader();
-        Matrix4fc modelMatrix = entity.getTransform().getGlobalModelMatrix();
-        shader.setMatrix4("model",modelMatrix);
-
+    @Override
+    public void draw(int mode){
         glBindVertexArray(vao);
-        glDrawArrays(renderingUpdater.getDrawingMode(),0, vertices.size());
+        glDrawArrays(mode,0,vertices.size());
         glBindVertexArray(0);
-        //        model.Draw();
-        //        super.update();
     }
+    public int getVAO(){
+        return vao;
+    }
+//    public void draw(EntityModel entity) {
+//        Shader shader = renderer.getActiveShader();
+//        Matrix4fc modelMatrix = entity.getTransform().getGlobalModelMatrix();
+//        shader.setMatrix4("model",modelMatrix);
+//
+//        glBindVertexArray(vao);
+//        glDrawArrays(renderer.getDrawingMode(),0, vertices.size());
+//        glBindVertexArray(0);
+//
+////        Ray ray = InputController.ray;
+////        if(ray == null)
+////            return;
+////        for(Face f: entity.getFaces()){
+////            ArrayList<Vector3f> positions = new ArrayList<>();
+////
+////            for(VertexInstance v: f.getVertices()){
+////                float distanceToCenter = ray.origin.distance(v.getPosition().getValue());
+////                float radius = 0.001f * distanceToCenter;
+////                float dist = ray.distanceFromSphere(v.getPosition().getValue(),radius);
+////                if(dist > 0){
+////                    System.out.println(dist);
+////                }
+////            }
+////        }
+//
+//        //        model.Draw();
+//        //        super.update();
+//    }
 
     private int vao, vbo;
 
@@ -77,4 +99,3 @@ public class ModelDrawer implements IModelDrawer {
         glBindVertexArray(0);
     }
 }
-

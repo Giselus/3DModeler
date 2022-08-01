@@ -1,7 +1,6 @@
 package Windows;
 
 //import Controllers.RenderingController;
-import Scene.RenderingUpdater;
 import imgui.ImGui;
 import imgui.type.ImBoolean;
 

@@ -1,38 +1,36 @@
 package EntityTree;
 
-import Scene.IModelDrawer;
-import Scene.ModelDrawer;
+import Scene.IRenderer;
 import UtilsModel.Face;
-import UtilsModel.Model;
+import UtilsModel.Mesh;
 import UtilsModel.VertexPosition;
 
 import java.util.ArrayList;
 
 public class EntityModel extends Entity {
 
-    final private Model model;
-    private IModelDrawer modelDrawer;
+    final private Mesh mesh;
 
-    public EntityModel(Model model, Entity parent) {
+    public EntityModel(Mesh mesh, Entity parent) {
         super(parent);
-        this.model = model;
+        this.mesh = mesh;
     }
 
     @Override
-    public void drawSelfAndChildren() {
-        modelDrawer.draw(this);
-        super.drawSelfAndChildren();
-    }
-
-    public void setDrawer(ModelDrawer modelDrawer) {
-        this.modelDrawer = modelDrawer;
+    public void drawSelfAndChildren(IRenderer renderer) {
+        renderer.render(this);
+        super.drawSelfAndChildren(renderer);
     }
 
     public ArrayList<Face> getFaces() {
-        return model.getFaces();
+        return mesh.getFaces();
     }
 
     public ArrayList<VertexPosition> getVertices() {
-        return model.getVertices();
+        return mesh.getVertices();
+    }
+
+    public Mesh getMesh(){
+        return mesh;
     }
 }
