@@ -2,6 +2,7 @@ package Application;
 
 import ModelLoader.OBJLoader;
 import Scene.*;
+import UtilsCommon.Camera;
 
 import java.util.function.BiConsumer;
 
@@ -17,17 +18,20 @@ public class App {
     private IAppWindow appWindow;
     private IRenderer renderer;
     private IInput input;
+    private Camera camera;
 
     public void run() {
         initialize();
 
         while(!appWindow.shouldBeClosed()){
+            input.runContinuousCallbacks();
             renderer.startFrame();
 
             //render models here
             sceneState.getRoot().drawSelfAndChildren(renderer);
 
             renderer.renderGUI();
+            input.processInput();
         }
         graphicEngine.destroy();
 //        while(!glfwWindowShouldClose(appWindow.getMainWindow())) {
@@ -52,7 +56,8 @@ public class App {
         appWindow.setWidth(sceneState.getSceneWindowWidth());
 
         graphicEngine.initialize();
-
+        camera = new Camera(input);
+        sceneState.setCamera(camera);
     }
 
     private void sceneStateInit() {
