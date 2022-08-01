@@ -1,6 +1,7 @@
 package UtilsCommon;
 
 import Scene.IInput;
+import Scene.SceneState;
 import org.joml.*;
 import org.joml.Math;
 
@@ -28,9 +29,11 @@ public class Camera {
     }
 
     private IInput input;
+    private SceneState sceneState;
 
-    public Camera(IInput input){
+    public Camera(IInput input, SceneState sceneState){
         this.input = input;
+        this.sceneState = sceneState;
         position = new Vector3f(0f);
         worldUp = new Vector3f(0f,1f,0f);
         updateCameraVectors();
@@ -40,13 +43,18 @@ public class Camera {
     private void registerInput(){
         input.addMouseMoveCallback(this::ProcessMousePosition);
         input.addMouseScrollCallback(this::ProcessMouseScroll);
-        //TODO: register input
     }
 
     public Matrix4f getViewMatrix(){
         Vector3f dir = new Vector3f(position);
         dir.add(front);
         return new Matrix4f().lookAt(position,dir, up);
+    }
+
+    public Matrix4f getProjectionMatrix(){
+        Matrix4f projection = new Matrix4f().setPerspective((float) java.lang.Math.toRadians(zoom),
+                (float)sceneState.getSceneWindowWidth()/sceneState.getSceneWindowHeight(), 0.1f, 200.0f);
+        return projection;
     }
 
     public void ProcessMousePosition(float offsetX, float offsetY){
@@ -101,5 +109,23 @@ public class Camera {
         this.front = front.normalize();
         right = new Vector3f(this.front).cross(worldUp).normalize();
         up = new Vector3f(right).cross(this.front).normalize();
+    }
+
+    public Ray getRay(float xPos, float yPos){
+        Vector4f ray_clip = new Vector4f(xPos,yPos,-1f,1f);
+
+        Vector4f ray_eye = new Vector4f();
+        Matrix4f projection = getProjectionMatrix();
+        projection.invert();
+        projection.mul(new Matrix4f(ray_clip,new Vector4f(0),new Vector4f(0),new Vector4f(0))).getColumn(0,ray_eye);
+        ray_eye.z = -1f;
+        ray_eye.w = 0f;
+
+       Vector3f ray_wor = new Vector3f();
+       Matrix4f view = getViewMatrix();
+       view.invert();
+       view.mul(new Matrix4f(ray_eye,new Vector4f(0f),new Vector4f(0),new Vector4f(0))).getColumn(0,ray_wor);
+       ray_wor.normalize();
+       return new Ray(position,ray_wor);
     }
 }

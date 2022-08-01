@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Consumer;
 
 public abstract class Entity {
     protected final Transform transform;
@@ -71,9 +72,10 @@ public abstract class Entity {
         children.remove(child);
     }
 
-    public void drawSelfAndChildren(IRenderer renderer) {
-        for(Entity child : children)
-            child.drawSelfAndChildren(renderer);
+    public void invokeFunctionOnSubtree(Consumer<Entity> f){
+        f.accept(this);
+        for(Entity child: children)
+            child.invokeFunctionOnSubtree(f);
     }
 
     public Collection<Entity> getChildren() {

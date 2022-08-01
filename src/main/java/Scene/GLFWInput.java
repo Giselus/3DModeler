@@ -102,8 +102,9 @@ public class GLFWInput implements IInput{
             pressedKeys.remove(code);
             return;
         }
-        if(action == GLFW_PRESS)
-            pressedKeys.add(code);
+        if(action != GLFW_PRESS)
+            return;
+        pressedKeys.add(code);
         for(Runnable f: keyCallbackMap.get(code)){
             f.run();
         }
@@ -115,8 +116,9 @@ public class GLFWInput implements IInput{
             pressedMouseKeys.remove(code);
             return;
         }
-        if(action == GLFW_PRESS)
-            pressedMouseKeys.add(code);
+        if(action != GLFW_PRESS)
+            return;
+        pressedMouseKeys.add(code);
         for(Runnable f: mouseKeyCallbackMap.get(code)){
             f.run();
         }
@@ -136,7 +138,7 @@ public class GLFWInput implements IInput{
 
     private void runKeyContinuousCallbacks(){
         for(KeyCode code: pressedKeys){
-            for(Runnable f: keyCallbackMap.get(code)){
+            for(Runnable f: keyContinuousCallbackMap.get(code)){
                 f.run();
             }
         }
@@ -144,7 +146,7 @@ public class GLFWInput implements IInput{
 
     private void runMouseKeyContinuousCallbacks(){
         for(MouseKeyCode code: pressedMouseKeys){
-            for(Runnable f: mouseKeyCallbackMap.get(code)){
+            for(Runnable f: mouseKeyContinuousCallbackMap.get(code)){
                 f.run();
             }
         }
