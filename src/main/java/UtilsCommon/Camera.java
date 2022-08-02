@@ -67,7 +67,7 @@ public class Camera {
         offsetX *= mouseSensitivity;
         offsetY *= mouseSensitivity;
         yaw += offsetX;
-        pitch -= offsetY;
+        pitch += offsetY;
 
 
         if(pitch > 89.0f)
@@ -101,7 +101,7 @@ public class Camera {
     private void updateCameraVectors(){
         Vector3f front = new Vector3f();
         front.x = -(float)(Math.cos(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)));
-        front.y = -(float)(Math.sin(Math.toRadians(pitch)));
+        front.y = (float)(Math.sin(Math.toRadians(pitch)));
         front.z = -(float)(Math.sin(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)));
         Vector3f position = new Vector3f();
         position.x = -front.x;
