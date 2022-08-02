@@ -69,6 +69,7 @@ public class GLFWInput implements IInput{
     private HashSet<MouseKeyCode> pressedMouseKeys = new HashSet<>();
 
     private void mousePositionCallback(long window, double posX, double posY){
+        posY = (float)sceneState.getSceneWindowHeight() - posY;
         if(firstTick){
             firstTick = false;
             lastX = (float)posX;
@@ -77,7 +78,7 @@ public class GLFWInput implements IInput{
         mouseX = (float)posX;
         mouseY = (float)posY;
         float offsetX = mouseX - lastX;
-        float offsetY = lastY - mouseY;
+        float offsetY = mouseY - lastY;
 
 
 
@@ -160,8 +161,10 @@ public class GLFWInput implements IInput{
     private float deltaScroll = 0f;
 
     private GLFWAppWindow appWindow;
-    public GLFWInput(GLFWAppWindow appWindow){
+    private SceneState sceneState;
+    public GLFWInput(GLFWAppWindow appWindow, SceneState sceneState){
         this.appWindow = appWindow;
+        this.sceneState = sceneState;
     }
 
     @Override

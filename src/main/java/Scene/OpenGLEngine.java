@@ -17,7 +17,7 @@ public class OpenGLEngine extends IGraphicEngine{
         super(sceneState);
         appWindow = new GLFWAppWindow();
         renderer = new OpenGLRenderer(sceneState, (GLFWAppWindow) appWindow, glslVersion);
-        input = new GLFWInput((GLFWAppWindow) appWindow);
+        input = new GLFWInput((GLFWAppWindow) appWindow, sceneState);
     }
 
 }

@@ -6,6 +6,8 @@ import UtilsCommon.Ray;
 import UtilsModel.Face;
 import UtilsModel.VertexInstance;
 import UtilsModel.VertexPosition;
+import org.joml.Vector3f;
+import org.joml.Vector4f;
 
 import java.util.ArrayList;
 
@@ -24,9 +26,63 @@ public class Editor {
         registerInput();
     }
 
+    private void movePoints(float xOffset, float yOffset){
+        if(!input.isKeyPressed(IInput.KeyCode.KEY_X)){
+            return;
+        }
+        float mouseX = input.getMouseX();
+        float mouseY = input.getMouseY();
+        float lastX = mouseX - xOffset;
+        float lastY = mouseY - yOffset;
+
+        Vector3f meanPoint = new Vector3f();
+        for(VertexPosition v: pickedVertices){
+            meanPoint.add(v.getValue());
+        }
+        meanPoint.div((float)pickedVertices.size());
+        Vector3f cameraDir = sceneState.getCamera().getDirection();
+        Vector4f normalPlane = new Vector4f(0f);
+        //(x + y + z = w)
+        normalPlane.x = cameraDir.x;
+        normalPlane.y = cameraDir.y;
+        normalPlane.z = cameraDir.z;
+        normalPlane.w = cameraDir.x *meanPoint.x + cameraDir.y * meanPoint.y + cameraDir.z * meanPoint.z;
+
+        float clipX = (2f * mouseX) / (float)sceneState.getSceneWindowWidth() - 1f;
+        float clipY = (2f * mouseY) / (float)sceneState.getSceneWindowHeight() -1f;
+        Camera camera = sceneState.getCamera();
+        Ray ray = camera.getRay(clipX,clipY);
+        Vector3f anotherRay = ray.direction;
+        Vector3f cameraPosition = camera.getPosition();
+        float parameter = (normalPlane.w - normalPlane.x*cameraPosition.x
+                - normalPlane.y*cameraPosition.y - normalPlane.z*cameraPosition.z)
+                /(normalPlane.x * anotherRay.x + normalPlane.y * anotherRay.y + normalPlane.z * anotherRay.z);
+        Vector3f intersectionPoint = new Vector3f(0f);
+        anotherRay.mul(parameter, intersectionPoint);
+        intersectionPoint.add(cameraPosition);
+
+        float clipX2 = (2f * lastX) / (float)sceneState.getSceneWindowWidth() - 1f;
+        float clipY2 = (2f * lastY) / (float)sceneState.getSceneWindowHeight() -1f;
+        Ray ray2 = camera.getRay(clipX2,clipY2);
+        Vector3f anotherRay2 = ray2.direction;
+        float parameter2 = (normalPlane.w - normalPlane.x*cameraPosition.x
+                - normalPlane.y*cameraPosition.y - normalPlane.z*cameraPosition.z)
+                /(normalPlane.x * anotherRay.x + normalPlane.y * anotherRay.y + normalPlane.z * anotherRay.z);
+        Vector3f intersectionPoint2 = new Vector3f(0f);
+        anotherRay2.mul(parameter2, intersectionPoint2);
+        intersectionPoint2.add(cameraPosition);
+
+        Vector3f offset = new Vector3f();
+        intersectionPoint.sub(intersectionPoint2,offset);
+
+        for(VertexPosition v: pickedVertices){
+            v.setValue(v.getValue().add(offset));
+        }
+    }
+
     private void registerInput(){
         input.addMouseKeyCallback(IInput.MouseKeyCode.MOUSE_LEFT,this::pick);
-        input.addKeyCallback(IInput.KeyCode.KEY_A, ()->{System.out.println("AA");});
+        input.addMouseMoveCallback(this::movePoints);
     }
 
     private float minDistance;
@@ -37,7 +93,7 @@ public class Editor {
             clearPicked();
         }
         float mouseX = (2f * input.getMouseX()) / (float)sceneState.getSceneWindowWidth() - 1f;
-        float mouseY = 1f - (2f * input.getMouseY()) / (float)sceneState.getSceneWindowHeight();
+        float mouseY = (2f * input.getMouseY()) / (float)sceneState.getSceneWindowHeight() - 1f;
         Camera camera = sceneState.getCamera();
         Ray ray = camera.getRay(mouseX,mouseY);
         lastlyChoosenVertex = null;

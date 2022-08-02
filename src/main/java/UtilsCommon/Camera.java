@@ -57,7 +57,11 @@ public class Camera {
         return projection;
     }
 
-    public void ProcessMousePosition(float offsetX, float offsetY){
+    public Vector3f getDirection(){
+        return front;
+    }
+
+    private void ProcessMousePosition(float offsetX, float offsetY){
         if(!input.isMouseKeyPressed(IInput.MouseKeyCode.MOUSE_SCROLL))
             return;
         offsetX *= mouseSensitivity;
@@ -74,7 +78,7 @@ public class Camera {
 
         updateCameraVectors();
     }
-    public void ProcessMouseScroll(float offset){
+    private void ProcessMouseScroll(float offset){
         while(offset > 0.5f || offset < -0.5f) {
             if (offset < 0f) {
                 distance *= scrollSensitivity;
