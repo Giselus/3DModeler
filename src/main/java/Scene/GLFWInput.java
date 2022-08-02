@@ -99,6 +99,8 @@ public class GLFWInput implements IInput{
 
     private void keyCallback(long window, int key, int scancode, int action, int mods){
         KeyCode code = keyCodeTransformMap.get(key);
+        if(code == null)
+            return;
         if(action == GLFW_RELEASE){
             pressedKeys.remove(code);
             return;
@@ -113,6 +115,8 @@ public class GLFWInput implements IInput{
 
     private void mouseKeyCallback(long window, int key, int action, int mods){
         MouseKeyCode code = mouseKeyCodeTransformMap.get(key);
+        if(code == null)
+            return;
         if(action == GLFW_RELEASE){
             pressedMouseKeys.remove(code);
             return;
