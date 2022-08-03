@@ -80,9 +80,11 @@ public class OpenGLRenderer implements IRenderer{
     @Override
     public void render(EntityModel entityModel) {
         Mesh mesh = entityModel.getMesh();
-        //if(mesh.getMeshDrawer() == null){
+        if(mesh.getMeshDrawer() == null){
             mesh.setMeshDrawer(new OpenGLMeshDrawer(mesh.getFaces()));
-        //}
+        }else{
+            mesh.getMeshDrawer().recalculate();
+        }
         setActiveShader(mainShader);
         setDrawingMode(GL_TRIANGLES);
 

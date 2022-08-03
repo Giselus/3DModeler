@@ -30,6 +30,11 @@ public class OpenGLMeshDrawer implements IMeshDrawer{
         glDrawArrays(mode,0,vertices.size());
         glBindVertexArray(0);
     }
+
+    public void recalculate(){
+        setupMesh();
+    }
+
     public int getVAO(){
         return vao;
     }
@@ -77,8 +82,8 @@ public class OpenGLMeshDrawer implements IMeshDrawer{
     }
 
     private void setupMesh(){
-        glDeleteBuffers(vbo);
         glDeleteVertexArrays(vao);
+        glDeleteBuffers(vbo);
         vao = glGenVertexArrays();
         vbo = glGenBuffers();
 
