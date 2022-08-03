@@ -12,8 +12,7 @@ import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
 import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
-import static org.lwjgl.opengl.GL30.glBindVertexArray;
-import static org.lwjgl.opengl.GL30.glGenVertexArrays;
+import static org.lwjgl.opengl.GL30.*;
 
 public class OpenGLMeshDrawer implements IMeshDrawer{
     private ArrayList<VertexInstance> vertices;
@@ -78,6 +77,8 @@ public class OpenGLMeshDrawer implements IMeshDrawer{
     }
 
     private void setupMesh(){
+        glDeleteBuffers(vbo);
+        glDeleteVertexArrays(vao);
         vao = glGenVertexArrays();
         vbo = glGenBuffers();
 
@@ -88,13 +89,17 @@ public class OpenGLMeshDrawer implements IMeshDrawer{
         FloatBuffer verticesBuffer = MemoryUtil.memAllocFloat(vertices.size() * 7);
         vertices.forEach((v) -> verticesBuffer.put(v.getBufferedData()));
         verticesBuffer.flip();
+
         glBufferData(GL_ARRAY_BUFFER, verticesBuffer, GL_STATIC_DRAW);
+
         glEnableVertexAttribArray(0);
         glVertexAttribPointer(0,3,GL_FLOAT,false,28,0);
         glEnableVertexAttribArray(1);
         glVertexAttribPointer(1,3,GL_FLOAT,false,28,12);
         glEnableVertexAttribArray(2);
         glVertexAttribPointer(2,1,GL_FLOAT,false,28,24);
+
+        MemoryUtil.memFree(verticesBuffer);
 
         glBindVertexArray(0);
     }
