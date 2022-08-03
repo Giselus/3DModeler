@@ -13,11 +13,13 @@ import java.util.*;
 public class OBJParser {
     private LinkedList<NamedModel> readObjects;
     private ArrayList<VertexPosition> cords;
+    private ArrayList<VertexPosition> currCords;
     private ArrayList<Face> faces;
 
     String modelName;
 
     public LinkedList<NamedModel> load(String path) {
+        cords = new ArrayList<>();
         clear();
         readObjects = new LinkedList<>();
         File file;
@@ -53,7 +55,7 @@ public class OBJParser {
                     modelName = splintedLine[1];
                     continue;
                 }
-                readObjects.add(new NamedModel(new Mesh(cords, faces), modelName));
+                readObjects.add(new NamedModel(new Mesh(currCords, faces), modelName));
                 modelName = splintedLine[1];
                 clear();
                 continue;
@@ -65,7 +67,7 @@ public class OBJParser {
                 case "f" -> readFace(splintedLine);
             }
         }
-        readObjects.add(new NamedModel(new Mesh(cords, faces), modelName));
+        readObjects.add(new NamedModel(new Mesh(currCords, faces), modelName));
     }
     private void readVertexPosition(String[] line){
         Vector3f cords = new Vector3f(
@@ -73,6 +75,7 @@ public class OBJParser {
                 Float.parseFloat(line[2]),
                 Float.parseFloat(line[3]));
         this.cords.add(new VertexPosition(cords));
+        this.currCords.add(new VertexPosition(cords));
     }
 
     private void readNormals(String[] line){
@@ -92,8 +95,7 @@ public class OBJParser {
         faces.add(new Face(tempVertices));
     }
     private void clear(){
-        if(cords == null)
-            cords = new ArrayList<>();
+        currCords = new ArrayList<>();
         faces = new ArrayList<>();
     }
 }

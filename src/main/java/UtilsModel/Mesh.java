@@ -30,4 +30,24 @@ public class Mesh {
     public void setMeshDrawer(IMeshDrawer meshDrawer){
         this.meshDrawer = meshDrawer;
     }
+
+    public void addVertex(VertexPosition vertex){
+        vertices.add(vertex);
+    }
+
+    public void addFace(ArrayList<VertexPosition> listOfVertices){
+        if(listOfVertices.size() == 3)
+            faces.add(new Face(listOfVertices));
+        else
+            System.out.println("Wrong number of vertices");
+    }
+
+    public void deleteVertex(VertexPosition vertex){
+        for(int i=faces.size()-1; i>=0; i--){
+            if(faces.get(i).getVertices().stream().map(VertexInstance::getPosition).filter(v -> v==vertex).limit(1).count() > 0){
+                faces.remove(i);
+            }
+        }
+        vertices.remove(vertex);
+    }
 }
