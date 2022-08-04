@@ -15,7 +15,7 @@ public class Camera {
     private float yaw = 0;
     private float pitch = 0f;
 
-    private float mouseSensitivity = 0.3f;
+    private float mouseSensitivity = 150f;
     private float scrollSensitivity = 1.04f;
     private float scrollLinear = 0.35f;
     private float distance = 15f;

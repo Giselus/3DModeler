@@ -45,8 +45,8 @@ public class EditOperations {
         normalPlane.z = cameraDir.z;
         normalPlane.w = cameraDir.x *meanPoint.x + cameraDir.y * meanPoint.y + cameraDir.z * meanPoint.z;
 
-        float clipX = (2f * mouseX) / (float)sceneState.getSceneWindowWidth() - 1f;
-        float clipY = (2f * mouseY) / (float)sceneState.getSceneWindowHeight() -1f;
+        float clipX = (2f * mouseX) - 1f;
+        float clipY = (2f * mouseY) - 1f;
         Camera camera = sceneState.getCamera();
         Ray ray = camera.getRay(clipX,clipY);
         Vector3f anotherRay = ray.direction;
@@ -58,8 +58,8 @@ public class EditOperations {
         anotherRay.mul(parameter, intersectionPoint);
         intersectionPoint.add(cameraPosition);
 
-        float clipX2 = (2f * lastX) / (float)sceneState.getSceneWindowWidth() - 1f;
-        float clipY2 = (2f * lastY) / (float)sceneState.getSceneWindowHeight() -1f;
+        float clipX2 = (2f * lastX) - 1f;
+        float clipY2 = (2f * lastY) - 1f;
         Ray ray2 = camera.getRay(clipX2,clipY2);
         Vector3f anotherRay2 = ray2.direction;
         float parameter2 = (normalPlane.w - normalPlane.x*cameraPosition.x

@@ -44,8 +44,8 @@ public class Editor {
         if(!input.isKeyPressed(IInput.KeyCode.KEY_LEFT_CTRL)){
             clearPicked();
         }
-        float mouseX = (2f * input.getMouseX()) / (float)sceneState.getSceneWindowWidth() - 1f;
-        float mouseY = (2f * input.getMouseY()) / (float)sceneState.getSceneWindowHeight() - 1f;
+        float mouseX = (2f * input.getMouseX()) - 1f;
+        float mouseY = (2f * input.getMouseY()) - 1f;
         Camera camera = sceneState.getCamera();
         Ray ray = camera.getRay(mouseX,mouseY);
         lastlyChoosenVertex = null;

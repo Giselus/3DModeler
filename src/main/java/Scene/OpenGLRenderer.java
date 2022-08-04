@@ -132,7 +132,7 @@ public class OpenGLRenderer implements IRenderer{
         ImGui.newFrame();
 
         MainWindow.show();
-        SceneWindow.show(sceneState.getSceneWindowWidth(), sceneState.getSceneWindowHeight(), sceneState.getSceneTexture());
+        SceneWindow.show(sceneState.getSceneTexture());
         EntitiesWindow.show(sceneState.getRoot(), sceneState);
         InspectorWindow.show(sceneState);
 

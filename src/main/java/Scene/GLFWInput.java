@@ -1,5 +1,7 @@
 package Scene;
 
+import Windows.SceneWindow;
+import org.joml.Vector2f;
 import org.lwjgl.glfw.Callbacks;
 
 import java.util.HashSet;
@@ -69,7 +71,9 @@ public class GLFWInput implements IInput{
     private HashSet<MouseKeyCode> pressedMouseKeys = new HashSet<>();
 
     private void mousePositionCallback(long window, double posX, double posY){
-        posY = (float)sceneState.getSceneWindowHeight() - posY;
+        Vector2f tmp = SceneWindow.mapPosition((float)posX,(float)posY);
+        posX = tmp.x;
+        posY = 1f-tmp.y;
         if(firstTick){
             firstTick = false;
             lastX = (float)posX;

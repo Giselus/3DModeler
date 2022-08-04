@@ -9,8 +9,8 @@ public class SceneState {
     private Entity selectedEntity = null;
     private Camera camera;
 
-    private int sceneWindowWidth = 1200;
-    private int sceneWindowHeight = 800;
+    private final int sceneWindowWidth = 1200;
+    private final int sceneWindowHeight = 800;
     private int sceneTexture;
 
     public void setRoot(Entity root) {
