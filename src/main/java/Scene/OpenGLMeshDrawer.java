@@ -20,7 +20,7 @@ public class OpenGLMeshDrawer implements IMeshDrawer{
 
     public OpenGLMeshDrawer(ArrayList<Face> faces){
         this.faces = faces;
-        processTopology(faces);
+        processTopology();
         setupMesh();
     }
 
@@ -32,6 +32,7 @@ public class OpenGLMeshDrawer implements IMeshDrawer{
     }
 
     public void recalculate(){
+        processTopology();
         setupMesh();
     }
 
@@ -69,7 +70,7 @@ public class OpenGLMeshDrawer implements IMeshDrawer{
 
     private int vao, vbo;
 
-    private void processTopology(ArrayList<Face> faces){
+    private void processTopology(){
         vertices = new ArrayList<>();
         for(Face face: faces){
             var faceVertices = face.getVertices();
