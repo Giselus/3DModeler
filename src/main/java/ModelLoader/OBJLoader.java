@@ -2,9 +2,10 @@ package ModelLoader;
 
 import EntityTree.Entity;
 import EntityTree.EntityEmpty;
-import EntityTree.EntityModel;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class OBJLoader implements Loader {
     private final OBJParser objParser;
@@ -16,9 +17,16 @@ public class OBJLoader implements Loader {
     @Override
     public Entity load(String path) {
         Entity root = new EntityEmpty();
-        LinkedList<NamedModel> models = objParser.load(path);
-        for(NamedModel model : models)
-                new EntityModel(model.model, root).setName(model.name);
+        ParsingResult parsingResult = objParser.load(path);
+        if(parsingResult.adjacencyList == null){
+            parsingResult.adjacencyList =
+                    (ArrayList<Integer>) IntStream.of(new int[parsingResult.readObjects.size()]).boxed().collect(Collectors.toList());
+        }
+        parsingResult.readObjects.set(0, root);
+
+        for(int i=1; i<parsingResult.adjacencyList.size(); i++){
+            parsingResult.readObjects.get(i).setParent(parsingResult.readObjects.get(parsingResult.adjacencyList.get(i)));
+        }
         return root;
     }
 }

@@ -1,5 +1,7 @@
 package ModelLoader;
 
+import EntityTree.Entity;
+import EntityTree.EntityModel;
 import UtilsModel.Face;
 import UtilsModel.Mesh;
 import UtilsModel.VertexPosition;
@@ -11,17 +13,18 @@ import java.io.FileNotFoundException;
 import java.util.*;
 
 public class OBJParser {
-    private LinkedList<NamedModel> readObjects;
+    private ArrayList<Entity> readObjects;
     private ArrayList<VertexPosition> cords;
     private ArrayList<VertexPosition> currCords;
     private ArrayList<Face> faces;
-
+    private ArrayList<Integer> adjacencyList;
     String modelName;
-
-    public LinkedList<NamedModel> load(String path) {
+    ParsingResult load(String path) {
         cords = new ArrayList<>();
+        adjacencyList = null;
         clear();
-        readObjects = new LinkedList<>();
+        readObjects = new ArrayList<>();
+        readObjects.add(null);
         File file;
         try {
             file = new File(path);
@@ -37,7 +40,7 @@ public class OBJParser {
             System.out.println("An error has occurred while reading file " + path);
             return null;
         }
-        return readObjects;
+        return new ParsingResult(readObjects, adjacencyList);
     }
     private void readFile(File file) throws RuntimeException, FileNotFoundException {
         boolean firstObject = true;
@@ -55,7 +58,11 @@ public class OBJParser {
                     modelName = splintedLine[1];
                     continue;
                 }
-                readObjects.add(new NamedModel(new Mesh(currCords, faces), modelName));
+
+                var temp = new EntityModel(new Mesh(currCords, faces), null);
+                temp.setName(modelName);
+                readObjects.add(temp);
+
                 modelName = splintedLine[1];
                 clear();
                 continue;
@@ -65,9 +72,12 @@ public class OBJParser {
                 case "vn" -> readNormals(splintedLine);
                 case "vt" -> readTextures(splintedLine);
                 case "f" -> readFace(splintedLine);
+                case "ee" -> readEdge(splintedLine);
             }
         }
-        readObjects.add(new NamedModel(new Mesh(currCords, faces), modelName));
+        var temp = new EntityModel(new Mesh(currCords, faces), null);
+        temp.setName(modelName);
+        readObjects.add(temp);
     }
     private void readVertexPosition(String[] line){
         Vector3f cords = new Vector3f(
@@ -94,18 +104,30 @@ public class OBJParser {
         }
         faces.add(new Face(tempVertices));
     }
+
+    private void readEdge(String[] line){
+        if(adjacencyList == null){
+            adjacencyList = new ArrayList<>();
+        }
+        int parent = Integer.parseInt(line[1]);
+        int children = Integer.parseInt(line[2]);
+        while(adjacencyList.size() <= children){
+            adjacencyList.add(-1);
+        }
+        adjacencyList.set(children, parent);
+    }
     private void clear(){
         currCords = new ArrayList<>();
         faces = new ArrayList<>();
     }
 }
 
-class NamedModel {
-    Mesh model;
-    String name;
+class ParsingResult {
+    ArrayList<Entity> readObjects;
+    ArrayList<Integer> adjacencyList;
 
-    public NamedModel(Mesh model, String modelName) {
-        this.model = model;
-        this.name = modelName;
+    ParsingResult(ArrayList<Entity> readObjects, ArrayList<Integer> adjacencyList){
+        this.readObjects = readObjects;
+        this.adjacencyList = adjacencyList;
     }
 }
