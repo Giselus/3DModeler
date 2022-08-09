@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class VertexInstanceTest {
@@ -31,7 +30,6 @@ class VertexInstanceTest {
         VertexPosition result = new VertexInstance(v1, face, normal).getPosition();
         assertEquals(v1, result);
     }
-
     @Test
     public void testGetBufferedData(){
         setUp();

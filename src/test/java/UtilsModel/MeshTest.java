@@ -6,7 +6,9 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
 
 class MeshTest {
 
@@ -55,12 +57,7 @@ class MeshTest {
     @Test
     public void testSetMeshDrawer(){
         Mesh mesh = new Mesh(null, null);
-        IMeshDrawer expected = new IMeshDrawer() {
-            @Override
-            public void draw(int mode) {}
-            @Override
-            public void recalculate() {}
-        };
+        IMeshDrawer expected = mock(IMeshDrawer.class);
         mesh.setMeshDrawer(expected);
         IMeshDrawer result = mesh.getMeshDrawer();
         assertEquals(expected, result);
@@ -90,7 +87,7 @@ class MeshTest {
         ArrayList<Face> facesList = mesh.getFaces();
 
         var resultFace = facesList.get(0);
-        assertEquals(1, facesList.size());
+        assertThat(facesList).containsExactly(resultFace);
 
         for(var vertex: resultFace.getVertices()){
             var value = vertex.getPosition();
