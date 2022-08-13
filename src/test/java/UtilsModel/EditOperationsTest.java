@@ -8,7 +8,6 @@ import org.joml.Vector3f;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -42,10 +41,10 @@ class EditOperationsTest {
         IInput input = mock(IInput.class);
         SceneState sceneState = mock(SceneState.class);
         ArrayList<VertexPosition> pickedVertices = new ArrayList<>();
+        EntityEmpty entityEmpty = mock(EntityEmpty.class);
 
         EditOperations editOperations = new EditOperations(input, pickedVertices, sceneState);
 
-        EntityEmpty entityEmpty = mock(EntityEmpty.class);
         when(sceneState.getSelectedEntity()).thenReturn(entityEmpty);
 
         editOperations.createFace();
@@ -137,5 +136,21 @@ class EditOperationsTest {
         assertThat(pickedVertices).doesNotContain(v1, v2);
         assertThat(pickedVertices.size()).isEqualTo(2);
         assertThat(result).containsExactly(v1.getValue(), v2.getValue());
+    }
+
+    @Test
+    public void testVerticesDoesNotMoveWhenKeyIsNotPressed(){
+        IInput input = mock(IInput.class);
+        SceneState sceneState = mock(SceneState.class);
+        ArrayList<VertexPosition> pickedVertices = new ArrayList<>();
+
+        EditOperations editOperations = new EditOperations(input, pickedVertices, sceneState);
+
+        when(input.isKeyPressed(IInput.KeyCode.KEY_X)).thenReturn(false);
+
+        editOperations.movePoints(1f, 1f);
+
+        verify(input).isKeyPressed(IInput.KeyCode.KEY_X);
+        verifyNoMoreInteractions(input, sceneState);
     }
 }

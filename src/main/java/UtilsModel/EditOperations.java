@@ -12,6 +12,8 @@ import org.joml.Vector4f;
 
 import java.util.ArrayList;
 
+import static UtilsCommon.GeometryMath.*;
+
 public class EditOperations {
     IInput input;
     ArrayList<VertexPosition> pickedVertices;
@@ -29,53 +31,29 @@ public class EditOperations {
         }
         float mouseX = input.getMouseX();
         float mouseY = input.getMouseY();
-        float lastX = mouseX - xOffset;
-        float lastY = mouseY - yOffset;
+        float previousX = mouseX - xOffset;
+        float previousY = mouseY - yOffset;
 
-        Vector3f meanPoint = new Vector3f();
-        for(VertexPosition v: pickedVertices){
-            meanPoint.add(v.getValue());
-        }
-        meanPoint.div((float)pickedVertices.size());
-        Vector3f cameraDir = sceneState.getCamera().getDirection();
-        Vector4f normalPlane = new Vector4f(0f);
-        //(x + y + z = w)
-        normalPlane.x = cameraDir.x;
-        normalPlane.y = cameraDir.y;
-        normalPlane.z = cameraDir.z;
-        normalPlane.w = cameraDir.x *meanPoint.x + cameraDir.y * meanPoint.y + cameraDir.z * meanPoint.z;
+        Vector3f meanPoint = meanPoint(pickedVertices);
 
-        float clipX = (2f * mouseX) - 1f;
-        float clipY = (2f * mouseY) - 1f;
         Camera camera = sceneState.getCamera();
-        Ray ray = camera.getRay(clipX,clipY);
-        Vector3f anotherRay = ray.direction;
-        Vector3f cameraPosition = camera.getPosition();
-        float parameter = (normalPlane.w - normalPlane.x*cameraPosition.x
-                - normalPlane.y*cameraPosition.y - normalPlane.z*cameraPosition.z)
-                /(normalPlane.x * anotherRay.x + normalPlane.y * anotherRay.y + normalPlane.z * anotherRay.z);
-        Vector3f intersectionPoint = new Vector3f(0f);
-        anotherRay.mul(parameter, intersectionPoint);
-        intersectionPoint.add(cameraPosition);
 
-        float clipX2 = (2f * lastX) - 1f;
-        float clipY2 = (2f * lastY) - 1f;
-        Ray ray2 = camera.getRay(clipX2,clipY2);
-        Vector3f anotherRay2 = ray2.direction;
-        float parameter2 = (normalPlane.w - normalPlane.x*cameraPosition.x
-                - normalPlane.y*cameraPosition.y - normalPlane.z*cameraPosition.z)
-                /(normalPlane.x * anotherRay.x + normalPlane.y * anotherRay.y + normalPlane.z * anotherRay.z);
-        Vector3f intersectionPoint2 = new Vector3f(0f);
-        anotherRay2.mul(parameter2, intersectionPoint2);
-        intersectionPoint2.add(cameraPosition);
+        Vector4f normalPlane = normalPlane(camera.getDirection(), meanPoint);
+
+        Vector3f cameraPosition = camera.getPosition();
+
+        Vector3f currentMouseDirection = clickDirection(mouseX, mouseY, camera);
+        Vector3f currentIntersectionPoint = intersectionVectorPlane(cameraPosition, currentMouseDirection, normalPlane);
+
+        Vector3f previousMouseDirection = clickDirection(previousX, previousY, camera);
+        Vector3f previousIntersectionPoint = intersectionVectorPlane(cameraPosition, previousMouseDirection, normalPlane);
 
         Vector3f offset = new Vector3f();
-        intersectionPoint.sub(intersectionPoint2,offset);
+        currentIntersectionPoint.sub(previousIntersectionPoint, offset);
 
-        for(VertexPosition v: pickedVertices){
-            v.setValue(v.getValue().add(offset));
-        }
+        translatePoints(pickedVertices, offset);
     }
+
 
     public void createFace(){
         Entity temp = sceneState.getSelectedEntity();
