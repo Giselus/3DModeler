@@ -139,6 +139,25 @@ class EditOperationsTest {
     }
 
     @Test
+    public void deleteVertexBadEntity(){
+        IInput input = mock(IInput.class);
+        SceneState sceneState = mock(SceneState.class);
+        ArrayList<VertexPosition> pickedVertices = new ArrayList<>();
+        pickedVertices.add(new VertexPosition(new Vector3f(1f, 8.3f, 2f)));
+        EntityEmpty entityEmpty = mock(EntityEmpty.class);
+
+        EditOperations editOperations = new EditOperations(input, pickedVertices, sceneState);
+
+        when(sceneState.getSelectedEntity()).thenReturn(entityEmpty);
+
+        editOperations.deleteVertex();
+
+        assertThat(pickedVertices).isEmpty();
+        verify(sceneState).getSelectedEntity();
+        verifyNoMoreInteractions(sceneState, input);
+    }
+
+    @Test
     public void testVerticesDoesNotMoveWhenKeyIsNotPressed(){
         IInput input = mock(IInput.class);
         SceneState sceneState = mock(SceneState.class);
