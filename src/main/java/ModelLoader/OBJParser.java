@@ -25,12 +25,8 @@ public class OBJParser {
         clear();
         readObjects = new ArrayList<>();
         readObjects.add(null);
-        File file;
-        try {
-            file = new File(path);
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("File: " + path + " has not been found.");
+        File file = new File(path);
+        if(!file.canRead()){
             return null;
         }
         try {
@@ -48,7 +44,7 @@ public class OBJParser {
         String line;
         while(scanner.hasNext()){
             line = scanner.nextLine();
-            if(line == null){
+            if(line.length() == 0){
                 continue;
             }
             String[] splintedLine = line.split(" ");
@@ -69,8 +65,6 @@ public class OBJParser {
             }
             switch (splintedLine[0]) {
                 case "v" -> readVertexPosition(splintedLine);
-                case "vn" -> readNormals(splintedLine);
-                case "vt" -> readTextures(splintedLine);
                 case "f" -> readFace(splintedLine);
                 case "ee" -> readEdge(splintedLine);
             }
@@ -88,16 +82,9 @@ public class OBJParser {
         this.currCords.add(new VertexPosition(cords));
     }
 
-    private void readNormals(String[] line){
-        // TODO read if it useful for something
-    }
-    private void readTextures(String[] line){
-        // TODO read if it useful for something
-    }
     private void readFace(String[] line){
         ArrayList<VertexPosition> tempVertices = new ArrayList<>();
         int limit = line.length;
-        System.out.println(Arrays.toString(line));
         for(int i=1; i<limit; i++){
             String[] oneVertex = line[i].split("/");
             tempVertices.add(cords.get(Integer.parseInt(oneVertex[0]) - 1));

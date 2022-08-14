@@ -18,14 +18,16 @@ public class OBJLoader implements Loader {
     public Entity load(String path) {
         Entity root = new EntityEmpty();
         ParsingResult parsingResult = objParser.load(path);
-        if(parsingResult.adjacencyList == null){
-            parsingResult.adjacencyList =
-                    (ArrayList<Integer>) IntStream.of(new int[parsingResult.readObjects.size()]).boxed().collect(Collectors.toList());
-        }
-        parsingResult.readObjects.set(0, root);
+        if(parsingResult != null) {
+            if (parsingResult.adjacencyList == null) {
+                parsingResult.adjacencyList =
+                        (ArrayList<Integer>) IntStream.of(new int[parsingResult.readObjects.size()]).boxed().collect(Collectors.toList());
+            }
+            parsingResult.readObjects.set(0, root);
 
-        for(int i=1; i<parsingResult.adjacencyList.size(); i++){
-            parsingResult.readObjects.get(i).setParent(parsingResult.readObjects.get(parsingResult.adjacencyList.get(i)));
+            for (int i = 1; i < parsingResult.adjacencyList.size(); i++) {
+                parsingResult.readObjects.get(i).setParent(parsingResult.readObjects.get(parsingResult.adjacencyList.get(i)));
+            }
         }
         return root;
     }
