@@ -4,6 +4,8 @@ import EntityTree.EntityEmpty;
 import EntityTree.EntityModel;
 import Scene.IInput;
 import Scene.SceneState;
+import UtilsCommon.Camera;
+import UtilsCommon.Ray;
 import org.joml.Vector3f;
 import org.junit.jupiter.api.Test;
 
@@ -139,7 +141,7 @@ class EditOperationsTest {
     }
 
     @Test
-    public void deleteVertexBadEntity(){
+    public void deleteVertexBadEntity() {
         IInput input = mock(IInput.class);
         SceneState sceneState = mock(SceneState.class);
         ArrayList<VertexPosition> pickedVertices = new ArrayList<>();
@@ -197,9 +199,49 @@ class EditOperationsTest {
 
         when(input.isKeyPressed(IInput.KeyCode.KEY_X)).thenReturn(false);
 
-        editOperations.movePoints(1f, 1f);
+        editOperations.movePoints(0.3f, 0.3f);
 
         verify(input).isKeyPressed(IInput.KeyCode.KEY_X);
         verifyNoMoreInteractions(input, sceneState);
+    }
+
+    @Test
+    public void testVerticesMoveWhenKeyIsPressed(){
+        IInput input = mock(IInput.class);
+        SceneState sceneState = mock(SceneState.class);
+        ArrayList<VertexPosition> pickedVertices = new ArrayList<>();
+        VertexPosition v1 = new VertexPosition(new Vector3f(3f, 2f, 7f));
+        pickedVertices.add(v1);
+        Camera camera = mock(Camera.class);
+        Ray ray = mock(Ray.class);
+
+        Vector3f expectedPosition = new Vector3f(4.5f, 4f, 3.5f);
+        EditOperations editOperations = new EditOperations(input, pickedVertices, sceneState);
+
+        when(input.isKeyPressed(IInput.KeyCode.KEY_X)).thenReturn(true);
+        when(input.getMouseX()).thenReturn(0.2f);
+        when(input.getMouseY()).thenReturn(0.3f);
+        when(sceneState.getCamera()).thenReturn(camera);
+        when(camera.getPosition()).thenReturn(new Vector3f(2f, 1f, 1f));
+        when(camera.getDirection()).thenReturn(new Vector3f(1f, 1f, 1f));
+        when(camera.getRay(anyFloat(), anyFloat())).thenReturn(ray);
+        when(ray.getDirection()).thenReturn(new Vector3f(0.5f, 0.8f, 0.3f), new Vector3f(0.1f, 0.2f, 0.5f));
+
+        editOperations.movePoints(0.1f, -0.2f);
+
+        assertThat(v1.getValue().x).isEqualTo(expectedPosition.x, withPrecision(0.001f));
+        assertThat(v1.getValue().y).isEqualTo(expectedPosition.y, withPrecision(0.001f));
+        assertThat(v1.getValue().z).isEqualTo(expectedPosition.z, withPrecision(0.001f));
+
+        verify(input).isKeyPressed(IInput.KeyCode.KEY_X);
+        verify(input).getMouseX();
+        verify(input).getMouseY();
+        verify(sceneState).getCamera();
+        verify(camera).getPosition();
+        verify(camera).getDirection();
+        verify(camera, times(2)).getRay(anyFloat(), anyFloat());
+        verify(ray, times(2)).getDirection();
+
+        verifyNoMoreInteractions(input, sceneState, camera, ray);
     }
 }
