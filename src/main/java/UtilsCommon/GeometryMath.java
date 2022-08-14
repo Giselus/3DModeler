@@ -38,11 +38,11 @@ public class GeometryMath {
         return intersectionPoint;
     }
 
-    public static Vector3f clickDirection(float x, float y, Camera camera) {
+    public static Ray clickRay(float x, float y, Camera camera) {
         float clipX = (2f * x) - 1f;
         float clipY = (2f * y) - 1f;
 
-        return camera.getRay(clipX,clipY).getDirection();
+        return camera.getRay(clipX,clipY);
     }
 
     public static void translatePoints(ArrayList<VertexPosition> points, Vector3f offset) {

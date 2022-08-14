@@ -8,7 +8,7 @@ import java.util.List;
 public class Ray {
     static float epsilon = 0.01f;
     //TODO: change to get/set
-    public Vector3f origin;
+    private Vector3f origin;
     private Vector3f direction;
     public Ray(Vector3f origin, Vector3f direction) {
         this.origin = origin;
@@ -91,5 +91,13 @@ public class Ray {
 
     public void setDirection(Vector3f direction) {
         this.direction = direction;
+    }
+
+    public Vector3f getOrigin() {
+        return origin;
+    }
+
+    public void setOrigin(Vector3f origin) {
+        this.origin = origin;
     }
 }

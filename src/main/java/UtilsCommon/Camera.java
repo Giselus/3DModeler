@@ -37,12 +37,6 @@ public class Camera {
         position = new Vector3f(0f);
         worldUp = new Vector3f(0f,1f,0f);
         updateCameraVectors();
-        registerInput();
-    }
-
-    private void registerInput(){
-        input.addMouseMoveCallback(this::ProcessMousePosition);
-        input.addMouseScrollCallback(this::ProcessMouseScroll);
     }
 
     public Matrix4f getViewMatrix(){
@@ -61,7 +55,7 @@ public class Camera {
         return front;
     }
 
-    private void ProcessMousePosition(float offsetX, float offsetY){
+    public void ProcessMousePosition(float offsetX, float offsetY){
         if(!input.isMouseKeyPressed(IInput.MouseKeyCode.MOUSE_SCROLL))
             return;
         offsetX *= mouseSensitivity;
@@ -78,7 +72,7 @@ public class Camera {
 
         updateCameraVectors();
     }
-    private void ProcessMouseScroll(float offset){
+    public void ProcessMouseScroll(float offset){
         while(offset > 0.5f || offset < -0.5f) {
             if (offset < 0f) {
                 distance *= scrollSensitivity;

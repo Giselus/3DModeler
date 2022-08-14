@@ -68,9 +68,8 @@ class GeometryMathTest {
 
         when(camera.getRay(anyFloat(), anyFloat())).thenReturn(ray);
 
-        GeometryMath.clickDirection(x, y, camera);
+        GeometryMath.clickRay(x, y, camera);
 
-        verify(ray).getDirection();
         verify(camera).getRay(AdditionalMatchers.eq(0f, delta), AdditionalMatchers.eq(0.4f, delta));
     }
 

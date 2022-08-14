@@ -42,10 +42,10 @@ public class EditOperations {
 
         Vector3f cameraPosition = camera.getPosition();
 
-        Vector3f currentMouseDirection = clickDirection(mouseX, mouseY, camera);
+        Vector3f currentMouseDirection = clickRay(mouseX, mouseY, camera).getDirection();
         Vector3f currentIntersectionPoint = intersectionVectorPlane(cameraPosition, currentMouseDirection, normalPlane);
 
-        Vector3f previousMouseDirection = clickDirection(previousX, previousY, camera);
+        Vector3f previousMouseDirection = clickRay(previousX, previousY, camera).getDirection();
         Vector3f previousIntersectionPoint = intersectionVectorPlane(cameraPosition, previousMouseDirection, normalPlane);
 
         Vector3f offset = new Vector3f();
