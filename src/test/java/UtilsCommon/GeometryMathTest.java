@@ -4,11 +4,11 @@ import UtilsModel.VertexPosition;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 import org.junit.jupiter.api.Test;
+import org.mockito.AdditionalMatchers;
 
 import java.util.ArrayList;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 class GeometryMathTest {
