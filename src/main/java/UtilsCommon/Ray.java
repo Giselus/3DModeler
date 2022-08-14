@@ -84,4 +84,12 @@ public class Ray {
         if(t0 < 0) return -1;
         return t0;
     }
+    
+    public Vector3f getDirection() {
+        return direction;
+    }
+
+    public void setDirection(Vector3f direction) {
+        this.direction = direction;
+    }
 }
