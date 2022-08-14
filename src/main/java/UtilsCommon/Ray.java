@@ -9,7 +9,7 @@ public class Ray {
     static float epsilon = 0.01f;
     //TODO: change to get/set
     public Vector3f origin;
-    public Vector3f direction;
+    private Vector3f direction;
     public Ray(Vector3f origin, Vector3f direction) {
         this.origin = origin;
         this.direction = direction;

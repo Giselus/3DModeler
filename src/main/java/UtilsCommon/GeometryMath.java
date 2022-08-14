@@ -42,7 +42,7 @@ public class GeometryMath {
         float clipX = (2f * x) - 1f;
         float clipY = (2f * y) - 1f;
 
-        return camera.getRay(clipX,clipY).direction;
+        return camera.getRay(clipX,clipY).getDirection();
     }
 
     public static void translatePoints(ArrayList<VertexPosition> points, Vector3f offset) {
