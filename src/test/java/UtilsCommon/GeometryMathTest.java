@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 class GeometryMathTest {
 
@@ -53,6 +55,23 @@ class GeometryMathTest {
         assertThat(result.x).isEqualTo(expected.x, withPrecision(0.01f));
         assertThat(result.y).isEqualTo(expected.y, withPrecision(0.01f));
         assertThat(result.z).isEqualTo(expected.z, withPrecision(0.01f));
+    }
+
+    @Test
+    void testClickDirection() {
+        float x = 0.5f;
+        float y = 0.7f;
+        float delta = 0.001f;
+
+        Camera camera = mock(Camera.class);
+        Ray ray = mock(Ray.class);
+
+        when(camera.getRay(anyFloat(), anyFloat())).thenReturn(ray);
+
+        GeometryMath.clickDirection(x, y, camera);
+
+        verify(ray).getDirection();
+        verify(camera).getRay(AdditionalMatchers.eq(0f, delta), AdditionalMatchers.eq(0.4f, delta));
     }
 
     @Test
