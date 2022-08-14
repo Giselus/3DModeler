@@ -158,6 +158,36 @@ class EditOperationsTest {
     }
 
     @Test
+    public void deleteVertexGoodEntity() {
+        IInput input = mock(IInput.class);
+        SceneState sceneState = mock(SceneState.class);
+        EntityModel entityModel = mock(EntityModel.class);
+        Mesh mesh = mock(Mesh.class);
+
+        ArrayList<VertexPosition> pickedVertices = new ArrayList<>();
+        VertexPosition v1 = new VertexPosition(new Vector3f(5f, 3f, 2f));
+        VertexPosition v2 = new VertexPosition(new Vector3f(2f, 3f, 1f));
+        pickedVertices.add(v1);
+        pickedVertices.add(v2);
+
+        EditOperations editOperations = new EditOperations(input, pickedVertices, sceneState);
+
+        when(sceneState.getSelectedEntity()).thenReturn(entityModel);
+        when(entityModel.getMesh()).thenReturn(mesh);
+
+        editOperations.deleteVertex();
+
+        assertThat(pickedVertices).isEmpty();
+        assertThat(v1.isPicked()).isFalse();
+        assertThat(v2.isPicked()).isFalse();
+
+        verify(sceneState).getSelectedEntity();
+        verify(entityModel).getMesh();
+        verify(mesh, times(2)).deleteVertex(any());
+        verifyNoMoreInteractions(sceneState, entityModel, mesh, input);
+    }
+
+    @Test
     public void testVerticesDoesNotMoveWhenKeyIsNotPressed(){
         IInput input = mock(IInput.class);
         SceneState sceneState = mock(SceneState.class);
