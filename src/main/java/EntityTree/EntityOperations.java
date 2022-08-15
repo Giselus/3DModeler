@@ -7,6 +7,8 @@ import UtilsModel.Mesh;
 import UtilsModel.VertexPosition;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class EntityOperations {
     IInput input;
@@ -72,10 +74,15 @@ public class EntityOperations {
                 vertex.unpick();
             }
             pickedVertices.clear();
-            for(var vertex: ((EntityModel) entity).getVertices()) {
-                vertex.pick();
-                pickedVertices.add(vertex);
+            for(var face: ((EntityModel) entity).getFaces()) {
+                for(var vertex: face.getVertices()) {
+                    vertex.getPosition().pick();
+                    pickedVertices.add(vertex.getPosition());
+                }
             }
+            Set<VertexPosition> set = new HashSet<>(pickedVertices);
+            pickedVertices.clear();
+            pickedVertices.addAll(set);
         }
     }
 

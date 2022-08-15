@@ -1,6 +1,5 @@
 package EntityTree;
 
-import Scene.IRenderer;
 import UtilsModel.Face;
 import UtilsModel.Mesh;
 import UtilsModel.VertexPosition;

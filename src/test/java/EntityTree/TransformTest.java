@@ -1,18 +1,18 @@
 package EntityTree;
 
 import org.joml.Matrix4f;
+import org.joml.Matrix4fc;
 import org.joml.Vector3f;
 import org.joml.Vector3fc;
 import org.junit.jupiter.api.Test;
 
-import java.nio.FloatBuffer;
-
 import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.*;
 
 class TransformTest {
 
     @Test
-    void getLocalTranslation() {
+    void testGetLocalTranslation() {
         var transform = new Transform();
         Vector3fc expected = new Vector3f(0f, 0f, 0f);
         Vector3fc result = transform.getLocalTranslation();
@@ -20,7 +20,7 @@ class TransformTest {
     }
 
     @Test
-    void setLocalTranslation() {
+    void testSetLocalTranslation() {
         var transform = new Transform();
         Vector3fc expected = new Vector3f(1f, 8f, 3f);
         transform.setLocalTranslation(new Vector3f(1f, 8f, 3f));
@@ -29,7 +29,7 @@ class TransformTest {
     }
 
     @Test
-    void getLocalRotation() {
+    void testGetLocalRotation() {
         var transform = new Transform();
         Vector3fc expected = new Vector3f(0f, 0f, 0f);
         Vector3fc result = transform.getLocalTranslation();
@@ -37,7 +37,7 @@ class TransformTest {
     }
 
     @Test
-    void setLocalRotation() {
+    void testSetLocalRotation() {
         var transform = new Transform();
         Vector3fc expected = new Vector3f(4f, 2f, 0f);
         transform.setLocalRotation(new Vector3f(4f, 2f, 0f));
@@ -46,7 +46,7 @@ class TransformTest {
     }
 
     @Test
-    void getLocalScale() {
+    void testGetLocalScale() {
         var transform = new Transform();
         Vector3fc expected = new Vector3f(1f, 1f, 1f);
         Vector3fc result = transform.getLocalScale();
@@ -54,7 +54,7 @@ class TransformTest {
     }
 
     @Test
-    void setLocalScale() {
+    void testSetLocalScale() {
         var transform = new Transform();
         Vector3fc expected = new Vector3f(5f, 1f, 3f);
         transform.setLocalScale(new Vector3f(5f, 1f, 3f));
@@ -63,7 +63,7 @@ class TransformTest {
     }
 
     @Test
-    void getGlobalModelMatrix() {
+    void testGetGlobalModelMatrix() {
         var transform = new Transform();
         var expected = new Matrix4f().identity();
         var result = transform.getGlobalModelMatrix();
@@ -71,13 +71,35 @@ class TransformTest {
     }
 
     @Test
-    void updateGlobalModelMatrix() {
+    void testUpdateGlobalModelMatrixNoArgs() {
+        Transform transform = new Transform();
+        transform.setLocalRotation(new Vector3f(90f, 90f, 0f));
+        transform.setLocalTranslation(new Vector3f(42f, 2f, 3f));
+        transform.setLocalScale(new Vector3f(4f, 5f, 6f));
+        Matrix4fc expected = new Matrix4f(0f, 0f, -4f, 0f, 5f, 0f, 0f, 0f, 0f, -6f, 0f, 0f, 42f, 2f, 3f, 1f);
 
+        transform.updateGlobalModelMatrix();
+        Matrix4fc result = transform.getGlobalModelMatrix();
+
+        assertTrue(result.equals(expected, 0.001f));
     }
 
     @Test
-    void testUpdateGlobalModelMatrix() {
+    void testUpdateGlobalModelMatrixWithArgs() {
+        Transform transform = new Transform();
+        transform.setLocalRotation(new Vector3f(90f, 90f, 0f));
+        transform.setLocalTranslation(new Vector3f(42f, 2f, 3f));
+        transform.setLocalScale(new Vector3f(4f, 5f, 6f));
+        Matrix4fc expected = new Matrix4f(0f, 4f, 0f, 0f, 0f, 0f, 0f, -5f, 0f, 0f, 6f, 0f, -1f, -3f, -2f, -42f);
+        Matrix4f argMatrix = new Matrix4f().zero();
+        argMatrix.m30(-1f);
+        argMatrix.m21(-1f);
+        argMatrix.m12(-1f);
+        argMatrix.m03(-1f);
+
+        transform.updateGlobalModelMatrix(argMatrix);
+        Matrix4fc result = transform.getGlobalModelMatrix();
+
+        assertTrue(result.equals(expected, 0.001f));
     }
-
-
 }
