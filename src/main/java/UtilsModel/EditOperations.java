@@ -88,7 +88,7 @@ public class EditOperations {
                 mesh.deleteVertex(item);
                 item.unpick();
             }
+            pickedVertices.clear();
         }
-        pickedVertices.clear();
     }
 }

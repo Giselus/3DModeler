@@ -145,7 +145,8 @@ class EditOperationsTest {
         IInput input = mock(IInput.class);
         SceneState sceneState = mock(SceneState.class);
         ArrayList<VertexPosition> pickedVertices = new ArrayList<>();
-        pickedVertices.add(new VertexPosition(new Vector3f(1f, 8.3f, 2f)));
+        VertexPosition v1 = new VertexPosition(new Vector3f(1f, 8.3f, 2f));
+        pickedVertices.add(v1);
         EntityEmpty entityEmpty = mock(EntityEmpty.class);
 
         EditOperations editOperations = new EditOperations(input, pickedVertices, sceneState);
@@ -154,7 +155,7 @@ class EditOperationsTest {
 
         editOperations.deleteVertex();
 
-        assertThat(pickedVertices).isEmpty();
+        assertThat(pickedVertices).containsExactly(v1);
         verify(sceneState).getSelectedEntity();
         verifyNoMoreInteractions(sceneState, input);
     }
