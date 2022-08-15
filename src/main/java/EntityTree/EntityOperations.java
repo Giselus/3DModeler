@@ -74,15 +74,10 @@ public class EntityOperations {
                 vertex.unpick();
             }
             pickedVertices.clear();
-            for(var face: ((EntityModel) entity).getFaces()) {
-                for(var vertex: face.getVertices()) {
-                    vertex.getPosition().pick();
-                    pickedVertices.add(vertex.getPosition());
-                }
+            for(var vertex: ((EntityModel) entity).getVertices()){
+                vertex.pick();
+                pickedVertices.add(vertex);
             }
-            Set<VertexPosition> set = new HashSet<>(pickedVertices);
-            pickedVertices.clear();
-            pickedVertices.addAll(set);
         }
     }
 

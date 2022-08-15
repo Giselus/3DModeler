@@ -78,8 +78,9 @@ public class OBJParser {
                 Float.parseFloat(line[1]),
                 Float.parseFloat(line[2]),
                 Float.parseFloat(line[3]));
-        this.cords.add(new VertexPosition(cords));
-        this.currCords.add(new VertexPosition(cords));
+        VertexPosition newVertex = new VertexPosition(cords);
+        this.cords.add(newVertex);
+        this.currCords.add(newVertex);
     }
 
     private void readFace(String[] line){

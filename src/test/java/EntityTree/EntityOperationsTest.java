@@ -35,11 +35,8 @@ class EntityOperationsTest {
         meshVertices.add(vm1);
         meshVertices.add(vm2);
         meshVertices.add(vm3);
-        ArrayList<Face> meshFaces = new ArrayList<>();
-        meshFaces.add(new Face(meshVertices));
-        Mesh mesh = new Mesh(meshVertices, meshFaces);
+        Mesh mesh = new Mesh(meshVertices, null);
         EntityModel mainEntity = new EntityModel(mesh, null);
-
 
         when(sceneState.getMainSelectedEntity()).thenReturn(mainEntity);
 
