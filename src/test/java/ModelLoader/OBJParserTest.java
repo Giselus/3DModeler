@@ -26,7 +26,7 @@ class OBJParserTest {
     public void testFileWithErrorsParseToNull() {
         OBJParser parser = new OBJParser();
         ParsingResult parsingResult =
-                parser.load("src/main/resources/TestFiles/incorrectFile.obj");
+                parser.load("src/main/resources/TestFiles/TestLoader/incorrectFile.obj");
         assertThat(parsingResult).isNull();
     }
 
@@ -34,7 +34,7 @@ class OBJParserTest {
     public void testCorrectlyCreateEntitiesForOneMesh() {
         OBJParser parser = new OBJParser();
         ParsingResult parsingResult =
-                parser.load("src/main/resources/TestFiles/correctlyReadOneMesh.obj");
+                parser.load("src/main/resources/TestFiles/TestLoader/correctlyReadOneMesh.obj");
         Entity root = parsingResult.readObjects.get(0);
 
         assertThat(parsingResult.readObjects.size()).isEqualTo(2);
@@ -46,7 +46,7 @@ class OBJParserTest {
     public void testCorrectlyReadVerticesOneMesh() {
         OBJParser parser = new OBJParser();
         ParsingResult parsingResult =
-                parser.load("src/main/resources/TestFiles/correctlyReadOneMesh.obj");
+                parser.load("src/main/resources/TestFiles/TestLoader/correctlyReadOneMesh.obj");
         Vector3f v1 = new Vector3f(1f, 1f, -1f);
         Vector3f v2 = new Vector3f(1f, -1f, -1f);
         Vector3f v3 = new Vector3f(1f, -1f, 1f);
@@ -61,7 +61,7 @@ class OBJParserTest {
     public void testCorrectlyReadFaces() {
         OBJParser parser = new OBJParser();
         ParsingResult parsingResult =
-                parser.load("src/main/resources/TestFiles/correctlyReadOneMesh.obj");
+                parser.load("src/main/resources/TestFiles/TestLoader/correctlyReadOneMesh.obj");
         Vector3f v1 = new Vector3f(1f, 1f, -1f);
         Vector3f v2 = new Vector3f(1f, -1f, -1f);
         Vector3f v3 = new Vector3f(1f, -1f, 1f);
@@ -82,9 +82,9 @@ class OBJParserTest {
         Vector3f v1 = new Vector3f(1f, 1f, 1f);
 
         ParsingResult parsingResult =
-                parser.load("src/main/resources/TestFiles/manyCalls.obj");
+                parser.load("src/main/resources/TestFiles/TestLoader/manyCalls.obj");
         ParsingResult parsingResult2 =
-                parser.load("src/main/resources/TestFiles/manyCalls.obj");
+                parser.load("src/main/resources/TestFiles/TestLoader/manyCalls.obj");
 
         Mesh mesh1 = ((EntityModel)parsingResult.readObjects.get(1)).getMesh();
         Mesh mesh2 = ((EntityModel)parsingResult2.readObjects.get(1)).getMesh();
@@ -97,7 +97,7 @@ class OBJParserTest {
     public void testEmptyLinesAndUnknownSymbolsDoesNotBreakParsing() {
         OBJParser parser = new OBJParser();
         ParsingResult parsingResult =
-                parser.load("src/main/resources/TestFiles/correctlyReadWithEmptyLinesAndUnknownSymbols.obj");
+                parser.load("src/main/resources/TestFiles/TestLoader/correctlyReadWithEmptyLinesAndUnknownSymbols.obj");
         Vector3f v1 = new Vector3f(1f, 1f, -1f);
         Vector3f v2 = new Vector3f(1f, -1f, -1f);
         Vector3f v3 = new Vector3f(1f, -1f, 1f);
@@ -117,7 +117,7 @@ class OBJParserTest {
     public void testMultipleMeshesInOneFileNoStructure() {
         OBJParser parser = new OBJParser();
         ParsingResult parsingResult =
-                parser.load("src/main/resources/TestFiles/multipleMeshesNoStructure.obj");
+                parser.load("src/main/resources/TestFiles/TestLoader/multipleMeshesNoStructure.obj");
 
         ArrayList<Entity> result = parsingResult.readObjects;
         assertThat(result.size()).isEqualTo(5);
@@ -128,7 +128,7 @@ class OBJParserTest {
     public void testMultipleMeshesCorrectContent() {
         OBJParser parser = new OBJParser();
         ParsingResult parsingResult =
-                parser.load("src/main/resources/TestFiles/multipleMeshesCorrectContent.obj");
+                parser.load("src/main/resources/TestFiles/TestLoader/multipleMeshesCorrectContent.obj");
 
         Vector3f v1 = new Vector3f(1f, 1f, 1f);
         Vector3f v2 = new Vector3f(-1f, 1f, -1f);
@@ -154,7 +154,7 @@ class OBJParserTest {
     public void testMultipleMeshesWithStructure() {
         OBJParser parser = new OBJParser();
         ParsingResult parsingResult =
-                parser.load("src/main/resources/TestFiles/multipleMeshesWithStructure.obj");
+                parser.load("src/main/resources/TestFiles/TestLoader/multipleMeshesWithStructure.obj");
 
         assertThat(parsingResult.readObjects.size()).isEqualTo(5);
         assertThat(parsingResult.adjacencyList).containsExactly(-1, 0, 1, 1, 2);

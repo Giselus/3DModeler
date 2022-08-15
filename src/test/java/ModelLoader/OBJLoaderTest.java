@@ -21,7 +21,7 @@ class OBJLoaderTest {
     @Test
     void testOpenFileWithoutErrors() {
         OBJLoader objLoader = new OBJLoader();
-        Entity result = objLoader.load("src/main/resources/TestFiles/incorrectFile.obj");
+        Entity result = objLoader.load("src/main/resources/TestFiles/TestLoader/incorrectFile.obj");
 
         assertThat(result).isInstanceOf(EntityEmpty.class);
         assertThat(result.getChildren().size()).isEqualTo(0);
@@ -30,7 +30,7 @@ class OBJLoaderTest {
     @Test
     void testCorrectlyReturnEntitiesWithoutStructure() {
         OBJLoader objLoader = new OBJLoader();
-        Entity result = objLoader.load("src/main/resources/TestFiles/multipleMeshesNoStructure.obj");
+        Entity result = objLoader.load("src/main/resources/TestFiles/TestLoader/multipleMeshesNoStructure.obj");
 
         assertThat(result.getChildren().size()).isEqualTo(4);
 
@@ -44,7 +44,7 @@ class OBJLoaderTest {
     @Test
     void testCorrectlyReturnEntitiesWithStructure() {
         OBJLoader objLoader = new OBJLoader();
-        Entity result = objLoader.load("src/main/resources/TestFiles/multipleMeshesWithStructure.obj");
+        Entity result = objLoader.load("src/main/resources/TestFiles/TestLoader/multipleMeshesWithStructure.obj");
 
         Entity node1 = (Entity) result.getChildren().toArray()[0];
         Entity node2 = (Entity) node1.getChildren().toArray()[0];
