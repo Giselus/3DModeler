@@ -41,6 +41,7 @@ public class OBJSaver implements Saver{
 
     private StringBuilder preorderTraverse(Entity entity, int parentNode){
         int id = modelNumber + 1;
+        modelNumber++;
         adjacencyList.add(new ArrayList<>());
         adjacencyList.get(parentNode).add(id);
         StringBuilder result = new StringBuilder();

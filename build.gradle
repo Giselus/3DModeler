@@ -38,6 +38,7 @@ dependencies {
     implementation "io.github.spair:imgui-java-app:$imguiVersion"
 
     implementation 'org.joml:joml:1.10.4'
+    implementation 'commons-io:commons-io:2.11.0'
 }
 
 test {
