@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 public abstract class Entity {
-    protected final Transform transform;
+    protected Transform transform;
     protected Entity parent;
     protected final Collection<Entity> children;
     protected String name;
@@ -48,6 +48,10 @@ public abstract class Entity {
         }
     }
 
+    public Entity getParent() {
+        return parent;
+    }
+
     public Collection<Entity> getUnmodifiableChildren() {
         return Collections.unmodifiableCollection(children);
     }
@@ -67,6 +71,8 @@ public abstract class Entity {
     public Transform getTransform() {
         return transform;
     }
+
+    public void setTransform(Transform transform) { this.transform = transform; }
 
     public String getName() {
         return name;

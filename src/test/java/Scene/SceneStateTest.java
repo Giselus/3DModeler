@@ -25,8 +25,8 @@ class SceneStateTest {
         SceneState sceneState = new SceneState();
         Entity expected = new EntityEmpty();
 
-        sceneState.setSelectedEntity(expected);
-        Entity result = sceneState.getSelectedEntity();
+        sceneState.setMainSelectedEntity(expected);
+        Entity result = sceneState.getMainSelectedEntity();
 
         assertThat(result).isEqualTo(expected);
     }

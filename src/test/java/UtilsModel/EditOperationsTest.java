@@ -27,12 +27,12 @@ class EditOperationsTest {
         EntityModel entityModel = mock(EntityModel.class);
         Mesh mesh = mock(Mesh.class);
 
-        when(sceneState.getSelectedEntity()).thenReturn(entityModel);
+        when(sceneState.getMainSelectedEntity()).thenReturn(entityModel);
         when(entityModel.getMesh()).thenReturn(mesh);
 
         editOperations.createFace();
 
-        verify(sceneState).getSelectedEntity();
+        verify(sceneState).getMainSelectedEntity();
         verify(entityModel).getMesh();
         verify(mesh).addFace(pickedVertices);
         verifyNoMoreInteractions(sceneState, mesh, input);
@@ -47,11 +47,11 @@ class EditOperationsTest {
 
         EditOperations editOperations = new EditOperations(input, pickedVertices, sceneState);
 
-        when(sceneState.getSelectedEntity()).thenReturn(entityEmpty);
+        when(sceneState.getMainSelectedEntity()).thenReturn(entityEmpty);
 
         editOperations.createFace();
 
-        verify(sceneState).getSelectedEntity();
+        verify(sceneState).getMainSelectedEntity();
         verifyNoMoreInteractions(sceneState, entityEmpty, input);
     }
 
@@ -64,11 +64,11 @@ class EditOperationsTest {
         EditOperations editOperations = new EditOperations(input, pickedVertices, sceneState);
 
         EntityEmpty entityEmpty = mock(EntityEmpty.class);
-        when(sceneState.getSelectedEntity()).thenReturn(entityEmpty);
+        when(sceneState.getMainSelectedEntity()).thenReturn(entityEmpty);
 
         editOperations.createFace();
 
-        verify(sceneState).getSelectedEntity();
+        verify(sceneState).getMainSelectedEntity();
         verifyNoMoreInteractions(sceneState, entityEmpty, input);
     }
 
@@ -87,12 +87,12 @@ class EditOperationsTest {
         EntityModel entityModel = mock(EntityModel.class);
         Mesh mesh = mock(Mesh.class);
 
-        when(sceneState.getSelectedEntity()).thenReturn(entityModel);
+        when(sceneState.getMainSelectedEntity()).thenReturn(entityModel);
         when(entityModel.getMesh()).thenReturn(mesh);
 
         editOperations.copyVertices();
 
-        verify(sceneState).getSelectedEntity();
+        verify(sceneState).getMainSelectedEntity();
         verify(entityModel).getMesh();
         verify(mesh, times(1)).addVertex(any());
         verifyNoMoreInteractions(sceneState, entityModel, mesh, input);
@@ -121,7 +121,7 @@ class EditOperationsTest {
         EntityModel entityModel = mock(EntityModel.class);
         Mesh mesh = mock(Mesh.class);
 
-        when(sceneState.getSelectedEntity()).thenReturn(entityModel);
+        when(sceneState.getMainSelectedEntity()).thenReturn(entityModel);
         when(entityModel.getMesh()).thenReturn(mesh);
 
         editOperations.copyVertices();
@@ -129,7 +129,7 @@ class EditOperationsTest {
         var result = pickedVertices.stream()
                 .map(VertexPosition::getValue).toList();
 
-        verify(sceneState).getSelectedEntity();
+        verify(sceneState).getMainSelectedEntity();
         verify(entityModel).getMesh();
         verify(mesh, times(2)).addVertex(any());
         verifyNoMoreInteractions(sceneState, entityModel, mesh, input);
@@ -151,12 +151,12 @@ class EditOperationsTest {
 
         EditOperations editOperations = new EditOperations(input, pickedVertices, sceneState);
 
-        when(sceneState.getSelectedEntity()).thenReturn(entityEmpty);
+        when(sceneState.getMainSelectedEntity()).thenReturn(entityEmpty);
 
         editOperations.deleteVertex();
 
         assertThat(pickedVertices).containsExactly(v1);
-        verify(sceneState).getSelectedEntity();
+        verify(sceneState).getMainSelectedEntity();
         verifyNoMoreInteractions(sceneState, input);
     }
 
@@ -175,7 +175,7 @@ class EditOperationsTest {
 
         EditOperations editOperations = new EditOperations(input, pickedVertices, sceneState);
 
-        when(sceneState.getSelectedEntity()).thenReturn(entityModel);
+        when(sceneState.getMainSelectedEntity()).thenReturn(entityModel);
         when(entityModel.getMesh()).thenReturn(mesh);
 
         editOperations.deleteVertex();
@@ -184,7 +184,7 @@ class EditOperationsTest {
         assertThat(v1.isPicked()).isFalse();
         assertThat(v2.isPicked()).isFalse();
 
-        verify(sceneState).getSelectedEntity();
+        verify(sceneState).getMainSelectedEntity();
         verify(entityModel).getMesh();
         verify(mesh, times(2)).deleteVertex(any());
         verifyNoMoreInteractions(sceneState, entityModel, mesh, input);

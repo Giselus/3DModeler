@@ -1,12 +1,10 @@
 package UtilsModel;
 
 import EntityTree.Entity;
-import EntityTree.EntityEmpty;
 import EntityTree.EntityModel;
 import Scene.IInput;
 import Scene.SceneState;
 import UtilsCommon.Camera;
-import UtilsCommon.Ray;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
@@ -56,7 +54,7 @@ public class EditOperations {
 
 
     public void createFace(){
-        Entity temp = sceneState.getSelectedEntity();
+        Entity temp = sceneState.getMainSelectedEntity();
         if(temp instanceof EntityModel){
             ((EntityModel)temp).getMesh().addFace(pickedVertices);
         } else {
@@ -65,7 +63,7 @@ public class EditOperations {
     }
 
     public void copyVertices(){
-        Entity temp = sceneState.getSelectedEntity();
+        Entity temp = sceneState.getMainSelectedEntity();
         if(temp instanceof EntityModel){
             ArrayList<VertexPosition> newPickedList = new ArrayList<>();
             Mesh mesh = ((EntityModel)temp).getMesh();
@@ -81,7 +79,7 @@ public class EditOperations {
     }
 
     public void deleteVertex(){
-        Entity temp = sceneState.getSelectedEntity();
+        Entity temp = sceneState.getMainSelectedEntity();
         if(temp instanceof EntityModel){
             Mesh mesh = ((EntityModel)temp).getMesh();
             for(var item: pickedVertices){

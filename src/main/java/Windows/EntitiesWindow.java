@@ -3,6 +3,7 @@ package Windows;
 import EntityTree.Entity;
 import Scene.SceneState;
 import imgui.ImGui;
+import imgui.flag.ImGuiKey;
 import imgui.flag.ImGuiTreeNodeFlags;
 import imgui.type.ImBoolean;
 
@@ -19,12 +20,21 @@ public class EntitiesWindow {
         int nodeFlags = baseFlags;
         if(entity.getUnmodifiableChildren().size() == 0)
             nodeFlags |= ImGuiTreeNodeFlags.Bullet;
-        if(entity == sceneState.getSelectedEntity())
+        if(entity == sceneState.getMainSelectedEntity()) {
             nodeFlags |= ImGuiTreeNodeFlags.Selected;
+            nodeFlags |= ImGuiTreeNodeFlags.Framed;
+        }
+        if(sceneState.getSelectedEntities().contains(entity))
+            nodeFlags |= ImGuiTreeNodeFlags.Selected;
+
         ImGui.pushID(entity.getIndex());
         if(ImGui.treeNodeEx(entity.getName(), nodeFlags)) {
             if(ImGui.isItemClicked()){
-                sceneState.setSelectedEntity(entity);
+                sceneState.setMainSelectedEntity(entity);
+                if(!ImGui.isMouseDown(1)){
+                    sceneState.clearSelectedEntities();
+                }
+                sceneState.addSelectedEntity(entity);
             }
 
             if(ImGui.beginDragDropSource()) {

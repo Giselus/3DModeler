@@ -17,8 +17,8 @@ public class InspectorWindow {
 
     static public void show(SceneState sceneState) {
         ImGui.begin("Inspector", new ImBoolean(), 0);
-        if(sceneState.getSelectedEntity() != null)
-            showInspector(sceneState.getSelectedEntity());
+        if(sceneState.getMainSelectedEntity() != null)
+            showInspector(sceneState.getMainSelectedEntity());
         ImGui.end();
     }
 
