@@ -54,7 +54,24 @@ class RayTest {
     }
 
     @Test
-    public void testDistanceFromSphere() {
+    public void testDistanceFromSphereTooFar() {
+        Vector3f origin = new Vector3f(1f, 2f, 3f);
+        Vector3f direction = new Vector3f(4f, 5f, 6f);
+        Ray ray = new Ray(origin, direction);
 
+        float result = ray.distanceFromSphere(new Vector3f(7f, 8f, 9f), 0.1f);
+
+        assertThat(result).isEqualTo(-1.0f);
+    }
+
+    @Test
+    public void testDistanceFromSphereTooFar2() {
+        Vector3f origin = new Vector3f(0f, 0f, 0f);
+        Vector3f direction = new Vector3f(4f, 5f, 6f);
+        Ray ray = new Ray(origin, direction);
+
+        float result = ray.distanceFromSphere(new Vector3f(4.2f, 4.8f, 6f), 0.1f);
+
+        assertThat(result).isEqualTo(8.6f, withPrecision(1f));
     }
 }
