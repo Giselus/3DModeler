@@ -1,4 +1,4 @@
-package UtilsCommon;
+package Shaders;
 
 import org.joml.*;
 import org.lwjgl.system.MemoryStack;

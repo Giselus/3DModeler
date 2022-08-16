@@ -1,8 +1,10 @@
-package Scene;
+package OpenGLImpl;
 
 import EntityTree.EntityModel;
+import Scene.IRenderer;
+import Scene.SceneState;
 import UtilsCommon.Camera;
-import UtilsCommon.Shader;
+import Shaders.Shader;
 import UtilsModel.Mesh;
 import Windows.EntitiesWindow;
 import Windows.InspectorWindow;
@@ -29,7 +31,7 @@ import static org.lwjgl.opengl.GL30.GL_FRAMEBUFFER;
 import static org.lwjgl.opengl.GL32.GL_TEXTURE_2D_MULTISAMPLE;
 import static org.lwjgl.opengl.GL32.glTexImage2DMultisample;
 
-public class OpenGLRenderer implements IRenderer{
+public class OpenGLRenderer implements IRenderer {
 
     private ImGuiImplGlfw imGuiGlfw;
     private ImGuiImplGl3 imGuiGl3;

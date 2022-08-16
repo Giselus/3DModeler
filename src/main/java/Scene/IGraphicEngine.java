@@ -2,9 +2,9 @@ package Scene;
 
 public abstract class IGraphicEngine{
     SceneState sceneState;
-    IAppWindow appWindow;
-    IRenderer renderer;
-    IInput input;
+    protected IAppWindow appWindow;
+    protected IRenderer renderer;
+    protected IInput input;
 
     public IGraphicEngine(SceneState sceneState){
         this.sceneState = sceneState;

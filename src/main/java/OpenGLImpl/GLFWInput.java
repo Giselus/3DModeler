@@ -1,19 +1,19 @@
-package Scene;
+package OpenGLImpl;
 
+import Scene.IInput;
+import Scene.SceneState;
 import Windows.SceneWindow;
 import org.joml.Vector2f;
 import org.lwjgl.glfw.Callbacks;
 
 import java.util.HashSet;
-import java.util.Set;
 import java.util.TreeMap;
-import java.util.TreeSet;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import static org.lwjgl.glfw.GLFW.*;
 
-public class GLFWInput implements IInput{
+public class GLFWInput implements IInput {
 
     //TODO: Add continuous callback functions
 
@@ -269,6 +269,5 @@ public class GLFWInput implements IInput{
     public void removeMouseKeyCallback(MouseKeyCode key, Runnable f) {
         mouseKeyCallbackMap.get(key).remove(f);
     }
-
 
 }

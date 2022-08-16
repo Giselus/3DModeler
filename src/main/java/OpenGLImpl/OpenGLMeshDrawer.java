@@ -1,5 +1,6 @@
-package Scene;
+package OpenGLImpl;
 
+import Scene.IMeshDrawer;
 import UtilsModel.Face;
 import UtilsModel.VertexInstance;
 import org.lwjgl.system.MemoryUtil;
@@ -14,7 +15,7 @@ import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 import static org.lwjgl.opengl.GL30.*;
 
-public class OpenGLMeshDrawer implements IMeshDrawer{
+public class OpenGLMeshDrawer implements IMeshDrawer {
     private ArrayList<VertexInstance> vertices;
     private ArrayList<Face> faces;
 

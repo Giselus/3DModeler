@@ -2,16 +2,13 @@ package Application;
 
 import EntityTree.EntityModel;
 import ModelLoader.OBJLoader;
+import OpenGLImpl.OpenGLEngine;
 import Scene.*;
 import UtilsCommon.Camera;
 
-import java.util.function.BiConsumer;
-
-import static org.lwjgl.glfw.GLFW.*;
-
 public class App {
     //TODO: delete
-    private final String INIT_FILE = "src/main/data/szybkaFura.obj";
+    private final String INIT_FILE = "src/main/data/sphere.obj";
 
     private SceneState sceneState;
 
@@ -20,7 +17,7 @@ public class App {
     private IRenderer renderer;
     private IInput input;
     private Camera camera;
-    private Editor editor;
+    private InputRegisterer inputRegisterer;
     public void run() {
         initialize();
 
@@ -63,7 +60,7 @@ public class App {
         camera = new Camera(input,sceneState);
         sceneState.setCamera(camera);
 
-        editor = new Editor(input,sceneState);
+        inputRegisterer = new InputRegisterer(input,sceneState);
     }
 
     private void sceneStateInit() {

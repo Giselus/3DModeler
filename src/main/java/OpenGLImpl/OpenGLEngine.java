@@ -1,12 +1,9 @@
-package Scene;
+package OpenGLImpl;
 
-import imgui.ImGui;
-import imgui.ImGuiIO;
-import imgui.flag.ImGuiConfigFlags;
-import imgui.gl3.ImGuiImplGl3;
-import imgui.glfw.ImGuiImplGlfw;
+import Scene.IGraphicEngine;
+import Scene.SceneState;
 
-public class OpenGLEngine extends IGraphicEngine{
+public class OpenGLEngine extends IGraphicEngine {
 //    private GLFWAppWindow appWindow;
 //    private OpenGLRenderer renderer;
 //    private GLFWInput input;

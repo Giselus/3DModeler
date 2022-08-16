@@ -1,33 +1,26 @@
 package Scene;
 
-import EntityTree.EntityModel;
 import EntityTree.EntityOperations;
-import UtilsCommon.Camera;
 import UtilsCommon.Picker;
-import UtilsCommon.Ray;
 import UtilsModel.EditOperations;
-import UtilsModel.Face;
-import UtilsModel.VertexInstance;
 import UtilsModel.VertexPosition;
-import org.joml.Vector3f;
-import org.joml.Vector4f;
 
 import java.util.ArrayList;
 
-public class Editor {
+public class InputRegisterer {
     private final IInput input;
     private final EditOperations editOperations;
     private final Picker picker;
     private final SceneState sceneState;
     private final EntityOperations entityOperations;
 
-    public Editor(IInput input, SceneState sceneState) {
+    public InputRegisterer(IInput input, SceneState sceneState) {
         this.input = input;
         ArrayList<VertexPosition> pickedVertices = new ArrayList<>();
         this.sceneState = sceneState;
-        editOperations = new EditOperations(input, pickedVertices, sceneState);
-        entityOperations = new EntityOperations(input, pickedVertices, sceneState);
-        picker = new Picker(input, pickedVertices, sceneState);
+        this.editOperations = new EditOperations(input, pickedVertices, sceneState);
+        this.entityOperations = new EntityOperations(input, pickedVertices, sceneState);
+        this.picker = new Picker(input, pickedVertices, sceneState);
         registerInput();
     }
 
