@@ -25,7 +25,7 @@ public class Ray {
         v0v1.cross(v0v2,normal);
 
         float normalDotRayDirection = normal.dot(direction);
-        if(normalDotRayDirection < epsilon)
+        if(Math.abs(normalDotRayDirection) < epsilon)
             return -1f;
 
         float d = -(normal.dot(vertices.get(0)));
@@ -48,18 +48,6 @@ public class Ray {
             if(normal.dot(C) < 0)
                 return -1;
         }
-        System.out.println(origin);
-        System.out.println(direction);
-        System.out.println(intersection);
-
-        Vector3f tmp = new Vector3f(direction);
-        System.out.println("***");
-        ;
-        System.out.println(tmp);
-        tmp.mul(d);
-        System.out.println(tmp);
-        System.out.println(vertices);
-        System.out.println(distance);
         return distance;
     }
 
