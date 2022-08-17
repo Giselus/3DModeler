@@ -25,8 +25,8 @@ public class InputRegisterer {
     }
 
     private void registerInput() {
-        input.addMouseMoveCallback(sceneState.getCamera()::ProcessMousePosition);
-        input.addMouseScrollCallback(sceneState.getCamera()::ProcessMouseScroll);
+        input.addMouseMoveCallback(sceneState.getCamera()::processMousePosition);
+        input.addMouseScrollCallback(sceneState.getCamera()::processMouseScroll);
         input.addMouseKeyCallback(IInput.MouseKeyCode.MOUSE_LEFT, picker::pickVertex);
         input.addMouseMoveCallback(editOperations::movePoints);
         input.addKeyCallback(IInput.KeyCode.KEY_A, editOperations::createFace);

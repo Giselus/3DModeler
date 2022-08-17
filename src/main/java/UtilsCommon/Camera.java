@@ -55,7 +55,7 @@ public class Camera {
         return front;
     }
 
-    public void ProcessMousePosition(float offsetX, float offsetY){
+    public void processMousePosition(float offsetX, float offsetY){
         if(!input.isMouseKeyPressed(IInput.MouseKeyCode.MOUSE_SCROLL))
             return;
         offsetX *= mouseSensitivity;
@@ -63,16 +63,15 @@ public class Camera {
         yaw += offsetX;
         pitch += offsetY;
 
-
         if(pitch > 89.0f)
             pitch = 89.0f;
         if(pitch < -89.0f)
             pitch = -89.0f;
 
-
         updateCameraVectors();
     }
-    public void ProcessMouseScroll(float offset){
+
+    public void processMouseScroll(float offset){
         while(offset > 0.5f || offset < -0.5f) {
             if (offset < 0f) {
                 distance *= scrollSensitivity;
@@ -101,6 +100,7 @@ public class Camera {
         position.x = -front.x;
         position.y = -front.y;
         position.z = -front.z;
+
         this.position = position;
         this.position.normalize();
         this.position.mul(distance);
