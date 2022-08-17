@@ -1,6 +1,5 @@
 package UtilsModel;
 
-//import Scene.IMeshDrawer;
 import org.joml.Vector3f;
 import org.junit.jupiter.api.Test;
 

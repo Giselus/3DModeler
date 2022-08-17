@@ -15,13 +15,13 @@ public class EntityModel extends Entity {
         this.mesh = mesh;
     }
 
-    public ArrayList<Face> getFaces() {
-        return mesh.getFaces();
-    }
-
-    public ArrayList<VertexPosition> getVertices() {
-        return mesh.getVertices();
-    }
+//    public ArrayList<Face> getFaces() {
+//        return mesh.getFaces();
+//    }
+//
+//    public ArrayList<VertexPosition> getVertices() {
+//        return mesh.getVertices();
+//    }
 
     public Mesh getMesh(){
         return mesh;

@@ -46,8 +46,8 @@ public class EntityOperations {
 
         for(Entity entity: sceneState.getSelectedEntities()) {
             if(entity instanceof EntityModel) {
-                faces.addAll(((EntityModel) entity).getFaces());
-                vertices.addAll(((EntityModel) entity).getVertices());
+                faces.addAll(((EntityModel) entity).getMesh().getFaces());
+                vertices.addAll(((EntityModel) entity).getMesh().getVertices());
             }
             children.addAll(entity.getChildren());
         }
@@ -74,7 +74,7 @@ public class EntityOperations {
                 vertex.unpick();
             }
             pickedVertices.clear();
-            for(var vertex: ((EntityModel) entity).getVertices()){
+            for(var vertex: ((EntityModel) entity).getMesh().getVertices()){
                 vertex.pick();
                 pickedVertices.add(vertex);
             }
