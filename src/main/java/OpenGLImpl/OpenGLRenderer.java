@@ -19,6 +19,7 @@ import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
 import java.nio.ByteBuffer;
+import java.util.HashMap;
 
 import static org.lwjgl.glfw.GLFW.*;
 
@@ -53,6 +54,8 @@ public class OpenGLRenderer implements IRenderer {
     private int rbo;
     private int multiSampleTexture;
 
+    private HashMap<Mesh, OpenGLMeshDrawer> drawers = new HashMap<>();
+
     public OpenGLRenderer(SceneState sceneState, GLFWAppWindow appWindow, String glslVersion){
         this.sceneState = sceneState;
         this.appWindow = appWindow;
@@ -81,39 +84,18 @@ public class OpenGLRenderer implements IRenderer {
 
     @Override
     public void render(EntityModel entityModel) {
-        Mesh mesh = entityModel.getMesh();
-        if(mesh.getMeshDrawer() == null){
-            mesh.setMeshDrawer(new OpenGLMeshDrawer(mesh.getFaces()));
-        }else{
-            mesh.getMeshDrawer().recalculate();
-        }
         setActiveShader(mainShader);
         setDrawingMode(GL_TRIANGLES);
-
         drawMeshWithActiveShader(entityModel);
 
         setActiveShader(wireframeShader);
+        setDrawingMode(GL_LINES);
         drawMeshWithActiveShader(entityModel);
 
         setActiveShader(pointsShader);
         setDrawingMode(GL_POINTS);
         drawMeshWithActiveShader(entityModel);
 
-        //
-//        setDrawingMode(GL_TRIANGLES);
-//        setActiveShader(mainShader);
-//
-//        setActiveShader(mainShader);
-//        setDrawingMode(GL_TRIANGLES);
-//
-//        sceneState.getRoot().drawSelfAndChildren(); //todo
-//        if(MainController.getInstance().getMode() == MainController.Mode.EDIT){
-//            setActiveShader(wireframeShader);
-//            SceneController.getInstance().getRoot().update();
-//            setActiveShader(pointsShader);
-//            setDrawingMode(GL_POINTS);
-//            SceneController.getInstance().getRoot().update();
-//        }
     }
 
     //TODO: logic should be moved outside, there should be function to rather render one window
@@ -158,7 +140,13 @@ public class OpenGLRenderer implements IRenderer {
     }
 
     private void drawMeshWithActiveShader(EntityModel entity){
-        OpenGLMeshDrawer drawer = (OpenGLMeshDrawer) entity.getMesh().getMeshDrawer();
+        Mesh mesh = entity.getMesh();
+        if(!drawers.containsKey(mesh)){
+            drawers.put(mesh,new OpenGLMeshDrawer(mesh));
+        }else{
+            drawers.get(mesh).recalculate();
+        }
+        OpenGLMeshDrawer drawer = drawers.get(mesh);
         activeShader.setMatrix4("model",entity.getTransform().getGlobalModelMatrix());
         drawer.draw(drawingMode);
     }

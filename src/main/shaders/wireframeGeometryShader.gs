@@ -1,7 +1,7 @@
 #version 330
 
-layout (triangles) in;
-layout (line_strip, max_vertices=3) out;
+layout (lines) in;
+layout (line_strip, max_vertices=2) out;
 
 in vec3 GSNormal[];
 in float GSPicked[];
