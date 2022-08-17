@@ -1,7 +1,6 @@
 package UtilsCommon;
 
 import org.joml.Vector3f;
-import org.joml.Vector3fc;
 
 import java.util.List;
 
@@ -73,16 +72,9 @@ public class Ray {
         float thc = (float)Math.sqrt(radius - d2);
         float t0 = tca - thc;
         float t1 = tca + thc;
-        if(t0 > t1){
-            float tmp = t1;
-            t1 = t0;
-            t0 = tmp;
-        }
-        if(t0 < 0){
-            t0 = t1;
-        }
-        if(t0 < 0) return -1;
-        return t0;
+
+        t0 = t0 < 0 ? t1 : t0;
+        return t0 > 0 ? t0 : -1;
     }
     
     public Vector3f getDirection() {
