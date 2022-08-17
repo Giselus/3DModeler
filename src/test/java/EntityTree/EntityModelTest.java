@@ -193,39 +193,4 @@ class EntityModelTest {
 
         assertThat(result).isEqualTo(mesh);
     }
-
-    @Test
-    public void testGetVertices() {
-        ArrayList<VertexPosition> vertices = new ArrayList<>();
-        vertices.add(new VertexPosition(new Vector3f(1f, 2f, 3f)));
-        vertices.add(new VertexPosition(new Vector3f(2f, 3f, 1f)));
-        vertices.add(new VertexPosition(new Vector3f(3f, 1f, 2f)));
-
-        Mesh mesh = new Mesh(vertices, null);
-
-        EntityModel entity = new EntityModel(mesh, null);
-
-        ArrayList<VertexPosition> result = entity.getVertices();
-
-        assertThat(result).isEqualTo(vertices);
-    }
-
-    @Test
-    public void testGetFaces() {
-        ArrayList<VertexPosition> vertices = new ArrayList<>();
-        vertices.add(new VertexPosition(new Vector3f(1f, 2f, 3f)));
-        vertices.add(new VertexPosition(new Vector3f(2f, 3f, 1f)));
-        vertices.add(new VertexPosition(new Vector3f(3f, 1f, 2f)));
-
-        ArrayList<Face> faces = new ArrayList<>();
-        Face face = new Face(vertices);
-        faces.add(face);
-
-        Mesh mesh = new Mesh(vertices, faces);
-        EntityModel entity = new EntityModel(mesh, null);
-
-        ArrayList<Face> result = entity.getFaces();
-
-        assertThat(result).containsExactly(face);
-    }
 }

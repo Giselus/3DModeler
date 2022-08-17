@@ -59,14 +59,14 @@ public class OBJSaver implements Saver{
     private StringBuilder processEntityModel(EntityModel entity){
         StringBuilder result = new StringBuilder();
         result.append("o ").append(entity.getName()).append("\n");
-        for(var vertex: entity.getVertices()){
+        for(var vertex: entity.getMesh().getVertices()){
             if (!vertices.containsKey(vertex.getValue())) {
                 vertices.put(vertex.getValue(), vertexNumber);
                 vertexNumber++;
                 result.append("v ").append(vertexToStringBuilder(vertex.getValue())).append("\n");
             }
         }
-        for(var face: entity.getFaces()){
+        for(var face: entity.getMesh().getFaces()){
             result.append("f ");
             for(var vertex: face.getVertices()){
                 var value = vertex.getPosition().getValue();

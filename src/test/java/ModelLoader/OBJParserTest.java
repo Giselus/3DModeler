@@ -68,10 +68,10 @@ class OBJParserTest {
         Vector3f v4 = new Vector3f(-1f, -1f, 1f);
         EntityModel entityModel = (EntityModel) parsingResult.readObjects.get(1);
 
-        Face faceTriangle = entityModel.getFaces().get(0);
-        Face faceQuad = entityModel.getFaces().get(1);
+        Face faceTriangle = entityModel.getMesh().getFaces().get(0);
+        Face faceQuad = entityModel.getMesh().getFaces().get(1);
 
-        assertThat(entityModel.getFaces().size()).isEqualTo(2);
+        assertThat(entityModel.getMesh().getFaces().size()).isEqualTo(2);
         assertThat(faceTriangle.getVertices()).extracting(v -> v.getPosition().getValue()).containsExactly(v1, v2, v3);
         assertThat(faceQuad.getVertices()).extracting(v -> v.getPosition().getValue()).containsExactly(v1, v2, v3, v4);
     }
@@ -106,8 +106,8 @@ class OBJParserTest {
 
         assertThat(entityModel.getMesh().getVertices()).extracting(VertexPosition::getValue).containsExactly(v1, v2, v3, v4);
 
-        Face faceTriangle = entityModel.getFaces().get(0);
-        Face faceQuad = entityModel.getFaces().get(1);
+        Face faceTriangle = entityModel.getMesh().getFaces().get(0);
+        Face faceQuad = entityModel.getMesh().getFaces().get(1);
 
         assertThat(faceTriangle.getVertices()).extracting(v -> v.getPosition().getValue()).containsExactly(v1, v2, v3);
         assertThat(faceQuad.getVertices()).extracting(v -> v.getPosition().getValue()).containsExactly(v1, v2, v3, v4);

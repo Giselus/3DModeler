@@ -1,6 +1,5 @@
 package UtilsModel;
 
-import Scene.IMeshDrawer;
 import org.joml.Vector3f;
 import org.junit.jupiter.api.Test;
 
@@ -47,21 +46,21 @@ class MeshTest {
         }
     }
 
-    @Test
-    public void testUninitializedMeshDrawer(){
-        Mesh mesh = new Mesh(null, null);
-        IMeshDrawer result = mesh.getMeshDrawer();
-        assertNull(result);
-    }
-
-    @Test
-    public void testSetMeshDrawer(){
-        Mesh mesh = new Mesh(null, null);
-        IMeshDrawer expected = mock(IMeshDrawer.class);
-        mesh.setMeshDrawer(expected);
-        IMeshDrawer result = mesh.getMeshDrawer();
-        assertEquals(expected, result);
-    }
+//    @Test
+//    public void testUninitializedMeshDrawer(){
+//        Mesh mesh = new Mesh(null, null);
+//        IMeshDrawer result = mesh.getMeshDrawer();
+//        assertNull(result);
+//    }
+//
+//    @Test
+//    public void testSetMeshDrawer(){
+//        Mesh mesh = new Mesh(null, null);
+//        IMeshDrawer expected = mock(IMeshDrawer.class);
+//        mesh.setMeshDrawer(expected);
+//        IMeshDrawer result = mesh.getMeshDrawer();
+//        assertEquals(expected, result);
+//    }
 
     @Test
     public void testAddVertex(){

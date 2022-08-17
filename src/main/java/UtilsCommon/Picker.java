@@ -6,6 +6,9 @@ import Scene.SceneState;
 import UtilsModel.Face;
 import UtilsModel.VertexInstance;
 import UtilsModel.VertexPosition;
+import org.joml.Matrix4f;
+import org.joml.Matrix4fc;
+import org.joml.Vector3f;
 
 import java.util.ArrayList;
 import static UtilsCommon.GeometryMath.*;
@@ -36,10 +39,9 @@ public class Picker {
 
         sceneState.getRoot().invokeFunctionOnSubtree(entity -> {
             if(entity instanceof EntityModel){
-                for(Face face: ((EntityModel) entity).getFaces()){
-                    for(VertexInstance v: face.getVertices()){
-                        tryToPick(ray, v);
-                    }
+                Matrix4fc transformation = entity.getTransform().getGlobalModelMatrix();
+                for(VertexPosition v: ((EntityModel) entity).getMesh().getVertices()) {
+                    tryToPick(ray, v, transformation);
                 }
             }
         });
@@ -50,13 +52,14 @@ public class Picker {
         }
     }
 
-    private void tryToPick(Ray ray, VertexInstance vertex){
-        float radius = ray.getOrigin().distance(vertex.getPosition().getValue());
+    private void tryToPick(Ray ray, VertexPosition vertex, Matrix4fc transformation){
+        Vector3f position = vertex.getValue().mulPosition(transformation);
+        float radius = ray.getOrigin().distance(position);
         radius *= vertexRadius;
-        float distance = ray.distanceFromSphere(vertex.getPosition().getValue(),radius);
+        float distance = ray.distanceFromSphere(position,radius);
         if(distance > 0){
             if(lastlyChosenVertex == null || distance < minDistance){
-                lastlyChosenVertex = vertex.getPosition();
+                lastlyChosenVertex = vertex;
                 minDistance = distance;
             }
         }
