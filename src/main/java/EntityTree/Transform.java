@@ -50,9 +50,9 @@ public class Transform {
 
         return new Matrix4f().identity()
                 .translate(localTranslation)
-                .rotateY((float)Math.toRadians(localRotation.y()))
-                .rotateZ((float)Math.toRadians(localRotation.z()))
-                .rotateX((float)Math.toRadians(localRotation.x()))
+                .rotateY(Math.toRadians(localRotation.y()))
+                .rotateZ(Math.toRadians(localRotation.z()))
+                .rotateX(Math.toRadians(localRotation.x()))
                 .scale(localScale);
     }
 }

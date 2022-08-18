@@ -93,9 +93,9 @@ public class Camera {
 
     private void updateCameraVectors(){
         Vector3f front = new Vector3f();
-        front.x = -(float)(Math.cos(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)));
-        front.y = (float)(Math.sin(Math.toRadians(pitch)));
-        front.z = -(float)(Math.sin(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)));
+        front.x = -(Math.cos(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)));
+        front.y = (Math.sin(Math.toRadians(pitch)));
+        front.z = -(Math.sin(Math.toRadians(yaw)) * Math.cos(Math.toRadians(pitch)));
         Vector3f position = new Vector3f();
         position.x = -front.x;
         position.y = -front.y;

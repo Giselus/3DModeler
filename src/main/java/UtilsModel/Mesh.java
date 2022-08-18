@@ -3,8 +3,8 @@ package UtilsModel;
 import java.util.ArrayList;
 
 public class Mesh {
-    private ArrayList<VertexPosition> vertices;
-    private ArrayList<Face> faces;
+    private final ArrayList<VertexPosition> vertices;
+    private final ArrayList<Face> faces;
 
     public Mesh(ArrayList<VertexPosition> vertices, ArrayList<Face> faces){
         this.vertices = vertices;

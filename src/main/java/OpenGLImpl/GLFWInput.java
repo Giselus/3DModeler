@@ -14,20 +14,19 @@ import java.util.function.Consumer;
 import static org.lwjgl.glfw.GLFW.*;
 
 public class GLFWInput implements IInput {
+    private final HashSet<BiConsumer<Float,Float>> mousePositionCallbackSet = new HashSet<>();
+    private final HashSet<BiConsumer<Float,Float>> mousePositionContinuousCallbackSet = new HashSet<>();
 
-    private HashSet<BiConsumer<Float,Float>> mousePositionCallbackSet = new HashSet<>();
-    private HashSet<BiConsumer<Float,Float>> mousePositionContinuousCallbackSet = new HashSet<>();
+    private final HashSet<Consumer<Float>> mouseScrollCallbackSet = new HashSet<>();
+    private final HashSet<Consumer<Float>> mouseScrollContinuousCallbackSet = new HashSet<>();
 
-    private HashSet<Consumer<Float>> mouseScrollCallbackSet = new HashSet<>();
-    private HashSet<Consumer<Float>> mouseScrollContinuousCallbackSet = new HashSet<>();
+    private final TreeMap<KeyCode, HashSet<Runnable>> keyCallbackMap = new TreeMap<>();
+    private final TreeMap<KeyCode, HashSet<Runnable>> keyContinuousCallbackMap = new TreeMap<>();
 
-    private TreeMap<KeyCode, HashSet<Runnable>> keyCallbackMap = new TreeMap<>();
-    private TreeMap<KeyCode, HashSet<Runnable>> keyContinuousCallbackMap = new TreeMap<>();
+    private final TreeMap<MouseKeyCode, HashSet<Runnable>> mouseKeyCallbackMap = new TreeMap<>();
+    private final TreeMap<MouseKeyCode, HashSet<Runnable>> mouseKeyContinuousCallbackMap = new TreeMap<>();
 
-    private TreeMap<MouseKeyCode, HashSet<Runnable>> mouseKeyCallbackMap = new TreeMap<>();
-    private TreeMap<MouseKeyCode, HashSet<Runnable>> mouseKeyContinuousCallbackMap = new TreeMap<>();
-
-    private TreeMap<Integer, KeyCode> keyCodeTransformMap = new TreeMap<>();
+    private final TreeMap<Integer, KeyCode> keyCodeTransformMap = new TreeMap<>();
     {
         keyCodeTransformMap.put(GLFW_KEY_A,KeyCode.KEY_A);
         keyCodeTransformMap.put(GLFW_KEY_B,KeyCode.KEY_B);
@@ -58,15 +57,15 @@ public class GLFWInput implements IInput {
         keyCodeTransformMap.put(GLFW_KEY_LEFT_CONTROL,KeyCode.KEY_LEFT_CTRL);
     }
 
-    private TreeMap<Integer, MouseKeyCode> mouseKeyCodeTransformMap = new TreeMap<>();
+    private final TreeMap<Integer, MouseKeyCode> mouseKeyCodeTransformMap = new TreeMap<>();
     {
         mouseKeyCodeTransformMap.put(GLFW_MOUSE_BUTTON_1,MouseKeyCode.MOUSE_LEFT);
         mouseKeyCodeTransformMap.put(GLFW_MOUSE_BUTTON_2,MouseKeyCode.MOUSE_RIGHT);
         mouseKeyCodeTransformMap.put(GLFW_MOUSE_BUTTON_3,MouseKeyCode.MOUSE_SCROLL);
     }
 
-    private HashSet<KeyCode> pressedKeys = new HashSet<>();
-    private HashSet<MouseKeyCode> pressedMouseKeys = new HashSet<>();
+    private final HashSet<KeyCode> pressedKeys = new HashSet<>();
+    private final HashSet<MouseKeyCode> pressedMouseKeys = new HashSet<>();
 
     private void mousePositionCallback(long window, double posX, double posY){
         Vector2f tmp = SceneWindow.mapPosition((float)posX,(float)posY);
@@ -166,11 +165,10 @@ public class GLFWInput implements IInput {
     private boolean firstTick = true;
     private float deltaScroll = 0f;
 
-    private GLFWAppWindow appWindow;
-    private SceneState sceneState;
+    private final GLFWAppWindow appWindow;
+
     public GLFWInput(GLFWAppWindow appWindow, SceneState sceneState){
         this.appWindow = appWindow;
-        this.sceneState = sceneState;
     }
 
     @Override

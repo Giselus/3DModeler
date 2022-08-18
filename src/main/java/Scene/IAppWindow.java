@@ -1,11 +1,11 @@
 package Scene;
 
 public interface IAppWindow {
-    public boolean shouldBeClosed();
+    boolean shouldBeClosed();
 
-    public void setWidth(int width);
-    public void setHeight(int height);
+    void setWidth(int width);
+    void setHeight(int height);
 
-    public void initialize();
-    public void destroy();
+    void initialize();
+    void destroy();
 }

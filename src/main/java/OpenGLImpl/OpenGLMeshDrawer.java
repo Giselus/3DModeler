@@ -19,7 +19,7 @@ public class OpenGLMeshDrawer{
     private ArrayList<VertexInstance> triangulatedVertices;
     private ArrayList<VertexInstance> lineVertices;
 
-    private Mesh mesh;
+    private final Mesh mesh;
 
     public OpenGLMeshDrawer(Mesh mesh){
         this.mesh = mesh;
