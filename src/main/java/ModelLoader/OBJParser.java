@@ -33,7 +33,6 @@ public class OBJParser {
         try {
             readFile(file);
         } catch (Exception e){
-            e.printStackTrace();
             System.out.println("An error has occurred while reading file " + path);
             return null;
         }
