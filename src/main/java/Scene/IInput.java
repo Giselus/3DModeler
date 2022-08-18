@@ -32,6 +32,7 @@ public interface IInput {
         KEY_Y,
         KEY_Z,
         KEY_LEFT_CTRL,
+        KEY_LEFT_SHIFT
     }
     enum MouseKeyCode{
         MOUSE_LEFT,

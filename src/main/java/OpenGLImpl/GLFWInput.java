@@ -55,6 +55,7 @@ public class GLFWInput implements IInput {
         keyCodeTransformMap.put(GLFW_KEY_Y,KeyCode.KEY_Y);
         keyCodeTransformMap.put(GLFW_KEY_Z,KeyCode.KEY_Z);
         keyCodeTransformMap.put(GLFW_KEY_LEFT_CONTROL,KeyCode.KEY_LEFT_CTRL);
+        keyCodeTransformMap.put(GLFW_KEY_LEFT_SHIFT, KeyCode.KEY_LEFT_SHIFT);
     }
 
     private final TreeMap<Integer, MouseKeyCode> mouseKeyCodeTransformMap = new TreeMap<>();

@@ -5,6 +5,8 @@ import EntityTree.EntityModel;
 import Scene.IInput;
 import Scene.SceneState;
 import UtilsCommon.Camera;
+import org.joml.Matrix4f;
+import org.joml.Matrix4fc;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
@@ -24,6 +26,12 @@ public class EditOperations {
     }
 
     public void movePoints(float xOffset, float yOffset){
+        Entity entity = sceneState.getMainSelectedEntity();
+        if(!(entity instanceof EntityModel))
+            return;
+        Matrix4fc transformation = sceneState.getMainSelectedEntity().getTransform().getGlobalModelMatrix();
+        Matrix4f invertedTransformation = new Matrix4f();
+        transformation.invert(invertedTransformation);
         if(!input.isKeyPressed(IInput.KeyCode.KEY_X)){
             return;
         }
@@ -33,7 +41,7 @@ public class EditOperations {
         float previousY = mouseY - yOffset;
 
         Vector3f meanPoint = meanPoint(pickedVertices);
-
+        meanPoint.mulPosition(transformation);
         Camera camera = sceneState.getCamera();
 
         Vector4f normalPlane = normalPlane(camera.getDirection(), meanPoint);
@@ -48,10 +56,9 @@ public class EditOperations {
 
         Vector3f offset = new Vector3f();
         currentIntersectionPoint.sub(previousIntersectionPoint, offset);
-
+        offset.mulDirection(invertedTransformation);
         translatePoints(pickedVertices, offset);
     }
-
 
     public void createFace(){
         Entity temp = sceneState.getMainSelectedEntity();
