@@ -19,6 +19,7 @@ public class OBJParser {
     private ArrayList<Face> faces;
     private ArrayList<Integer> adjacencyList;
     String modelName;
+
     ParsingResult load(String path) {
         cords = new ArrayList<>();
         adjacencyList = null;
@@ -38,6 +39,7 @@ public class OBJParser {
         }
         return new ParsingResult(readObjects, adjacencyList);
     }
+
     private void readFile(File file) throws RuntimeException, FileNotFoundException {
         boolean firstObject = true;
         Scanner scanner = new Scanner(file);
@@ -73,6 +75,7 @@ public class OBJParser {
         temp.setName(modelName);
         readObjects.add(temp);
     }
+
     private void readVertexPosition(String[] line){
         Vector3f cords = new Vector3f(
                 Float.parseFloat(line[1]),
@@ -104,6 +107,7 @@ public class OBJParser {
         }
         adjacencyList.set(children, parent);
     }
+
     private void clear(){
         currCords = new ArrayList<>();
         faces = new ArrayList<>();

@@ -3,10 +3,7 @@ package UtilsCommon;
 import EntityTree.EntityModel;
 import Scene.IInput;
 import Scene.SceneState;
-import UtilsModel.Face;
-import UtilsModel.VertexInstance;
 import UtilsModel.VertexPosition;
-import org.joml.Matrix4f;
 import org.joml.Matrix4fc;
 import org.joml.Vector3f;
 

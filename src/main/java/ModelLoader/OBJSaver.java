@@ -11,15 +11,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class OBJSaver implements Saver{
-
     private HashMap<Vector3f, Integer> vertices;
     private ArrayList<ArrayList<Integer>> adjacencyList;
     private int vertexNumber;
-
     private int modelNumber;
 
     @Override
-    public void save(Entity entity, String dst, SaveMode saveMode) {
+    public void save(Entity entity, String dst, SaveMode saveMode){
         clear();
         adjacencyList.add(new ArrayList<>());
         String entityToSave = entity
@@ -97,6 +95,7 @@ public class OBJSaver implements Saver{
         }
         return result.toString();
     }
+
     private void clear(){
         adjacencyList = new ArrayList<>();
         vertices = new HashMap<>();

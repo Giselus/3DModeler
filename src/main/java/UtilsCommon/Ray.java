@@ -6,7 +6,6 @@ import java.util.List;
 
 public class Ray {
     static float epsilon = 0.01f;
-    //TODO: change to get/set
     private Vector3f origin;
     private Vector3f direction;
     public Ray(Vector3f origin, Vector3f direction) {

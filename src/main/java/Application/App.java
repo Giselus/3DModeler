@@ -7,7 +7,6 @@ import Scene.*;
 import UtilsCommon.Camera;
 
 public class App {
-    //TODO: delete
     private final String INIT_FILE = "src/main/data/sphere.obj";
 
     private SceneState sceneState;
@@ -35,14 +34,6 @@ public class App {
             input.processInput();
         }
         graphicEngine.destroy();
-//        while(!glfwWindowShouldClose(appWindow.getMainWindow())) {
-//            renderingUpdater.update();
-//            appWindow.update();
-//
-//            glfwSwapBuffers(appWindow.getMainWindow());
-//            glfwPollEvents();
-//        }
-//        appWindow.destroy();
     }
 
     private void initialize() {

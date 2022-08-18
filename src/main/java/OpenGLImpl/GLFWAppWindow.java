@@ -7,7 +7,6 @@ import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 public class GLFWAppWindow implements IAppWindow {
-
     private long windowID;
     private int width;
     private int height;
@@ -55,7 +54,5 @@ public class GLFWAppWindow implements IAppWindow {
     public long getWindowID(){
         return windowID;
     }
-
-
 }
 

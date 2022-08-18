@@ -43,35 +43,6 @@ public class OpenGLMeshDrawer{
         setupMesh();
     }
 
-//    public void draw(EntityModel entity) {
-//        Shader shader = renderer.getActiveShader();
-//        Matrix4fc modelMatrix = entity.getTransform().getGlobalModelMatrix();
-//        shader.setMatrix4("model",modelMatrix);
-//
-//        glBindVertexArray(vao);
-//        glDrawArrays(renderer.getDrawingMode(),0, vertices.size());
-//        glBindVertexArray(0);
-//
-////        Ray ray = InputController.ray;
-////        if(ray == null)
-////            return;
-////        for(Face f: entity.getFaces()){
-////            ArrayList<Vector3f> positions = new ArrayList<>();
-////
-////            for(VertexInstance v: f.getVertices()){
-////                float distanceToCenter = ray.origin.distance(v.getPosition().getValue());
-////                float radius = 0.001f * distanceToCenter;
-////                float dist = ray.distanceFromSphere(v.getPosition().getValue(),radius);
-////                if(dist > 0){
-////                    System.out.println(dist);
-////                }
-////            }
-////        }
-//
-//        //        model.Draw();
-//        //        super.update();
-//    }
-
     private int triangulatedVao, triangulatedVbo;
     private int lineVao, lineVbo;
 

@@ -14,7 +14,6 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class InspectorWindow {
-
     static public void show(SceneState sceneState) {
         ImGui.begin("Inspector", new ImBoolean(), 0);
         if(sceneState.getMainSelectedEntity() != null)

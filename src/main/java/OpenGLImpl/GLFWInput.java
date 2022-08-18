@@ -15,8 +15,6 @@ import static org.lwjgl.glfw.GLFW.*;
 
 public class GLFWInput implements IInput {
 
-    //TODO: Add continuous callback functions
-
     private HashSet<BiConsumer<Float,Float>> mousePositionCallbackSet = new HashSet<>();
     private HashSet<BiConsumer<Float,Float>> mousePositionContinuousCallbackSet = new HashSet<>();
 

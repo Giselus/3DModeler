@@ -1,13 +1,9 @@
 package EntityTree;
 
 
-import Scene.IRenderer;
-
-import javax.swing.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.function.Consumer;
 
 public abstract class Entity {

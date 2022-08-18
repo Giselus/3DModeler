@@ -4,9 +4,6 @@ import Scene.IGraphicEngine;
 import Scene.SceneState;
 
 public class OpenGLEngine extends IGraphicEngine {
-//    private GLFWAppWindow appWindow;
-//    private OpenGLRenderer renderer;
-//    private GLFWInput input;
 
     private String glslVersion = "#version 130";
 

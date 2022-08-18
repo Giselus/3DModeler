@@ -1,13 +1,10 @@
 package Scene;
 
 import java.util.function.BiConsumer;
-import java.util.function.BiFunction;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
 public interface IInput {
-
-    public static enum KeyCode{
+    enum KeyCode{
         KEY_A,
         KEY_B,
         KEY_C,
@@ -36,34 +33,34 @@ public interface IInput {
         KEY_Z,
         KEY_LEFT_CTRL,
     }
-    public static enum MouseKeyCode{
+    enum MouseKeyCode{
         MOUSE_LEFT,
         MOUSE_RIGHT,
         MOUSE_SCROLL
     }
 
-    public void initialize();
-    public void destroy();
-    public void runContinuousCallbacks();
-    public void processInput();
+    void initialize();
+    void destroy();
+    void runContinuousCallbacks();
+    void processInput();
 
-    public float getMouseX();
-    public float getMouseY();
+    float getMouseX();
+    float getMouseY();
 
-    public boolean isKeyPressed(KeyCode key);
-    public boolean isMouseKeyPressed(MouseKeyCode key);
+    boolean isKeyPressed(KeyCode key);
+    boolean isMouseKeyPressed(MouseKeyCode key);
 
     //Arguments are equal to offset of mouse position
-    public void addMouseMoveCallback(BiConsumer<Float, Float> f);
+    void addMouseMoveCallback(BiConsumer<Float, Float> f);
     //Arguments are equal to present mouse position
-    public void removeMouseMoveCallback(BiConsumer<Float, Float> f);
+    void removeMouseMoveCallback(BiConsumer<Float, Float> f);
 
-    public void addMouseScrollCallback(Consumer<Float> f);
-    public void removeMouseScrollCallback(Consumer<Float> f);
+    void addMouseScrollCallback(Consumer<Float> f);
+    void removeMouseScrollCallback(Consumer<Float> f);
 
-    public void addKeyCallback(KeyCode key, Runnable f);
-    public void removeKeyCallback(KeyCode key, Runnable f);
+    void addKeyCallback(KeyCode key, Runnable f);
+    void removeKeyCallback(KeyCode key, Runnable f);
 
-    public void addMouseKeyCallback(MouseKeyCode key, Runnable f);
-    public void removeMouseKeyCallback(MouseKeyCode key, Runnable f);
+    void addMouseKeyCallback(MouseKeyCode key, Runnable f);
+    void removeMouseKeyCallback(MouseKeyCode key, Runnable f);
 }

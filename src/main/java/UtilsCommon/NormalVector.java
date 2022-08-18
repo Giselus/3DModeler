@@ -18,7 +18,7 @@ public class NormalVector {
         u1.normalize();
         this.value = u1;
     }
-    //TODO recalculate instead of creating new instance
+
     public Vector3f getValue(){
         return new Vector3f(value);
     }

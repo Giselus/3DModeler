@@ -98,7 +98,6 @@ public class OpenGLRenderer implements IRenderer {
 
     }
 
-    //TODO: logic should be moved outside, there should be function to rather render one window
     @Override
     public void renderGUI() {
         glBindFramebuffer(GL_READ_FRAMEBUFFER,multiSampleFbo);
@@ -127,7 +126,6 @@ public class OpenGLRenderer implements IRenderer {
 
     }
 
-    //TODO: this should be moved somewhere else
 
     private void setDrawingMode(int mode) {
         drawingMode = mode;
@@ -225,7 +223,6 @@ public class OpenGLRenderer implements IRenderer {
         glLineWidth(1f);
         glPointSize(5);
 
-        //setDrawers();
     }
 
 
