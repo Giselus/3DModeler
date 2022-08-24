@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public class VertexPosition {
     private final Vector3f value;
     private boolean isPicked = false;
-    private ArrayList<VertexInstance> instances = new ArrayList<>();
+    private final ArrayList<VertexInstance> instances = new ArrayList<>();
     public VertexPosition(Vector3f value){
         this.value = value;
     }
