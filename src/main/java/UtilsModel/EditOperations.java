@@ -29,7 +29,7 @@ public class EditOperations {
         Entity entity = sceneState.getMainSelectedEntity();
         if(!(entity instanceof EntityModel))
             return;
-        Matrix4fc transformation = sceneState.getMainSelectedEntity().getTransform().getGlobalModelMatrix();
+        Matrix4fc transformation = entity.getTransform().getGlobalModelMatrix();
         Matrix4f invertedTransformation = new Matrix4f();
         transformation.invert(invertedTransformation);
         if(!input.isKeyPressed(IInput.KeyCode.KEY_X)){

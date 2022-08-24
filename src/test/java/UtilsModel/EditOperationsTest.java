@@ -2,6 +2,7 @@ package UtilsModel;
 
 import EntityTree.EntityEmpty;
 import EntityTree.EntityModel;
+import EntityTree.Transform;
 import Scene.IInput;
 import Scene.SceneState;
 import UtilsCommon.Camera;
@@ -195,13 +196,18 @@ class EditOperationsTest {
         IInput input = mock(IInput.class);
         SceneState sceneState = mock(SceneState.class);
         ArrayList<VertexPosition> pickedVertices = new ArrayList<>();
+        EntityModel entityModel = mock(EntityModel.class);
+        Transform transform = new Transform();
 
         EditOperations editOperations = new EditOperations(input, pickedVertices, sceneState);
 
         when(input.isKeyPressed(IInput.KeyCode.KEY_X)).thenReturn(false);
+        when(sceneState.getMainSelectedEntity()).thenReturn(entityModel);
+        when(entityModel.getTransform()).thenReturn(transform);
 
         editOperations.movePoints(0.3f, 0.3f);
 
+        verify(sceneState).getMainSelectedEntity();
         verify(input).isKeyPressed(IInput.KeyCode.KEY_X);
         verifyNoMoreInteractions(input, sceneState);
     }
@@ -211,6 +217,8 @@ class EditOperationsTest {
         IInput input = mock(IInput.class);
         SceneState sceneState = mock(SceneState.class);
         ArrayList<VertexPosition> pickedVertices = new ArrayList<>();
+        EntityModel entityModel = mock(EntityModel.class);
+        Transform transform = new Transform();
         VertexPosition v1 = new VertexPosition(new Vector3f(3f, 2f, 7f));
         pickedVertices.add(v1);
         Camera camera = mock(Camera.class);
@@ -220,6 +228,8 @@ class EditOperationsTest {
         EditOperations editOperations = new EditOperations(input, pickedVertices, sceneState);
 
         when(input.isKeyPressed(IInput.KeyCode.KEY_X)).thenReturn(true);
+        when(sceneState.getMainSelectedEntity()).thenReturn(entityModel);
+        when(entityModel.getTransform()).thenReturn(transform);
         when(input.getMouseX()).thenReturn(0.2f);
         when(input.getMouseY()).thenReturn(0.3f);
         when(sceneState.getCamera()).thenReturn(camera);
@@ -234,6 +244,7 @@ class EditOperationsTest {
         assertThat(v1.getValue().y).isEqualTo(expectedPosition.y, withPrecision(0.001f));
         assertThat(v1.getValue().z).isEqualTo(expectedPosition.z, withPrecision(0.001f));
 
+        verify(sceneState).getMainSelectedEntity();
         verify(input).isKeyPressed(IInput.KeyCode.KEY_X);
         verify(input).getMouseX();
         verify(input).getMouseY();
@@ -244,5 +255,6 @@ class EditOperationsTest {
         verify(ray, times(2)).getDirection();
 
         verifyNoMoreInteractions(input, sceneState, camera, ray);
+
     }
 }
