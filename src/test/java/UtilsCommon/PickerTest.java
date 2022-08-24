@@ -2,6 +2,7 @@ package UtilsCommon;
 
 import EntityTree.EntityEmpty;
 import EntityTree.EntityModel;
+import EntityTree.Transform;
 import Scene.IInput;
 import Scene.SceneState;
 import UtilsModel.Face;
@@ -20,20 +21,33 @@ class PickerTest {
     public void testKeyIsNotPressed() {
         IInput input = mock(IInput.class);
         ArrayList<VertexPosition> pickedVertices = new ArrayList<>();
+        pickedVertices.add(new VertexPosition(new Vector3f()));
+        pickedVertices.add(new VertexPosition(new Vector3f()));
+        pickedVertices.add(new VertexPosition(new Vector3f()));
+        ArrayList<Face> pickedFaces = new ArrayList<>();
+        pickedFaces.add(new Face(pickedVertices));
         VertexPosition v1 = new VertexPosition(new Vector3f());
         v1.pick();
         pickedVertices.add(v1);
         SceneState sceneState = mock(SceneState.class);
         Camera camera = mock(Camera.class);
+        ArrayList<VertexPosition> vertices = new ArrayList<>();
+        vertices.add(new VertexPosition(new Vector3f(1f, 1f, 1f)));
+        vertices.add(new VertexPosition(new Vector3f(2f, 2f, 2f)));
+        vertices.add(new VertexPosition(new Vector3f(3f, 3f, 3f)));
+        ArrayList<Face> faces = new ArrayList<>();
+        faces.add(new Face(vertices));
+        EntityModel entityModel = new EntityModel(new Mesh(vertices, faces), null);
 
-        Picker picker = new Picker(input, pickedVertices, sceneState);
+        Picker picker = new Picker(input, pickedVertices, pickedFaces, sceneState);
 
         when(input.isKeyPressed(IInput.KeyCode.KEY_LEFT_CTRL)).thenReturn(false);
         when(sceneState.getCamera()).thenReturn(camera);
         when(camera.getRay(anyFloat(), anyFloat())).thenReturn(new Ray(new Vector3f(), new Vector3f()));
         when(sceneState.getRoot()).thenReturn(new EntityEmpty());
+        when(sceneState.getMainSelectedEntity()).thenReturn(entityModel);
 
-        picker.pickVertex();
+        picker.pick();
 
         assertThat(v1.isPicked()).isFalse();
         assertThat(pickedVertices).doesNotContain(v1);
@@ -45,6 +59,7 @@ class PickerTest {
     public void testKeyIsPressed() {
         IInput input = mock(IInput.class);
         ArrayList<VertexPosition> pickedVertices = new ArrayList<>();
+        ArrayList<Face> pickedFaces = new ArrayList<>();
         VertexPosition v1 = new VertexPosition(new Vector3f());
         v1.pick();
         pickedVertices.add(v1);
@@ -65,16 +80,17 @@ class PickerTest {
 
         EntityModel entityModel = new EntityModel(mesh, null);
 
-        Picker picker = new Picker(input, pickedVertices, sceneState);
+        Picker picker = new Picker(input, pickedVertices, pickedFaces, sceneState);
 
         when(input.isKeyPressed(IInput.KeyCode.KEY_LEFT_CTRL)).thenReturn(true);
         when(sceneState.getCamera()).thenReturn(camera);
+        when(sceneState.getMainSelectedEntity()).thenReturn(entityModel);
         when(camera.getRay(anyFloat(), anyFloat())).thenReturn(ray);
         when(sceneState.getRoot()).thenReturn(entityModel);
         when(ray.getOrigin()).thenReturn(new Vector3f());
         when(ray.distanceFromSphere(any(), anyFloat())).thenReturn(0.5f, 0.2f, 4f);
 
-        picker.pickVertex();
+        picker.pick();
 
         assertThat(pickedVertices).containsExactlyInAnyOrder(v1, newVertices.get(1));
     }
