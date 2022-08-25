@@ -118,6 +118,17 @@ class OBJSaverTest {
         assertThat(expectedLines).containsAll(resultLines);
     }
 
+    @Test
+    public void testWritingToIllegalFile(){
+        Entity root = new EntityEmpty();
+        Entity child1 = new EntityModel(new Mesh(new ArrayList<>(), new ArrayList<>()), root);
+        child1.setName("a");
+
+        Saver saver = new OBJSaver();
+        boolean result = saver.save(root, DIR + "/cantWrite.obj", SaveMode.EXTENDED_OBJ);
+        assertThat(result).isFalse();
+    }
+
     @BeforeEach
     public void createDir() {
         File dir = new File(TEMP_DIR);

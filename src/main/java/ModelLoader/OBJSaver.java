@@ -17,7 +17,7 @@ public class OBJSaver implements Saver{
     private int modelNumber;
 
     @Override
-    public void save(Entity entity, String dst, SaveMode saveMode){
+    public boolean save(Entity entity, String dst, SaveMode saveMode){
         clear();
         adjacencyList.add(new ArrayList<>());
         String entityToSave = entity
@@ -33,8 +33,9 @@ public class OBJSaver implements Saver{
             }
             myWriter.close();
         } catch (IOException e){
-            e.printStackTrace();
+            return false;
         }
+        return true;
     }
 
     private StringBuilder preorderTraverse(Entity entity, int parentNode){
