@@ -11,6 +11,8 @@ import org.joml.Matrix4fc;
 import org.joml.Vector3f;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
+
 import static UtilsCommon.GeometryMath.*;
 
 public class Picker {
@@ -31,6 +33,7 @@ public class Picker {
         this.pickedFaces = pickedFaces;
         this.sceneState = sceneState;
     }
+
     public void pick(){
         if(!input.isKeyPressed(IInput.KeyCode.KEY_LEFT_CTRL)){
             clearPicked();
@@ -59,6 +62,7 @@ public class Picker {
             addFaceToPicked(lastlyChosenFace);
         }
     }
+
     private void castVertexRay(){
         Camera camera = sceneState.getCamera();
         Ray ray = clickRay(input.getMouseX(),input.getMouseY(), camera);
@@ -91,12 +95,11 @@ public class Picker {
     }
 
     private void checkRayFaceIntersection(Ray ray, Face face, Matrix4fc transformation){
-        ArrayList<Vector3f> vertices = new ArrayList<>();
-        for(VertexInstance vertex: face.getVertices()){
-            Vector3f position = vertex.getPosition().getValue();
-            position.mulPosition(transformation);
-            vertices.add(position);
-        }
+        ArrayList<Vector3f> vertices = (ArrayList<Vector3f>) face.getVertices().stream()
+                .map(VertexInstance::getPosition)
+                .map(VertexPosition::getValue)
+                .map(pos -> pos.mulPosition(transformation)).collect(Collectors.toList());
+
         float distance = ray.distanceFromPlane(vertices);
         if(distance > 0){
             if(lastlyChosenFace == null || distance < minDistance){
@@ -117,23 +120,22 @@ public class Picker {
         pickedVertices.clear();
     }
 
-    private void addVertexToPicked(VertexPosition vertex){
+    private void addVertexToPicked(VertexPosition vertex) {
         if(vertex.isPicked())
             return;
         vertex.pick();
         pickedVertices.add(vertex);
         for(VertexInstance instance: vertex.getInstances()){
             Face face = instance.getFace();
-            if(face.isPicked())
-                continue;
             boolean isEveryVertexOnFacePicked = true;
             for(VertexInstance instanceOnFace: face.getVertices()){
                 VertexPosition vertexOnFace = instanceOnFace.getPosition();
-                if(!vertexOnFace.isPicked()){
+                if (!vertexOnFace.isPicked()) {
                     isEveryVertexOnFacePicked = false;
+                    break;
                 }
             }
-            if(isEveryVertexOnFacePicked){
+            if(isEveryVertexOnFacePicked && !face.isPicked()){
                 face.pick();
                 pickedFaces.add(face);
             }
