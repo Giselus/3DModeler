@@ -37,5 +37,6 @@ public class InputRegisterer {
         input.addKeyCallback(IInput.KeyCode.KEY_S, entityOperations::pickAllEntityVertices);
         input.addKeyCallback(IInput.KeyCode.KEY_M, entityOperations::mergeTwoEntities);
         input.addKeyCallback(IInput.KeyCode.KEY_Z, entityOperations::deleteEntities);
+        input.addKeyCallback(IInput.KeyCode.KEY_N, entityOperations::copyEntity);
     }
 }
