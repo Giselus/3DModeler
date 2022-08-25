@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class OBJSaver implements Saver{
+public class OBJSaver implements Saver {
     private HashMap<Vector3f, Integer> vertices;
     private ArrayList<ArrayList<Integer>> adjacencyList;
     private int vertexNumber;
