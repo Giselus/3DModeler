@@ -125,7 +125,7 @@ class OBJSaverTest {
         child1.setName("a");
 
         Saver saver = new OBJSaver();
-        boolean result = saver.save(root, DIR + "/cantWrite.obj", SaveMode.EXTENDED_OBJ);
+        boolean result = saver.save(root, "/sad  adasd  asdasdj", SaveMode.EXTENDED_OBJ);
         assertThat(result).isFalse();
     }
 
