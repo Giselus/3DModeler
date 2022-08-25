@@ -4,12 +4,14 @@ import Scene.IInput;
 import Scene.SceneState;
 import UtilsModel.Face;
 import UtilsModel.Mesh;
+import UtilsModel.VertexInstance;
 import UtilsModel.VertexPosition;
 import org.joml.Vector3f;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.*;
@@ -145,5 +147,55 @@ class EntityOperationsTest {
         assertThat(((EntityModel)resultEntity).getMesh().getFaces())
                 .containsExactlyInAnyOrderElementsOf(facesNode3);
         assertThat(root.getChildren()).containsExactly(resultEntity);
+    }
+
+    @Test
+    public void testCopyEntity() {
+        IInput input = mock(IInput.class);
+        SceneState sceneState = mock(SceneState.class);
+
+        EntityOperations entityOperations = new EntityOperations(input, new ArrayList<>(), sceneState);
+
+        Entity root = new EntityEmpty();
+        ArrayList<VertexPosition> meshVertices = new ArrayList<>();
+        VertexPosition vm1 = new VertexPosition(new Vector3f(2f, 7f, 1f));
+        VertexPosition vm2 = new VertexPosition(new Vector3f(8f, 6f, 3f));
+        VertexPosition vm3 = new VertexPosition(new Vector3f(1f, 6f, 4f));
+        meshVertices.add(vm1);
+        meshVertices.add(vm2);
+        meshVertices.add(vm3);
+        Face face = new Face(meshVertices);
+        ArrayList<Face> faces = new ArrayList<>();
+        faces.add(face);
+        Mesh mesh = new Mesh(meshVertices, faces);
+        EntityModel mainEntity = new EntityModel(mesh, root);
+
+        List<Vector3f> expectedVertices = meshVertices.stream().map(VertexPosition::getValue).toList();
+
+        when(sceneState.getMainSelectedEntity()).thenReturn(mainEntity);
+
+        entityOperations.copyEntity();
+
+        EntityModel resultEntity = null;
+        for(Entity child : root.getChildren()) {
+            if(child != mainEntity) {
+                resultEntity = (EntityModel) child;
+                break;
+            }
+        }
+
+        assertThat(resultEntity).isNotNull();
+        List<Vector3f> resultVertices = resultEntity.getMesh().getVertices().stream()
+                .map(VertexPosition::getValue).toList();
+        List<VertexPosition> resultFaceVertices = resultEntity.getMesh().getFaces().get(0).getVertices().stream()
+                .map(VertexInstance::getPosition).toList();
+
+        assertThat(root.getChildren().size()).isEqualTo(2);
+        assertThat(root.getChildren()).containsExactlyInAnyOrder(mainEntity, resultEntity);
+        assertThat(resultEntity.getParent()).isEqualTo(root);
+        assertThat(resultEntity.getChildren()).isEmpty();
+        assertThat(resultVertices).containsExactlyInAnyOrderElementsOf(expectedVertices);
+        assertThat(resultEntity.getMesh().getFaces().size()).isEqualTo(1);
+        assertThat(resultFaceVertices).containsExactlyInAnyOrderElementsOf(resultEntity.getMesh().getVertices());
     }
 }
