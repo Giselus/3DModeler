@@ -2,12 +2,15 @@ package Application;
 
 import EntityTree.EntityModel;
 import ModelLoader.OBJLoader;
+import ModelLoader.OBJSaver;
+import ModelLoader.SaveMode;
 import OpenGLImpl.OpenGLEngine;
 import Scene.*;
 import UtilsCommon.Camera;
 
 public class App {
-    private final String INIT_FILE = "src/main/data/sphere.obj";
+    private final String INIT_FILE = "src/main/data/result.obj";
+    private final String END_FILE = "src/main/data/result.obj";
 
     private SceneState sceneState;
 
@@ -34,6 +37,7 @@ public class App {
             input.processInput();
         }
         graphicEngine.destroy();
+        new OBJSaver().save(sceneState.getRoot(), END_FILE, SaveMode.EXTENDED_OBJ);
     }
 
     private void initialize() {
