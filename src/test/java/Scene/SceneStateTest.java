@@ -52,17 +52,6 @@ class SceneStateTest {
     }
 
     @Test
-    public void testSceneTexture() {
-        SceneState sceneState = new SceneState();
-        int expected = 42;
-
-        sceneState.setSceneTexture(expected);
-        int result = sceneState.getSceneTexture();
-
-        assertThat(result).isEqualTo(expected);
-    }
-
-    @Test
     public void testCamera() {
         SceneState sceneState = new SceneState();
         Camera camera = mock(Camera.class);

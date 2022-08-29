@@ -46,9 +46,8 @@ public class Camera {
     }
 
     public Matrix4f getProjectionMatrix(){
-        Matrix4f projection = new Matrix4f().setPerspective((float) java.lang.Math.toRadians(zoom),
+        return new Matrix4f().setPerspective((float) java.lang.Math.toRadians(zoom),
                 (float)sceneState.getSceneWindowWidth()/sceneState.getSceneWindowHeight(), 0.1f, 200.0f);
-        return projection;
     }
 
     public Vector3f getDirection(){

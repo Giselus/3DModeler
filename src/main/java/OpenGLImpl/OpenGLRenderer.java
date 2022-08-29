@@ -53,6 +53,7 @@ public class OpenGLRenderer implements IRenderer {
     private int fbo;
     private int rbo;
     private int multiSampleTexture;
+    private int texture;
 
     private HashMap<Mesh, OpenGLMeshDrawer> drawers = new HashMap<>();
 
@@ -115,7 +116,7 @@ public class OpenGLRenderer implements IRenderer {
         ImGui.newFrame();
 
         MainWindow.show();
-        SceneWindow.show(sceneState.getSceneTexture());
+        SceneWindow.show(texture);
         EntitiesWindow.show(sceneState.getRoot(), sceneState);
         InspectorWindow.show(sceneState);
 
@@ -211,13 +212,13 @@ public class OpenGLRenderer implements IRenderer {
         fbo = glGenFramebuffers();
         glBindFramebuffer(GL_FRAMEBUFFER,fbo);
 
-        sceneState.setSceneTexture(glGenTextures());
-        glBindTexture(GL_TEXTURE_2D,sceneState.getSceneTexture());
+        texture = glGenTextures();
+        glBindTexture(GL_TEXTURE_2D, texture);
         glTexImage2D(GL_TEXTURE_2D,0,GL_RGB,sceneState.getSceneWindowWidth(), sceneState.getSceneWindowHeight(),
                 0,GL_RGB,GL_UNSIGNED_BYTE,(ByteBuffer) null);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glFramebufferTexture2D(GL_FRAMEBUFFER,GL_COLOR_ATTACHMENT0,GL_TEXTURE_2D,sceneState.getSceneTexture(),0);
+        glFramebufferTexture2D(GL_FRAMEBUFFER,GL_COLOR_ATTACHMENT0,GL_TEXTURE_2D,texture,0);
         glBindFramebuffer(GL_FRAMEBUFFER,0);
 
         glLineWidth(1f);

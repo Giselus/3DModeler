@@ -14,8 +14,6 @@ public class SceneState {
 
     private final int sceneWindowWidth = 1200;
     private final int sceneWindowHeight = 800;
-    private int sceneTexture;
-
 
     public Entity getRoot() {
         return root;
@@ -50,14 +48,6 @@ public class SceneState {
 
     public int getSceneWindowHeight(){
         return sceneWindowHeight;
-    }
-
-    public int getSceneTexture() {
-        return sceneTexture;
-    }
-
-    public void setSceneTexture(int sceneTexture) {
-        this.sceneTexture = sceneTexture;
     }
 
     public Camera getCamera(){return camera;}

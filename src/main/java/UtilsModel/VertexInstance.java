@@ -6,14 +6,12 @@ import org.joml.Vector3f;
 public class VertexInstance {
     private final VertexPosition position;
     private final UtilsModel.Face face;
-    //private NormalVector normal;
 
     private Vector2f textureCoordinate;
     public VertexInstance(VertexPosition position, Face face){
         position.addInstance(this);
         this.position = position;
         this.face = face;
-        //this.normal = normal;
     }
 
     public VertexPosition getPosition(){
