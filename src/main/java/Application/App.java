@@ -9,7 +9,7 @@ import Scene.*;
 import UtilsCommon.Camera;
 
 public class App {
-    private final String INIT_FILE = "src/main/data/result.obj";
+    private final String INIT_FILE = "src/main/data/cube.obj";
     private final String END_FILE = "src/main/data/result.obj";
 
     private SceneState sceneState;
